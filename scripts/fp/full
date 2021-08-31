@@ -1,0 +1,27 @@
+#!/bin/bash
+rm temp/*
+CHUNKSIZE=0.7
+FRAMES=693
+ffmpeg -i video/1.mp4 -c:v libx264 -crf 22 -map 0 -segment_time $CHUNKSIZE \
+  -reset_timestamps 1 -g $FRAMES -sc_threshold 0 \
+  -force_key_frames "expr:gte(t,n_forced*$CHUNKSIZE)" -f segment temp/out%03d.mp4
+cd temp
+i=1; shuf -z -e -- * | while IFS= read -rd '' f; do mv -- "$f" "out$((i++)).mp4"; done
+for file in $(ls -1v *.mp4);do
+  lowest=100000000
+  name=""
+  for compare in $(ls -1v *.mp4 | grep -v "^$file$");do
+    contender=$(leven "$(xxd -p $file | tr -d '\n' | tail -c1024)" "$(xxd -p $compare | tr -d '\n' | head -c1024)")
+    echo "Current lowest: $lowest $name"
+    echo "Contender: $compare $contender"
+    if (( contender < lowest )); then
+      lowest=$contender
+      name=$compare
+      echo "Found new lowest $compare"
+    fi
+  done
+  echo "Writing to file"
+  echo "file $name" >> ../list.txt
+done
+mv ../list.txt list.txt
+ffmpeg -y -f concat -safe 0 -i list.txt -c copy ../output.mp4

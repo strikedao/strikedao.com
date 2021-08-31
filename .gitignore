@@ -1,0 +1,5 @@
+.DS_Store
+scripts/node_modules
+scripts/video
+scripts/results
+scripts/fp/video/

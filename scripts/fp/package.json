@@ -1,0 +1,14 @@
+{
+  "name": "strike",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tim Daubenschütz <tim@daubenschuetz.de> (https://timdaub.github.io/)",
+  "license": "ISC",
+  "dependencies": {
+    "levenshtein-edit-distance": "3.0.0"
+  }
+}

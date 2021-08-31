@@ -1,0 +1,7 @@
+#!/bin/bash
+filesList=""
+cd temp
+for file in $(ls -1v *.mp4);do #lists even numbered file
+  echo "file ${file}" >> list.txt
+done
+ffmpeg -f concat -safe 0 -i list.txt -c copy ../output.mp4
