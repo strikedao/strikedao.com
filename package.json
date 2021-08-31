@@ -1,0 +1,33 @@
+{
+  "name": "strike",
+  "version": "0.0.1",
+  "description": "Strike is a autonomous system making use of quadratic voting mechanisms",
+  "main": "./src/index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimDaub/strike.git"
+  },
+  "keywords": [
+    "quadratic",
+    "voting",
+    "strike",
+    "hito",
+    "steyerl",
+    "performance",
+    "ethereum",
+    "goerli"
+  ],
+  "author": "Tim Daubenschütz <tim@daubenschuetz.de> (https://timdaub.github.io)",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/TimDaub/strike/issues"
+  },
+  "homepage": "https://github.com/TimDaub/strike#readme",
+  "dependencies": {
+    "dotenv": "10.0.0",
+    "nodemailer": "6.6.3"
+  }
+}
