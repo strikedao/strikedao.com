@@ -23,19 +23,14 @@ function getTransporter() {
   });
 }
 
-// TODO: Test this function using ava
-async function send(to, subject, text, html) {
+export async function send(to, subject, text, html) {
   const transport = getTransporter();
   const data = {
     from: PUBLIC_NAME,
-    to,,
+    to,
     subject,
     text,
-    html,
+    html
   };
   return await transport.sendMail(data);
 }
-
-send()
-  .then(console.log)
-  .catch(console.log);
