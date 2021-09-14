@@ -1,0 +1,4 @@
+CREATE TABLE stills (
+  priority NUMBER NOT NULL UNIQUE,
+  token TEXT NOT NULL PRIMARY KEY
+)

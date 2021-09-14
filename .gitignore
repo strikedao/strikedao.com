@@ -5,3 +5,4 @@ scripts/results
 scripts/fp/video/
 .env
 node_modules
+strike.db
