@@ -1,4 +1,5 @@
 CREATE TABLE stills (
-  priority NUMBER NOT NULL UNIQUE,
-  token TEXT NOT NULL PRIMARY KEY
+  token TEXT NOT NULL PRIMARY KEY,
+  priority NUMBER NOT NULL,
+  UNIQUE(token, priority)
 )
