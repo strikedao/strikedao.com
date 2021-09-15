@@ -4,13 +4,11 @@
   "description": "Strike is a autonomous system making use of quadratic voting mechanisms",
   "main": "./src/index.mjs",
   "scripts": {
-    "test": "ava"
+    "dev": "node ./src/start.mjs",
+    "test": "ava --serial --verbose"
   },
   "ava": {
-    "nodeArguments": [
-      "--loader=esmock",
-      "--no-warnings"
-    ]
+    "nodeArguments": ["--loader=esmock", "--no-warnings"]
   },
   "repository": {
     "type": "git",

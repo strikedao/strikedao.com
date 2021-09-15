@@ -14,7 +14,7 @@ const database = {
   name: "test.db"
 };
 
-async function delDB() {
+export async function delDB() {
   try {
     await access(database.name, constants.F_OK);
   } catch (err) {
