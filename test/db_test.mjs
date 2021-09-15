@@ -5,7 +5,8 @@ import { constants } from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
 
-import { init, stills, migrations } from "../src/db.mjs";
+import { init, questions, stills, migrations } from "../src/db.mjs";
+import config from "../config.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -29,20 +30,46 @@ test.before(delDB);
 test.serial("if init migration runs a migration on the db", async t => {
   migrations.init(0);
   const db = init();
-  const [priority, token] = db.prepare("PRAGMA table_info(stills)").all();
+  const [token, priority] = db.prepare("PRAGMA table_info(stills)").all();
   t.is(priority.name, "priority");
   t.is(token.name, "token");
 });
 
 test.serial("if stills can be generated with tokens in db", async t => {
   migrations.init(0);
-  const quantity = 693;
-  await stills.init(quantity);
+  await stills.init();
 
   const db = init();
   const { actual } = db.prepare("SELECT COUNT(*) as actual FROM stills").get();
-  t.is(quantity, actual);
+  t.is(config.stills.quantity, actual);
 });
+
+test.serial(
+  "if questions can be configured in db according to .mjs file",
+  async t => {
+    migrations.init(0);
+    migrations.init(1);
+    await stills.init();
+    await questions.init();
+
+    const db = init();
+    const { boxAmount } = db
+      .prepare("SELECT COUNT(*) as boxAmount FROM boxes")
+      .get();
+    t.true(boxAmount > 0);
+    t.truthy(boxAmount);
+
+    const { optionAmount } = db
+      .prepare("SELECT COUNT(*) as optionAmount FROM options")
+      .get();
+    t.true(optionAmount > 0);
+    t.truthy(optionAmount);
+
+    const ksuids = db.prepare("SELECT ksuid FROM boxes ORDER BY ksuid").all();
+    const copy = [...ksuids].sort((a, b) => a.ksuid - b.ksuid);
+    t.deepEqual(ksuids, copy);
+  }
+);
 
 test.serial("if migration 1 can be applied", async t => {
   migrations.init(0);

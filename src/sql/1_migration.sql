@@ -18,7 +18,7 @@ CREATE TABLE options (
 DROP TABLE stills;
 CREATE TABLE stills (
   token TEXT NOT NULL PRIMARY KEY,
-  email TEXT NOT NULL,
+  email TEXT,
   priority NUMBER NOT NULL,
 
   UNIQUE(token, email, priority)

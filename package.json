@@ -36,6 +36,7 @@
     "better-sqlite3": "7.4.3",
     "bs58": "4.0.1",
     "dotenv": "10.0.0",
+    "ksuid": "2.0.0",
     "nodemailer": "6.6.3"
   },
   "devDependencies": {
