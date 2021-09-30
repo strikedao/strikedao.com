@@ -44,6 +44,24 @@ test.serial("if stills can be generated with tokens in db", async t => {
   t.is(config.stills.quantity, actual);
 });
 
+test.serial("if still email can be set by knowing its token", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  await stills.init();
+
+  const db = init();
+  const { token } = db
+    .prepare("SELECT priority, token FROM stills where priority = 0")
+    .get();
+  t.truthy(token);
+  const email = "example@example.com";
+  stills.allocate(token, email);
+  const still = db
+    .prepare(`SELECT email FROM stills where token = @token`)
+    .get({ token });
+  t.is(still.email, email);
+});
+
 test.serial(
   "if questions can be configured in db according to .mjs file",
   async t => {

@@ -108,6 +108,23 @@ export const questions = {
 };
 
 export const stills = {
+  allocate: async function(token, email) {
+    const db = init();
+
+    db.prepare(
+      `
+      UPDATE
+        stills
+      SET
+        email = @email
+      WHERE
+        token = @token
+    `
+    ).run({
+      token,
+      email
+    });
+  },
   init: async function() {
     const db = init();
 

@@ -41,7 +41,3 @@ export async function initDB() {
     await questions.init();
   }
 }
-
-boot()
-  .then()
-  .catch(console.error);
