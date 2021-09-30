@@ -4,13 +4,31 @@ import Fastify from "fastify";
 import dotenv from "dotenv";
 import process from "process";
 
+import { handleAllocate } from "./handlers.mjs";
+
 dotenv.config();
 
 const { SERVER_PORT } = process.env;
 
-const fastify = Fastify({
+export const fastify = Fastify({
   logger: true
 });
+
+fastify.patch(
+  "/stills/",
+  {
+    schema: {
+      body: {
+        type: "object",
+        required: ["email"],
+        properties: {
+          email: { type: "string" }
+        }
+      }
+    }
+  },
+  handleAllocate
+);
 
 export async function boot() {
   fastify.log.info(`Initializing database.`);
