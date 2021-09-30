@@ -58,6 +58,48 @@ test.serial(
   }
 );
 
+test.serial("if allocating many tokens at once is possible", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  await stills.init();
+
+  const db = init();
+  const email = "example@example.com";
+  const tokens = stills.allocateMany(email);
+  const sample = db
+    .prepare(`SELECT * FROM stills WHERE email = @email`)
+    .all({ email });
+  t.truthy(sample);
+  t.is(sample.length, config.stills.perEmail);
+});
+
+test.serial(
+  "if allocating many tokens throws when not enough are available",
+  async t => {
+    migrations.init(0);
+    migrations.init(1);
+    await stills.init();
+
+    const db = init();
+    const leftovers = config.stills.perEmail - 2;
+    const allocation = config.stills.quantity - leftovers;
+    const statement = db.prepare(`
+      UPDATE
+        stills
+      SET
+        email = 'test@example.com'
+      WHERE
+        priority = @id
+      `);
+    for (let id of Array(allocation).keys()) {
+      statement.run({ id });
+    }
+
+    const email = "example@example.com";
+    t.throws(t => stills.allocateMany(email));
+  }
+);
+
 test.serial(
   "if still claims function throws when less than required stills can only be claimed",
   async t => {
