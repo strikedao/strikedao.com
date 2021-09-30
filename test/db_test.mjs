@@ -44,6 +44,47 @@ test.serial("if stills can be generated with tokens in db", async t => {
   t.is(config.stills.quantity, actual);
 });
 
+test.serial(
+  "if unclaimed can return an amount of unclaimed cryptographic tokens",
+  async t => {
+    migrations.init(0);
+    migrations.init(1);
+    await stills.init();
+
+    const db = init();
+    const tokens = stills.getUnclaimed();
+    t.truthy(tokens);
+    t.is(tokens.length, config.stills.perEmail);
+  }
+);
+
+test.serial(
+  "if still claims function throws when less than required stills can only be claimed",
+  async t => {
+    migrations.init(0);
+    migrations.init(1);
+    await stills.init();
+
+    const db = init();
+
+    const leftovers = config.stills.perEmail - 2;
+    const allocation = config.stills.quantity - leftovers;
+    const statement = db.prepare(`
+      UPDATE
+        stills
+      SET
+        email = 'test@example.com'
+      WHERE
+        priority = @id
+      `);
+    for (let id of Array(allocation).keys()) {
+      statement.run({ id });
+    }
+
+    t.throws(t => stills.getUnclaimed());
+  }
+);
+
 test.serial("if still email can be set by knowing its token", async t => {
   migrations.init(0);
   migrations.init(1);

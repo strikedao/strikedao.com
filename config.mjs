@@ -1,7 +1,8 @@
 //@format
 const config = {
   stills: {
-    quantity: 693
+    quantity: 693,
+    perEmail: 10
   },
   questions: [
     {

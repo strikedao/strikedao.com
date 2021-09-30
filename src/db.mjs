@@ -108,7 +108,32 @@ export const questions = {
 };
 
 export const stills = {
-  allocate: async function(token, email) {
+  getUnclaimed: function() {
+    const limit = config.stills.perEmail;
+    const db = init();
+
+    const stills = db
+      .prepare(
+        `
+      SELECT
+        token
+      FROM
+        stills
+      WHERE
+        email IS NULL
+      LIMIT @limit
+    `
+      )
+      .all({ limit });
+    if (stills.length < limit) {
+      throw new Error(
+        `Couldn't allocate further stills; available stills currently is: ${stills.length}`
+      );
+    } else {
+      return stills;
+    }
+  },
+  allocate: function(token, email) {
     const db = init();
 
     db.prepare(
@@ -119,6 +144,8 @@ export const stills = {
         email = @email
       WHERE
         token = @token
+      AND
+        email IS NULL
     `
     ).run({
       token,
