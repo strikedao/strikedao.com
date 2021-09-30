@@ -2,9 +2,9 @@
   "name": "strike",
   "version": "0.0.1",
   "description": "Strike is a autonomous system making use of quadratic voting mechanisms",
-  "main": "./src/index.mjs",
+  "main": "./src/start.mjs",
   "scripts": {
-    "dev": "node ./src/start.mjs",
+    "dev": "nodemon --ext 'mjs'",
     "test": "ava --serial --verbose"
   },
   "ava": {
@@ -34,8 +34,10 @@
     "better-sqlite3": "7.4.3",
     "bs58": "4.0.1",
     "dotenv": "10.0.0",
+    "fastify": "3.22.0",
     "ksuid": "2.0.0",
-    "nodemailer": "6.6.3"
+    "nodemailer": "6.6.3",
+    "nodemon": "2.0.13"
   },
   "devDependencies": {
     "ava": "3.15.0",

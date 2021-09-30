@@ -1,5 +1,29 @@
 //@format
 import { init, migrations, stills, questions } from "./db.mjs";
+import Fastify from "fastify";
+import dotenv from "dotenv";
+import process from "process";
+
+dotenv.config();
+
+const { SERVER_PORT } = process.env;
+
+const fastify = Fastify({
+  logger: true
+});
+
+export async function boot() {
+  fastify.log.info(`Initializing database.`);
+  await initDB();
+  fastify.log.info(`Starting web server.`);
+  server();
+}
+
+function server() {
+  fastify.listen(SERVER_PORT, (err, address) => {
+    if (err) throw err;
+  });
+}
 
 export async function initDB() {
   migrations.init(0);
@@ -17,3 +41,7 @@ export async function initDB() {
     await questions.init();
   }
 }
+
+boot()
+  .then()
+  .catch(console.error);
