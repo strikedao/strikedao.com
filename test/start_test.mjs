@@ -2,7 +2,7 @@
 import test from "ava";
 import esmock from "esmock";
 
-import { delDB } from "./db_test.mjs";
+import { delDB } from "./utils.mjs";
 import { init } from "../src/db.mjs";
 
 test.afterEach.always(delDB);

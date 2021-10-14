@@ -3,7 +3,7 @@ import test from "ava";
 
 import { init, migrations, stills } from "../src/db.mjs";
 import { fastify, initDB } from "../src/start.mjs";
-import { delDB } from "./db_test.mjs";
+import { delDB } from "./utils.mjs";
 import config from "../config.mjs";
 
 test.afterEach.always(delDB);

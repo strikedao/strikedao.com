@@ -1,29 +1,10 @@
 // @format
 import test from "ava";
-import { access, unlink } from "fs/promises";
-import { constants } from "fs";
-import { fileURLToPath } from "url";
-import path from "path";
 import esmock from "esmock";
 
 import { init, questions, stills, migrations } from "../src/db.mjs";
 import config from "../config.mjs";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-const database = {
-  name: "test.db"
-};
-
-export async function delDB() {
-  try {
-    await access(database.name, constants.F_OK);
-  } catch (err) {
-    return;
-  }
-  console.info("deleting test.db");
-  await unlink(path.resolve(__dirname, `../${database.name}`));
-}
+import { delDB } from "./utils.mjs";
 
 test.afterEach.always(delDB);
 test.before(delDB);
