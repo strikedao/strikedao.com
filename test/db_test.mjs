@@ -4,6 +4,7 @@ import { access, unlink } from "fs/promises";
 import { constants } from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
+import esmock from "esmock";
 
 import { init, questions, stills, migrations } from "../src/db.mjs";
 import config from "../config.mjs";
@@ -33,6 +34,18 @@ test.serial("if init migration runs a migration on the db", async t => {
   const [token, priority] = db.prepare("PRAGMA table_info(stills)").all();
   t.is(priority.name, "priority");
   t.is(token.name, "token");
+});
+
+test.serial("if init allows overwriting options", async t => {
+  t.plan(1);
+  const dbMock = await esmock("../src/db.mjs", {
+    "better-sqlite3": {
+      default: (name, options) => {
+        t.is(options.verbose, null);
+      }
+    }
+  });
+  dbMock.init({ verbose: null });
 });
 
 test.serial("if stills can be generated with tokens in db", async t => {

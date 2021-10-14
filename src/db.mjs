@@ -26,7 +26,7 @@ const token = {
   size: 32
 };
 
-export function init() {
+export function init(options) {
   let name;
   if (env.NODE_ENV === "test") {
     name = "test.db";
@@ -34,7 +34,9 @@ export function init() {
     name = database.name;
   }
 
-  return sqlite3(name, database.options);
+  options = { ...database.options, ...options };
+
+  return sqlite3(name, options);
 }
 
 export const migrations = {
