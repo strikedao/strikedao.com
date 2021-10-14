@@ -6,3 +6,5 @@ scripts/fp/video/
 .env
 node_modules
 strike.db
+test.db
+test.db-journal

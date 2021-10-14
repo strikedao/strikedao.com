@@ -12,10 +12,15 @@ import config from "../config.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+let verbose;
+if (env.LOG_LEVEL === "ALL") {
+  verbose = console.log;
+}
+
 const database = {
   name: "strike.db",
   options: {
-    verbose: console.log
+    verbose
   },
   migrations: {
     path: "./sql"
