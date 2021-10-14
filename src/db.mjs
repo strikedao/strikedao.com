@@ -179,12 +179,15 @@ export const stills = {
 
 stills.allocateMany = function(email) {
   const db = init();
+  let tokens;
 
   db.transaction(() => {
-    const tokens = stills.getUnclaimed();
+    tokens = stills.getUnclaimed();
 
     for (let { token } of tokens) {
       stills.allocate(token, email);
     }
   })();
+
+  return tokens;
 };

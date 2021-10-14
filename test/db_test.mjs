@@ -79,6 +79,8 @@ test.serial("if allocating many tokens at once is possible", async t => {
   const db = init();
   const email = "example@example.com";
   const tokens = stills.allocateMany(email);
+  t.truthy(tokens);
+  t.is(tokens.length, config.stills.perEmail);
   const sample = db
     .prepare(`SELECT * FROM stills WHERE email = @email`)
     .all({ email });
