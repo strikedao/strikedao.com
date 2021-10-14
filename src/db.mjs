@@ -184,15 +184,16 @@ export const stills = {
 
 stills.allocateMany = function(email) {
   const db = init();
-  let tokens;
+  const list = [];
 
   db.transaction(() => {
-    tokens = stills.getUnclaimed();
+    const tokens = stills.getUnclaimed();
 
     for (let { token } of tokens) {
       stills.allocate(token, email);
+      list.push(token);
     }
   })();
 
-  return tokens;
+  return list;
 };

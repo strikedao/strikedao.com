@@ -15,3 +15,11 @@ test("if email can be sent as worker thread", async t => {
 
   t.deepEqual(await once(w, "exit"), [0]);
 });
+
+test("if errors are thrown when worker thread execution fails", async t => {
+  const w = new Worker("./src/workers/send.mjs", {
+    workerData: {}
+  });
+
+  t.deepEqual(await once(w, "exit"), [1]);
+});
