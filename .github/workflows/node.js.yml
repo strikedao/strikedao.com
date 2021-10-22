@@ -26,5 +26,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: 'echo "$STRIKE_ENV" > .env'
+      shell: bash
+      env:
+        STRIKE_ENV: ${{ secrets.environment }}
     - run: npm ci
     - run: npm run test
