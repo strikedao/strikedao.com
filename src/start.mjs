@@ -4,15 +4,36 @@ import Fastify from "fastify";
 import dotenv from "dotenv";
 import process from "process";
 
-import { handleAllocate } from "./handlers.mjs";
+import { serveBallotBox, handleAllocate } from "./handlers.mjs";
 
 dotenv.config();
 
 const { SERVER_PORT } = process.env;
 
 export const fastify = Fastify({
-  logger: true
+  logger: true,
+  ajv: {
+    customOptions: {
+      coerceTypes: "array"
+    }
+  }
 });
+
+fastify.get(
+  "/ballotbox/",
+  {
+    schema: {
+      querystring: {
+        type: "object",
+        required: ["tokens"],
+        properties: {
+          tokens: { type: "array" }
+        }
+      }
+    }
+  },
+  serveBallotBox
+);
 
 fastify.patch(
   "/stills/",

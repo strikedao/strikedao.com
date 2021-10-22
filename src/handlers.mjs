@@ -5,9 +5,14 @@ import { once } from "events";
 
 import { stills } from "./db.mjs";
 import enUS from "./locales/en-US.mjs";
+import { link } from "./tokens.mjs";
 
 const logger = pino({ level: "info" });
 const mailWorkerPath = "./src/workers/send.mjs";
+
+export async function serveBallotBox(request, reply) {
+  return reply.code(200).send();
+}
 
 export async function handleAllocate(request, reply) {
   const { email } = request.body;
@@ -21,7 +26,7 @@ export async function handleAllocate(request, reply) {
     return reply.code(410).send();
   }
 
-  const text = tokens.join(",");
+  const text = link(tokens);
   const mailWorker = new Worker(mailWorkerPath, {
     workerData: {
       to: email,

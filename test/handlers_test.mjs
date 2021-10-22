@@ -23,6 +23,20 @@ test("if handling allocations works", async t => {
   t.is(response.statusCode, 200);
 });
 
+test("if handling multiple query strings as an array works with fastify", async t => {
+  await initDB();
+
+  const response = await fastify.inject({
+    method: "get",
+    url: "/ballotbox/",
+    query: {
+      tokens: ["a", "b"]
+    }
+  });
+
+  t.is(response.statusCode, 200);
+});
+
 test("if handling allocation returns error when not enough stills are available", async t => {
   migrations.init(0);
   migrations.init(1);
