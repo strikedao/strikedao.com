@@ -5,11 +5,19 @@
   "main": "./src/listen.mjs",
   "scripts": {
     "dev": "nodemon --ext 'mjs'",
-    "test": "ava --serial --verbose"
+    "test": "ava --serial --verbose",
+    "connect": "source .env && ssh root@$IPV4",
+    "deploy": "source .env && rsync -avz . root@$IPV4:./strike --exclude \"strike.db\" --exclude=\"node_modules\" --exclude=\".git\""
   },
   "ava": {
-    "nodeArguments": ["--loader=esmock", "--no-warnings"],
-    "files": ["test/**/*", "!test/utils.mjs"]
+    "nodeArguments": [
+      "--loader=esmock",
+      "--no-warnings"
+    ],
+    "files": [
+      "test/**/*",
+      "!test/utils.mjs"
+    ]
   },
   "repository": {
     "type": "git",

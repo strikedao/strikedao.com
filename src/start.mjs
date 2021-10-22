@@ -1,14 +1,13 @@
 //@format
+import dotenv from "dotenv";
+dotenv.config();
 import { init, migrations, stills, questions } from "./db.mjs";
 import Fastify from "fastify";
-import dotenv from "dotenv";
 import process from "process";
 
 import { serveBallotBox, handleAllocate } from "./handlers.mjs";
 
-dotenv.config();
-
-const { SERVER_PORT } = process.env;
+const { SERVER_PORT, NODE_ENV } = process.env;
 
 export const fastify = Fastify({
   logger: true,
@@ -59,7 +58,10 @@ export async function boot() {
 }
 
 function server() {
-  fastify.listen(SERVER_PORT, (err, address) => {
+  let iface = "127.0.0.1";
+  if (NODE_ENV === "production") iface = "0.0.0.0";
+
+  fastify.listen(SERVER_PORT, iface, (err, address) => {
     if (err) throw err;
   });
 }
