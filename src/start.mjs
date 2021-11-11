@@ -18,6 +18,8 @@ export const fastify = Fastify({
   }
 });
 
+fastify.get("/", (request, reply) => reply.code(200).send("STRIKE"));
+
 fastify.get(
   "/ballotbox/",
   {
