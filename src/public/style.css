@@ -1,0 +1,17 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+  width: 100vw;
+}
+
+.hero h1 {
+  font-size: 6em;
+}
