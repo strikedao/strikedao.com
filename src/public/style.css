@@ -109,8 +109,7 @@ a button {
   text-decoration: none;
 }
 
-input[type="email"],
-button {
+input[type="email"] {
   /* reset format for button input */
   border: none;
   background-image: none;
