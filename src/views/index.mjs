@@ -22,6 +22,9 @@ export default html`
           helpless. The powerless in a world of criminals who operate above the
           law. Here he comes Here comes Speed Racer. He's a demon on wheels.
         </p>
+        <a href="/register">
+          <button>Participate</button>
+        </a>
       </section>
     </body>
   </html>

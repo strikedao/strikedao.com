@@ -1,3 +1,4 @@
+/* @format */
 @font-face {
   font-family: "Rockwell Condensed";
   src: url("rockwell-condensed.woff2") format("woff2"),
@@ -53,6 +54,30 @@ body {
 
   .hero p {
     width: auto;
-    margin: 0 5vw 0 5vw;
+    margin: 5vh 5vw 5vh 5vw;
   }
+}
+
+input[type="submit"], button {
+  /* reset format for button input */
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+
+  /* new styling */
+  border: 3px solid white;
+  padding: 5px 2em 5px 2em;
+  margin: 1em;
+
+  font-family: "Arial";
+  font-weight: bold;
+}
+
+a input[type="submit"], a button {
+  color: white;
+  text-decoration: none;
 }
