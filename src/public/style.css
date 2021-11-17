@@ -5,12 +5,24 @@
     url("rockwell-condensed.woff") format("woff");
 }
 
+:root {
+  --big-email-input-font-size: 2em;
+  --big-email-input-color: white;
+  --big-email-input-text-align: center;
+
+  --small-email-input-font-size: 1.25em;
+
+  --logo-font: "Rockwell Condensed";
+  --text-font: "Arial";
+}
+
 body {
   background-color: black;
   color: white;
 }
 
-.hero {
+.hero,
+.register {
   padding: 0 10vw 0 10vw;
 
   display: flex;
@@ -26,19 +38,26 @@ body {
 .hero h1 {
   margin: 0;
 
-  font-family: "Rockwell Condensed";
+  font-family: var(--logo-font);
   font-size: 15em;
   letter-spacing: 0.1em;
 }
 
-.hero p {
+p {
   display: inline-block;
-  width: 40em;
 
-  font-family: "Arial";
+  font-family: var(--text-font);
   text-align: left;
+}
 
+.register p {
+  width: 30em;
+  margin: 2em 0 2em 0;
+}
+
+.hero p {
   margin-top: -1em;
+  width: 40em;
 }
 
 @media only screen and (max-width: 600px) {
@@ -52,13 +71,15 @@ body {
     font-size: 6em;
   }
 
-  .hero p {
+  .hero p,
+  .register p {
     width: auto;
     margin: 5vh 5vw 5vh 5vw;
   }
 }
 
-input[type="submit"], button {
+input[type="submit"],
+button {
   /* reset format for button input */
   background: none;
   color: inherit;
@@ -73,11 +94,100 @@ input[type="submit"], button {
   padding: 5px 2em 5px 2em;
   margin: 1em;
 
-  font-family: "Arial";
+  font-family: var(--text-font);
   font-weight: bold;
 }
 
-a input[type="submit"], a button {
+a input[type="submit"],
+a button {
   color: white;
   text-decoration: none;
+}
+
+input[type="email"] {
+  /* reset format for button input */
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  box-shadow: none;
+  outline: none;
+
+  /* new styling */
+  border-bottom: 3px solid white;
+  width: 70vw;
+  height: 2em;
+  padding: 0.5em;
+
+  font-family: var(--text-font);
+  color: var(--big-email-input-color);
+  font-size: var(--big-email-input-font-size);
+  text-align: var(--big-email-input-text-align);
+}
+
+*::-webkit-input-placeholder {
+  color: var(--big-email-input-color);
+  font-size: var(--big-email-input-font-size) * 0.7;
+  text-align: var(--big-email-input-text-align);
+}
+*:-moz-placeholder {
+  /* FF 4-18 */
+  opacity: 1;
+  color: var(--big-email-input-color);
+  font-size: var(--big-email-input-font-size) * 0.7;
+  text-align: var(--big-email-input-text-align);
+}
+*::-moz-placeholder {
+  /* FF 19+ */
+  opacity: 1;
+  color: var(--big-email-input-color);
+  font-size: var(--big-email-input-font-size) * 0.7;
+  text-align: var(--big-email-input-text-align);
+}
+*:-ms-input-placeholder {
+  /* IE 10+ */
+  color: var(--big-email-input-color);
+  font-size: var(--big-email-input-font-size) * 0.7;
+  text-align: var(--big-email-input-text-align);
+}
+*::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: var(--big-email-input-color);
+  font-size: var(--big-email-input-font-size) * 0.7;
+  text-align: var(--big-email-input-text-align);
+}
+*::placeholder {
+  /* modern browser */
+  color: var(--big-email-input-color);
+  font-size: var(--big-email-input-font-size) * 0.7;
+  text-align: var(--big-email-input-text-align);
+}
+
+@media only screen and (max-width: 600px) {
+  input[type="email"] {
+    font-size: var(--small-email-input-font-size);
+  }
+
+  *::-webkit-input-placeholder {
+    font-size: var(--small-email-input-font-size);
+  }
+  *:-moz-placeholder {
+    /* FF 4-18 */
+    font-size: var(--small-email-input-font-size);
+  }
+  *::-moz-placeholder {
+    /* FF 19+ */
+    font-size: var(--small-email-input-font-size);
+  }
+  *:-ms-input-placeholder {
+    /* IE 10+ */
+    font-size: var(--small-email-input-font-size);
+  }
+  *::-ms-input-placeholder {
+    /* Microsoft Edge */
+    font-size: var(--small-email-input-font-size);
+  }
+  *::placeholder {
+    /* modern browser */
+    font-size: var(--small-email-input-font-size);
+  }
 }

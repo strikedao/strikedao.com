@@ -13,6 +13,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import { serveBallotBox, handleAllocate } from "./handlers.mjs";
 import index from "./views/index.mjs";
+import register from "./views/register.mjs";
 
 const { SERVER_PORT, NODE_ENV } = process.env;
 
@@ -35,6 +36,13 @@ fastify.get("/", (request, reply) => {
 		.code(200)
 		.type("text/html")
 		.send(index);
+});
+
+fastify.get("/register", (request, reply) => {
+	return reply
+		.code(200)
+		.type("text/html")
+		.send(register);
 });
 
 fastify.get(
