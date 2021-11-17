@@ -15,6 +15,13 @@ export default html`
     <body>
       <section class="hero">
         <h1>STRIKE</h1>
+        <p>
+          The first mate and his Skipper too will do their very best to make the
+          others comfortable in their tropic island nest. Michael Knight a young
+          loner on a crusade to champion the cause of the innocent. The
+          helpless. The powerless in a world of criminals who operate above the
+          law. Here he comes Here comes Speed Racer. He's a demon on wheels.
+        </p>
       </section>
     </body>
   </html>
