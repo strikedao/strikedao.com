@@ -13,16 +13,16 @@ export default html`
       <title></title>
     </head>
     <body>
-      <section class="register">
-        <input type="email" placeholder="Your email address" />
-        <p>
-          The first mate and his Skipper too will do their very best to make the
-          others comfortable in their tropic island nest.
-        </p>
-        <a href="#">
-          <button>Send me an Email</button>
-        </a>
-      </section>
+        <section class="register">
+          <form action="/stills/" method="post">
+            <input required name="email" type="email" placeholder="Your email address" />
+            <p>
+              The first mate and his Skipper too will do their very best to make the
+              others comfortable in their tropic island nest.
+            </p>
+            <input type="submit">Send me an Email</input>
+          </form>
+        </section>
     </body>
   </html>
 `;

@@ -38,7 +38,10 @@ export async function handleAllocate(request, reply) {
 
   const [exitCode] = await once(mailWorker, "exit");
   if (exitCode === 0) {
-    return reply.code(200).send();
+    // TODO: Upon success, we want to redirect the user to a screen
+    // indicating success. For now, the design isn't recommending an
+    // option yet, which is why we're redirecting to the root page.
+    return reply.redirect("/");
   } else {
     return reply.code(500).send();
   }
