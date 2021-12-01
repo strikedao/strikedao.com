@@ -1,0 +1,54 @@
+<mjml>
+	<mj-head>
+		<mj-font name="Rockwell Condensed"
+    	href="https://strikedao.com/public/style.css" />
+   	</mj-head>
+	</mj-head>
+  <mj-body
+    background-color="black">
+    <mj-section>
+      <mj-column>
+				<mj-text
+					align="left"
+					font-family="Rockwell Condensed"
+					color="white"
+					padding-bottom="0px"
+					font-weight="bold"
+        	font-size="120px">
+      		WELCOME TO
+    		</mj-text>
+				<mj-text
+					align="left"
+					font-family="Rockwell Condensed"
+					color="white"
+					padding-top="0px"
+					font-weight="bold"
+        	font-size="210px">
+      		STRIKE
+    		</mj-text>
+				<mj-text
+					padding-left="40px"
+					padding-right="40px"
+					font-size="15px"
+					line-height="30px"
+					color="white">
+          The first mate and his Skipper too will do their very best to make the others
+          comfortable in their tropic island nest. Michael Knight a young loner on a
+          crusade to champion the cause of the innocent. The helpless. The powerless in a
+          world of criminals who operate above the law. Here he comes Here comes Speed
+          Racer. He's a demon on wheels.
+				</mj-text>
+				<mj-button
+					border="3px solid white"
+					background-color="black"
+					font-weight="bold"
+					font-size="16px"
+					inner-padding="5px 20px"
+					href="<%= link %>"
+					align="center">
+        	Vote Now
+      	</mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -13,6 +13,19 @@ make setup
 pm2 start
 ```
 
+## visual debugging of mjml-designed email templates
+
+- We use [mjml](https://documentation.mjml.io) to format our emails
+  responsively.
+- The templates can be found in `src/templates`.
+- For visual debugging, use the following command line options:
+
+```bash
+mjml --watch ./src/templates/signup.mjml --output test.html
+```
+
+**NOTE:** `mjml` may have to be installed globally using `npm i -g`.
+
 ## api
 
 ### exemplary calls using `curl`

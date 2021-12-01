@@ -19,7 +19,7 @@ export async function handleAllocate(request, reply) {
 
   const emailExists = stills.doesEmailExist(email);
   if (emailExists) {
-    return reply.code(403).send();
+    return reply.code(403).send("Forbidden");
   }
 
   let tokens;
@@ -38,7 +38,7 @@ export async function handleAllocate(request, reply) {
       to: email,
       subject: enUS.mail.allocate.subject,
       text,
-      html: text
+      link: text
     }
   });
 
@@ -49,6 +49,6 @@ export async function handleAllocate(request, reply) {
     // option yet, which is why we're redirecting to the root page.
     return reply.redirect("/");
   } else {
-    return reply.code(500).send();
+    return reply.code(500).send("Internal Server Error");
   }
 }
