@@ -3,15 +3,15 @@ import htm from "htm";
 import vhtml from "vhtml";
 const html = htm.bind(vhtml);
 
+import head from "./head.mjs";
+
+const config = {
+  title: "StrikeDAO - Register to Vote"
+};
+
 export default html`
   <html>
-    <head>
-      <link rel="stylesheet" href="public/normalize.css" />
-      <link rel="stylesheet" href="public/style.css" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta charset="utf-8" />
-      <title></title>
-    </head>
+    ${head(config)}
     <body>
         <section class="register">
           <form action="/stills/" method="post">
