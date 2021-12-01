@@ -1,5 +1,11 @@
 //@format
 const config = {
+  website: {
+    description:
+      "StrikeDAO is an experiment on quadratic voting applied to Hito Steyerl’s Strike (2010) video",
+    keywords: "Hito Steyerl, Quadratic Voting, Decentralization, art",
+    author: "Department of Decentralization, Hito Steyerl, Tim Daubenschütz"
+  },
   stills: {
     quantity: 693,
     perEmail: 10
