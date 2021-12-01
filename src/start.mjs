@@ -33,6 +33,7 @@ fastify.register(fastifyStatic, {
 });
 fastify.register(fastifyFormbody);
 
+// Visual Frontend Endpoints
 fastify.get("/", (request, reply) => {
   return reply
     .code(200)
@@ -47,6 +48,7 @@ fastify.get("/register", (request, reply) => {
     .send(register);
 });
 
+// API Endpoints
 fastify.get(
   "/ballotbox/",
   {

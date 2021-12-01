@@ -16,6 +16,12 @@ export async function serveBallotBox(request, reply) {
 
 export async function handleAllocate(request, reply) {
   const { email } = request.body;
+
+  const emailExists = stills.doesEmailExist(email);
+  if (emailExists) {
+    return reply.code(403).send();
+  }
+
   let tokens;
   try {
     tokens = stills.allocateMany(email);

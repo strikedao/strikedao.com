@@ -25,6 +25,34 @@ test.serial("if handling allocations works", async t => {
 });
 
 test.serial(
+  "to ensure same email cannot register for stills twice",
+  async t => {
+    await initDB();
+
+    const response1 = await fastify.inject({
+      method: "POST",
+      url: "/stills/",
+      body: {
+        email: "example@example.com"
+      }
+    });
+
+    t.is(response1.statusCode, 302);
+    t.is(response1.headers.location, "/");
+
+    const response2 = await fastify.inject({
+      method: "POST",
+      url: "/stills/",
+      body: {
+        email: "example@example.com"
+      }
+    });
+
+    t.is(response2.statusCode, 403);
+  }
+);
+
+test.serial(
   "if handling multiple query strings as an array works with fastify",
   async t => {
     await initDB();

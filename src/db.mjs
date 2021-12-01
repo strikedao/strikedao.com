@@ -115,6 +115,27 @@ export const questions = {
 };
 
 export const stills = {
+  doesEmailExist: function(email) {
+    const db = init();
+    const { emailFlag } = db
+      .prepare(
+        `
+      SELECT
+        EXISTS (
+          SELECT
+            email
+          FROM
+            stills
+          WHERE
+            email = @email
+        ) as emailFlag
+    `
+      )
+      .get({
+        email
+      });
+    return emailFlag === 1;
+  },
   getUnclaimed: function() {
     const limit = config.stills.perEmail;
     const db = init();
@@ -187,6 +208,8 @@ stills.allocateMany = function(email) {
   const list = [];
 
   db.transaction(() => {
+    // TODO: Answer question if an error should be thrown and caught here, when
+    // no unclaimed tokens are returned?
     const tokens = stills.getUnclaimed();
 
     for (let { token } of tokens) {

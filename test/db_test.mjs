@@ -143,6 +143,25 @@ test.serial("if still email can be set by knowing its token", async t => {
 });
 
 test.serial(
+  "that email's existence in stills table can be verified",
+  async t => {
+    migrations.init(0);
+    migrations.init(1);
+    await stills.init();
+
+    const db = init();
+    const { token } = db
+      .prepare("SELECT priority, token FROM stills where priority = 0")
+      .get();
+    t.truthy(token);
+    const email = "example@example.com";
+    stills.allocate(token, email);
+    t.true(stills.doesEmailExist(email));
+    t.false(stills.doesEmailExist("nonexistent@email.com"));
+  }
+);
+
+test.serial(
   "if questions can be configured in db according to .mjs file",
   async t => {
     migrations.init(0);
