@@ -1,6 +1,6 @@
 # strike
 
-- Launch: Feb 15, 2022 (postponed by Studio Bonn)
+- Launch: March 5, 2021 (to-be-confirmed)
 
 ## installation
 
