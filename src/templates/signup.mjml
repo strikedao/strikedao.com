@@ -8,24 +8,8 @@
     background-color="black">
     <mj-section>
       <mj-column>
-				<mj-text
-					align="left"
-					font-family="Rockwell Condensed"
-					color="white"
-					padding-bottom="0px"
-					font-weight="bold"
-        	font-size="120px">
-      		WELCOME TO
-    		</mj-text>
-				<mj-text
-					align="left"
-					font-family="Rockwell Condensed"
-					color="white"
-					padding-top="0px"
-					font-weight="bold"
-        	font-size="210px">
-      		STRIKE
-    		</mj-text>
+        <mj-image
+          src="https://strikedao.com/public/email_logo.png" />
 				<mj-text
 					padding-left="40px"
 					padding-right="40px"
