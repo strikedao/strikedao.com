@@ -66,10 +66,6 @@ p {
   margin: 2em 0 2em 0;
 }
 
-section p {
-  margin-top: -1em;
-}
-
 section h2 {
   align-self: flex-start;
 }

@@ -16,7 +16,7 @@ import { serveBallotBox, handleAllocate } from "./handlers.mjs";
 import index from "./views/index.mjs";
 import register from "./views/register.mjs";
 import contact from "./views/contact.mjs";
-import about from "./views/about.mjs";
+import markdown from "./views/markdown.mjs";
 
 const { SERVER_PORT, NODE_ENV } = process.env;
 
@@ -57,11 +57,12 @@ fastify.get("/contact", (request, reply) => {
     .send(contact);
 });
 
-fastify.get("/about", (request, reply) => {
+fastify.get("/about", async (request, reply) => {
+  const content = await markdown("about.md");
   return reply
     .code(200)
     .type("text/html")
-    .send(about);
+    .send(content);
 });
 // API Endpoints
 fastify.get(

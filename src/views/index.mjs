@@ -10,7 +10,7 @@ const config = {
   title:
     "StrikeDAO is a project by Hito Steyerl and Department of Decentralization",
   paragraph:
-    "The first mate and his Skipper too will do their very best to make the others comfortable in their tropic island nest. Michael Knight a young loner on a crusade to champion the cause of the innocent. The helpless. The powerless in a world of criminals who operate above the law. Here he comes Here comes Speed Racer. He's a demon on wheels."
+    "Strike DAO is an experiment in participatory governance of blockchain art institutions. The Ethereum domain of Bundeskunsthalle was squatted by artist Hito Steyerl and DoD. In the Strike DAO process we will vote on three models of future governance of this squatted domain."
 };
 
 export default html`
