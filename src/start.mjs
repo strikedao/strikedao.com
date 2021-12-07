@@ -15,6 +15,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import { serveBallotBox, handleAllocate } from "./handlers.mjs";
 import index from "./views/index.mjs";
 import register from "./views/register.mjs";
+import contact from "./views/contact.mjs";
+import about from "./views/about.mjs";
 
 const { SERVER_PORT, NODE_ENV } = process.env;
 
@@ -48,6 +50,19 @@ fastify.get("/register", (request, reply) => {
     .send(register);
 });
 
+fastify.get("/contact", (request, reply) => {
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(contact);
+});
+
+fastify.get("/about", (request, reply) => {
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(about);
+});
 // API Endpoints
 fastify.get(
   "/ballotbox/",

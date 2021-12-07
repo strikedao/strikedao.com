@@ -26,7 +26,7 @@ body {
   margin: 0;
 }
 
-.hero,
+section,
 .register form {
   padding: 0 10vw 0 10vw;
 
@@ -35,17 +35,23 @@ body {
   justify-content: center;
   flex-direction: column;
   line-height: 1.5;
-
-  height: 100vh;
-  width: 80vw;
 }
 
-.hero h1 {
+.register form {
+  height: 100vh;
+}
+
+h1 {
   margin: 0;
 
   font-family: var(--logo-font);
   font-size: 15em;
   letter-spacing: 0.1em;
+}
+
+h2 {
+  font-size: 2.5em;
+  font-family: var(--logo-font);
 }
 
 p {
@@ -60,23 +66,31 @@ p {
   margin: 2em 0 2em 0;
 }
 
-.hero p {
+section p {
   margin-top: -1em;
-  width: 40em;
+}
+
+section h2 {
+  align-self: flex-start;
 }
 
 @media only screen and (max-width: 600px) {
-  .hero {
+  section {
     padding: 0;
     margin: 0 auto;
     width: 100vw;
   }
 
-  .hero h1 {
+  h1 {
     font-size: 6em;
   }
 
-  .hero p,
+  h2 {
+    font-size: 2.5em;
+  }
+
+  h2,
+  section p,
   .register p {
     width: auto;
     margin: 5vh 5vw 5vh 5vw;
@@ -195,4 +209,44 @@ input[type="email"] {
     /* modern browser */
     font-size: var(--small-email-input-font-size);
   }
+}
+
+nav {
+  min-height: 1em;
+  display: flex;
+  padding: 5vh 7.5vw 2.5vh 7.5vw;
+}
+
+nav .col {
+  flex: 50%;
+  display: flex;
+}
+
+nav .logo {
+  font-family: var(--logo-font);
+  font-size: 2em;
+}
+
+nav .col ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+nav .col ul li {
+  margin: 0 1.5em 0 0;
+  display: inline;
+
+  font-size: 1.5em;
+  font-family: var(--logo-font);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }

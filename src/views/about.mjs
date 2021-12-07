@@ -18,14 +18,13 @@ export default html`
     ${head(config)}
     <body>
       <${Navigation} />
-      <section class="hero">
-        <h1>STRIKE</h1>
+      <section>
+        <h2>
+          About
+        </h2>
         <p>
           ${config.paragraph}
         </p>
-        <a href="/register">
-          <button>Participate</button>
-        </a>
       </section>
     </body>
   </html>
