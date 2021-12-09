@@ -15,7 +15,9 @@ test.serial(
     await initDB();
 
     const db = init();
-    t.true(db.prepare("SELECT COUNT(*) as amount FROM boxes").get().amount > 0);
+    t.true(
+      db.prepare("SELECT COUNT(*) as amount FROM questions").get().amount > 0
+    );
     t.true(
       db.prepare("SELECT COUNT(*) as amount FROM stills").get().amount > 0
     );

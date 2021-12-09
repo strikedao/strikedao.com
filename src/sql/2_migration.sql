@@ -1,0 +1,3 @@
+ALTER TABLE boxes RENAME TO questions;
+ALTER TABLE options RENAME COLUMN boxID TO questionID;
+ALTER TABLE options ADD name TEXT NOT NULL;

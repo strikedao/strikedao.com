@@ -16,13 +16,16 @@ const config = {
       content: `There are many fruit. Tomatos are actually also fruit, since they can be considered berries.`,
       options: [
         {
-          content: "Tomatos"
+          name: "Tomatos",
+          content: "Tomatoes are fruit lol"
         },
         {
-          content: "Bananas"
+          name: "Bananas",
+          content: "obviously bananas are fruit too"
         },
         {
-          content: "I like hamsters"
+          name: "I like hamsters",
+          content: "actually hamsters aren't fruit."
         }
       ]
     },
@@ -31,10 +34,12 @@ const config = {
       content: "Dinosaurs are real; they have small hands a large mouths",
       options: [
         {
-          content: "Trex"
+          name: "Trex",
+          content: "a trex is what an email is to a mail."
         },
         {
-          content: "BROntosaurus"
+          name: "BROntosaurus",
+          content: "broooooo..."
         }
       ]
     }

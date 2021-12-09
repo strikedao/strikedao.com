@@ -74,6 +74,7 @@ test.serial(
   async t => {
     migrations.init(0);
     migrations.init(1);
+    migrations.init(2);
     await stills.init();
 
     const db = init();

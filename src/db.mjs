@@ -85,7 +85,7 @@ export const questions = {
       db.prepare(
         `
         INSERT INTO
-          boxes(ksuid, title, content)
+          questions(ksuid, title, content)
         VALUES
           (@ksuid, @title, @content)
       `
@@ -100,14 +100,15 @@ export const questions = {
         db.prepare(
           `
             INSERT INTO
-              options(ksuid, content, boxID)
+              options(ksuid, name, content, questionID)
             VALUES
-              (@ksuid, @content, @boxID)
+              (@ksuid, @name, @content, @questionID)
           `
         ).run({
           ksuid: oksuid.string,
+          name: option.name,
           content: option.content,
-          boxID: qksuid.string
+          questionID: qksuid.string
         });
       }
     }

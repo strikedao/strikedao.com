@@ -43,6 +43,7 @@ test.serial(
   async t => {
     migrations.init(0);
     migrations.init(1);
+    migrations.init(2);
     await stills.init();
 
     const db = init();
@@ -55,6 +56,7 @@ test.serial(
 test.serial("if allocating many tokens at once is possible", async t => {
   migrations.init(0);
   migrations.init(1);
+  migrations.init(2);
   await stills.init();
 
   const db = init();
@@ -75,6 +77,7 @@ test.serial(
   async t => {
     migrations.init(0);
     migrations.init(1);
+    migrations.init(2);
     await stills.init();
 
     const db = init();
@@ -102,6 +105,7 @@ test.serial(
   async t => {
     migrations.init(0);
     migrations.init(1);
+    migrations.init(2);
     await stills.init();
 
     const db = init();
@@ -127,6 +131,7 @@ test.serial(
 test.serial("if still email can be set by knowing its token", async t => {
   migrations.init(0);
   migrations.init(1);
+  migrations.init(2);
   await stills.init();
 
   const db = init();
@@ -147,6 +152,7 @@ test.serial(
   async t => {
     migrations.init(0);
     migrations.init(1);
+    migrations.init(2);
     await stills.init();
 
     const db = init();
@@ -166,15 +172,16 @@ test.serial(
   async t => {
     migrations.init(0);
     migrations.init(1);
+    migrations.init(2);
     await stills.init();
     await questions.init();
 
     const db = init();
-    const { boxAmount } = db
-      .prepare("SELECT COUNT(*) as boxAmount FROM boxes")
+    const { questionAmount } = db
+      .prepare("SELECT COUNT(*) as questionAmount FROM questions")
       .get();
-    t.true(boxAmount > 0);
-    t.truthy(boxAmount);
+    t.true(questionAmount > 0);
+    t.truthy(questionAmount);
 
     const { optionAmount } = db
       .prepare("SELECT COUNT(*) as optionAmount FROM options")
@@ -182,41 +189,44 @@ test.serial(
     t.true(optionAmount > 0);
     t.truthy(optionAmount);
 
-    const ksuids = db.prepare("SELECT ksuid FROM boxes ORDER BY ksuid").all();
+    const ksuids = db
+      .prepare("SELECT ksuid FROM questions ORDER BY ksuid")
+      .all();
     const copy = [...ksuids].sort((a, b) => a.ksuid - b.ksuid);
     t.deepEqual(ksuids, copy);
   }
 );
 
-test.serial("if migration 1 can be applied", async t => {
+test.serial("if migration 1 and two can be applied", async t => {
   migrations.init(0);
   migrations.init(1);
+  migrations.init(2);
   const db = init();
 
   db.prepare(
     `
     INSERT INTO
-      boxes(ksuid, title, content)
+      questions(ksuid, title, content)
     VALUES
-      ('box1', 'title', 'content')
+      ('q1', 'title', 'content')
   `
   ).run();
 
   db.prepare(
     `
     INSERT INTO
-      options(ksuid, content, boxID)
+      options(ksuid, name, content, questionID)
     VALUES
-      ('option1', 'option1', 'box1')
+      ('option1', 'name1', 'option1', 'q1')
   `
   ).run();
 
   db.prepare(
     `
     INSERT INTO
-      options(ksuid, content, boxID)
+      options(ksuid, name, content, questionID)
     VALUES
-      ('option2', 'option2', 'box1')
+      ('option2', 'name2', 'option2', 'q1')
   `
   ).run();
 
@@ -284,9 +294,9 @@ test.serial("if migration 1 can be applied", async t => {
     FROM
       options
     JOIN
-      boxes
+      questions
     ON
-      boxes.ksuid = options.boxID
+      questions.ksuid = options.questionID
     JOIN
       votes
     ON
@@ -296,7 +306,7 @@ test.serial("if migration 1 can be applied", async t => {
     ON
       stills.token = votes.token
     WHERE
-      boxes.ksuid = 'box1'
+      questions.ksuid = 'q1'
     GROUP BY
       stills.email,
       votes.optionID
