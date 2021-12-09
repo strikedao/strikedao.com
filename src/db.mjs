@@ -77,7 +77,47 @@ export const migrations = {
   }
 };
 
+const getQuestionById = function(id) {
+  const db = init();
+  return db
+    .prepare(
+      `
+      SELECT
+        ksuid,
+        title,
+        content
+      FROM
+        questions
+      WHERE
+        ksuid = @id
+    `
+    )
+    .get({ id });
+};
+
+const getQuestionWithOptions = function(id) {
+  const question = getQuestionById(id);
+
+  const db = init();
+  question.options = db
+    .prepare(
+      `
+    SELECT
+      ksuid,
+      content
+    FROM
+      options
+    WHERE
+      options.questionID = @id;
+  `
+    )
+    .all({ id });
+  return question;
+};
+
 export const questions = {
+  get: getQuestionById,
+  getWithOptions: getQuestionWithOptions,
   init: async function() {
     const db = init();
     for (let question of config.questions) {

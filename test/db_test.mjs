@@ -167,6 +167,66 @@ test.serial(
   }
 );
 
+test.serial("if questions with options can be get by id", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  await questions.init();
+
+  const db = init();
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+
+  t.truthy(qs);
+  t.is(qs.length, 2);
+  const defaultId = qs[0].ksuid;
+
+  const actualQuestion = questions.getWithOptions(defaultId);
+  t.truthy(actualQuestion);
+  t.is(actualQuestion.ksuid, defaultId);
+  t.is(actualQuestion.title, qs[0].title);
+  t.truthy(actualQuestion.options);
+  t.true(actualQuestion.options.length > 0);
+  t.truthy(actualQuestion.options[0].ksuid);
+  t.truthy(actualQuestion.options[0].content);
+});
+
+test.serial("if questions can be get by id", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  await questions.init();
+
+  const db = init();
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+
+  t.truthy(qs);
+  t.is(qs.length, 2);
+  const defaultId = qs[0].ksuid;
+
+  const actualQuestion = questions.get(defaultId);
+  t.truthy(actualQuestion);
+  t.is(actualQuestion.ksuid, defaultId);
+  t.is(actualQuestion.title, qs[0].title);
+});
+
 test.serial(
   "if questions can be configured in db according to .mjs file",
   async t => {
