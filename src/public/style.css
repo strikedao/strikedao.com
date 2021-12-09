@@ -7,7 +7,7 @@
 
 :root {
   --big-email-input-font-size: 2em;
-  --big-email-input-color: white;
+  --big-email-input-color: #f1f1f1;
   --big-email-input-text-align: center;
 
   --small-email-input-font-size: 1.25em;
