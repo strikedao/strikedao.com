@@ -2,7 +2,7 @@
 import test from "ava";
 import esmock from "esmock";
 
-import { init, questions, stills, migrations } from "../src/db.mjs";
+import { init, questions, stills, migrations, votes } from "../src/db.mjs";
 import config from "../config.mjs";
 import { delDB } from "./utils.mjs";
 
@@ -225,6 +225,135 @@ test.serial("if questions can be get by id", async t => {
   t.truthy(actualQuestion);
   t.is(actualQuestion.ksuid, defaultId);
   t.is(actualQuestion.title, qs[0].title);
+});
+
+test.serial(
+  "if double voting with same token on different choice throws an error",
+  async t => {
+    migrations.init(0);
+    migrations.init(1);
+    migrations.init(2);
+    await stills.init();
+    await questions.init();
+
+    const db = init();
+
+    const { token } = db
+      .prepare("SELECT priority, token FROM stills where priority = 0")
+      .get();
+    t.truthy(token);
+    const email = "example@example.com";
+    stills.allocate(token, email);
+
+    const qs = db
+      .prepare(
+        `
+      SELECT
+        *
+      FROM
+        questions
+    `
+      )
+      .all();
+
+    const question = questions.getWithOptions(qs[0].ksuid);
+    const option1 = question.options[0];
+
+    votes.vote(option1.ksuid, token);
+
+    t.not(option1.ksuid, question.options[1].ksuid);
+    t.throws(() => votes.vote(option2.ksuid, token));
+  }
+);
+
+test.serial(
+  "if double voting with same token on same choice throws an error",
+  async t => {
+    migrations.init(0);
+    migrations.init(1);
+    migrations.init(2);
+    await stills.init();
+    await questions.init();
+
+    const db = init();
+
+    const { token } = db
+      .prepare("SELECT priority, token FROM stills where priority = 0")
+      .get();
+    t.truthy(token);
+    const email = "example@example.com";
+    stills.allocate(token, email);
+
+    const qs = db
+      .prepare(
+        `
+      SELECT
+        *
+      FROM
+        questions
+    `
+      )
+      .all();
+
+    const question = questions.getWithOptions(qs[0].ksuid);
+    const option1 = question.options[0];
+
+    votes.vote(option1.ksuid, token);
+
+    t.throws(() => votes.vote(option1.ksuid, token));
+  }
+);
+
+test.serial("if votes can be cast for an option using a token", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  await stills.init();
+  await questions.init();
+
+  const db = init();
+
+  const { token } = db
+    .prepare("SELECT priority, token FROM stills where priority = 0")
+    .get();
+  t.truthy(token);
+  const email = "example@example.com";
+  stills.allocate(token, email);
+
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+
+  const question = questions.getWithOptions(qs[0].ksuid);
+  const option1 = question.options[0];
+
+  votes.vote(option1.ksuid, token);
+
+  const dbVotes = db
+    .prepare(
+      `
+    SELECT
+      optionID,
+      token
+    FROM
+      votes
+  `
+    )
+    .all();
+
+  t.truthy(dbVotes);
+  t.is(dbVotes.length, 1);
+
+  const vote = dbVotes[0];
+  t.is(vote.optionID, option1.ksuid);
+  t.is(vote.token, token);
 });
 
 test.serial(

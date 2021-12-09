@@ -77,6 +77,23 @@ export const migrations = {
   }
 };
 
+export const votes = {
+  vote: function(optionId, token) {
+    const db = init();
+    db.prepare(
+      `
+      INSERT INTO
+        votes (optionID, token)
+      VALUES
+        (@optionId, @token)
+    `
+    ).run({
+      optionId,
+      token
+    });
+  }
+};
+
 const getQuestionById = function(id) {
   const db = init();
   return db
