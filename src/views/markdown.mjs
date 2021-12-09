@@ -23,7 +23,7 @@ export default async name => {
       ${head()}
       <body>
         <${Navigation} />
-        <section>
+        <section class="text-content">
           ${html([`<section>${rendered}</section>`])}
         </section>
       </body>

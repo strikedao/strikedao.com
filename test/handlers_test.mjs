@@ -21,7 +21,7 @@ test.serial("if handling allocations works", async t => {
   });
 
   t.is(response.statusCode, 302);
-  t.is(response.headers.location, "/");
+  t.is(response.headers.location, "/success");
 });
 
 test.serial(
@@ -38,7 +38,7 @@ test.serial(
     });
 
     t.is(response1.statusCode, 302);
-    t.is(response1.headers.location, "/");
+    t.is(response1.headers.location, "/success");
 
     const response2 = await fastify.inject({
       method: "POST",

@@ -17,6 +17,7 @@ import index from "./views/index.mjs";
 import register from "./views/register.mjs";
 import contact from "./views/contact.mjs";
 import markdown from "./views/markdown.mjs";
+import success from "./views/success.mjs";
 
 const { SERVER_PORT, NODE_ENV } = process.env;
 
@@ -50,6 +51,13 @@ fastify.get("/register", (request, reply) => {
     .send(register);
 });
 
+fastify.get("/success", (request, reply) => {
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(success);
+});
+
 fastify.get("/contact", (request, reply) => {
   return reply
     .code(200)
@@ -64,6 +72,7 @@ fastify.get("/about", async (request, reply) => {
     .type("text/html")
     .send(content);
 });
+
 // API Endpoints
 fastify.get(
   "/ballotbox/",

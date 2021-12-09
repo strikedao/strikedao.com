@@ -47,7 +47,7 @@ export async function handleAllocate(request, reply) {
     // TODO: Upon success, we want to redirect the user to a screen
     // indicating success. For now, the design isn't recommending an
     // option yet, which is why we're redirecting to the root page.
-    return reply.redirect("/");
+    return reply.redirect("/success");
   } else {
     return reply.code(500).send("Internal Server Error");
   }

@@ -66,7 +66,7 @@ p {
   margin: 2em 0 2em 0;
 }
 
-section h2 {
+.text-content h2 {
   align-self: flex-start;
 }
 
@@ -245,4 +245,16 @@ nav .col ul li {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+a.secondary {
+  text-decoration: underline;
+}
+
+/* We never want to have two anchors too close together, which is
+ * why for the last anchor in a sibling relationship, we define a
+ * top margin that is wide enough to never falsly click one of the
+ * elements. */
+* > a ~ a:last-child {
+  margin-top: 1.5em;
 }
