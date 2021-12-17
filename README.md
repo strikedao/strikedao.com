@@ -1,6 +1,6 @@
 # strike
 
-- Launch: March 5, 2021 (to-be-confirmed)
+- Launch: March 15, 2021 (to-be-confirmed)
 
 ## installation
 
