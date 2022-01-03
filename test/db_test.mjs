@@ -31,6 +31,9 @@ test.serial("if init allows overwriting options", async t => {
 
 test.serial("if stills can be generated with tokens in db", async t => {
   migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
   await stills.init();
 
   const db = init();
@@ -44,6 +47,7 @@ test.serial(
     migrations.init(0);
     migrations.init(1);
     migrations.init(2);
+    migrations.init(3);
     await stills.init();
 
     const db = init();
@@ -57,6 +61,7 @@ test.serial("if allocating many tokens at once is possible", async t => {
   migrations.init(0);
   migrations.init(1);
   migrations.init(2);
+  migrations.init(3);
   await stills.init();
 
   const db = init();
@@ -78,6 +83,7 @@ test.serial(
     migrations.init(0);
     migrations.init(1);
     migrations.init(2);
+    migrations.init(3);
     await stills.init();
 
     const db = init();
@@ -106,6 +112,7 @@ test.serial(
     migrations.init(0);
     migrations.init(1);
     migrations.init(2);
+    migrations.init(3);
     await stills.init();
 
     const db = init();
@@ -132,6 +139,7 @@ test.serial("if still email can be set by knowing its token", async t => {
   migrations.init(0);
   migrations.init(1);
   migrations.init(2);
+  migrations.init(3);
   await stills.init();
 
   const db = init();
@@ -153,6 +161,7 @@ test.serial(
     migrations.init(0);
     migrations.init(1);
     migrations.init(2);
+    migrations.init(3);
     await stills.init();
 
     const db = init();
@@ -171,6 +180,7 @@ test.serial("if questions with options can be get by id", async t => {
   migrations.init(0);
   migrations.init(1);
   migrations.init(2);
+  migrations.init(3);
   await questions.init();
 
   const db = init();
@@ -203,6 +213,7 @@ test.serial("if questions can be get by id", async t => {
   migrations.init(0);
   migrations.init(1);
   migrations.init(2);
+  migrations.init(3);
   await questions.init();
 
   const db = init();
@@ -233,6 +244,7 @@ test.serial(
     migrations.init(0);
     migrations.init(1);
     migrations.init(2);
+    migrations.init(3);
     await stills.init();
     await questions.init();
 
@@ -259,10 +271,10 @@ test.serial(
     const question = questions.getWithOptions(qs[0].ksuid);
     const option1 = question.options[0];
 
-    votes.vote(option1.ksuid, token);
+    await votes.vote(option1.ksuid, token);
 
     t.not(option1.ksuid, question.options[1].ksuid);
-    t.throws(() => votes.vote(option2.ksuid, token));
+    await t.throwsAsync(async () => await votes.vote(option2.ksuid, token));
   }
 );
 
@@ -272,6 +284,7 @@ test.serial(
     migrations.init(0);
     migrations.init(1);
     migrations.init(2);
+    migrations.init(3);
     await stills.init();
     await questions.init();
 
@@ -298,9 +311,9 @@ test.serial(
     const question = questions.getWithOptions(qs[0].ksuid);
     const option1 = question.options[0];
 
-    votes.vote(option1.ksuid, token);
+    await votes.vote(option1.ksuid, token);
 
-    t.throws(() => votes.vote(option1.ksuid, token));
+    await t.throwsAsync(async () => await votes.vote(option1.ksuid, token));
   }
 );
 
@@ -308,6 +321,7 @@ test.serial("if votes can be cast for an option using a token", async t => {
   migrations.init(0);
   migrations.init(1);
   migrations.init(2);
+  migrations.init(3);
   await stills.init();
   await questions.init();
 
@@ -334,14 +348,15 @@ test.serial("if votes can be cast for an option using a token", async t => {
   const question = questions.getWithOptions(qs[0].ksuid);
   const option1 = question.options[0];
 
-  votes.vote(option1.ksuid, token);
+  await votes.vote(option1.ksuid, token);
 
   const dbVotes = db
     .prepare(
       `
     SELECT
       optionID,
-      token
+      token,
+      ksuid
     FROM
       votes
   `
@@ -350,6 +365,7 @@ test.serial("if votes can be cast for an option using a token", async t => {
 
   t.truthy(dbVotes);
   t.is(dbVotes.length, 1);
+  t.truthy(dbVotes[0].ksuid);
 
   const vote = dbVotes[0];
   t.is(vote.optionID, option1.ksuid);
@@ -362,6 +378,7 @@ test.serial(
     migrations.init(0);
     migrations.init(1);
     migrations.init(2);
+    migrations.init(3);
     await stills.init();
     await questions.init();
 
@@ -390,6 +407,7 @@ test.serial("if migration 1 and two can be applied", async t => {
   migrations.init(0);
   migrations.init(1);
   migrations.init(2);
+  migrations.init(3);
   const db = init();
 
   db.prepare(
@@ -449,27 +467,27 @@ test.serial("if migration 1 and two can be applied", async t => {
   db.prepare(
     `
     INSERT INTO
-      votes(optionID, token)
+      votes(optionID, token, ksuid)
     VALUES
-      ('option2', 'a')
+      ('option2', 'a', '1a')
   `
   ).run();
 
   db.prepare(
     `
     INSERT INTO
-      votes(optionID, token)
+      votes(optionID, token, ksuid)
     VALUES
-      ('option1', 'b')
+      ('option1', 'b', '2b')
   `
   ).run();
 
   db.prepare(
     `
     INSERT INTO
-      votes(optionID, token)
+      votes(optionID, token, ksuid)
     VALUES
-      ('option1', 'c')
+      ('option1', 'c', '3c')
   `
   ).run();
 

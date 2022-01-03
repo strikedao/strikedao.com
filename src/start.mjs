@@ -126,6 +126,7 @@ export async function initDB() {
   migrations.init(0);
   migrations.init(1);
   migrations.init(2);
+  migrations.init(3);
 
   const db = init();
   const stillsDB = db.prepare("SELECT COUNT(*) as amount FROM stills").get();

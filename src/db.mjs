@@ -78,18 +78,20 @@ export const migrations = {
 };
 
 export const votes = {
-  vote: function(optionId, token) {
+  vote: async function(optionId, token) {
     const db = init();
+    const ksuid = await KSUID.random();
     db.prepare(
       `
       INSERT INTO
-        votes (optionID, token)
+        votes (optionID, token, ksuid)
       VALUES
-        (@optionId, @token)
+        (@optionId, @token, @ksuid)
     `
     ).run({
       optionId,
-      token
+      token,
+      ksuid: ksuid.string
     });
   }
 };
