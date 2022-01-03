@@ -78,6 +78,32 @@ export const migrations = {
 };
 
 export const votes = {
+  listInOrder: function() {
+    const db = init();
+    let l = db
+      .prepare(
+        `
+      SELECT
+        votes.ksuid AS ksuid,
+        votes.token AS token,
+        stills.priority AS priority
+      FROM
+        votes
+      JOIN
+        stills
+      ON
+        votes.token = stills.token
+    `
+      )
+      .all();
+    l = l
+      .map(entry => {
+        entry.pksuid = KSUID.parse(entry.ksuid);
+        return entry;
+      })
+      .sort((a, b) => a.pksuid.compare(b.pksuid));
+    return l;
+  },
   vote: async function(optionId, token) {
     const db = init();
     const ksuid = await KSUID.random();

@@ -9,6 +9,57 @@ import { delDB } from "./utils.mjs";
 test.afterEach.always(delDB);
 test.before(delDB);
 
+test.serial("if votes can be listed by creation date", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  await stills.init();
+  await questions.init();
+
+  const db = init();
+
+  const tokens = db
+    .prepare("SELECT token FROM stills LIMIT 3")
+    .all()
+    .map(({ token }) => token);
+  const email = "example@example.com";
+  stills.allocate(tokens[0], email);
+  stills.allocate(tokens[1], email);
+
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+
+  const question = questions.getWithOptions(qs[0].ksuid);
+  const option1 = question.options[0];
+  function sleep(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+  }
+
+  // NOTE: ksuid's temporal resolution is 1s
+  await votes.vote(option1.ksuid, tokens[0]);
+  await sleep(1000);
+  await votes.vote(option1.ksuid, tokens[1]);
+  await sleep(1000);
+  await votes.vote(option1.ksuid, tokens[2]);
+
+  const l = votes.listInOrder();
+  t.not(l[0].pksuid.timestamp, l[1].pksuid.timestamp);
+  t.truthy(l);
+  t.is(l[0].token, tokens[0]);
+  t.is(l[1].token, tokens[1]);
+  t.is(l[2].token, tokens[2]);
+  t.truthy(l[0].priority);
+});
+
 test.serial("if init migration runs a migration on the db", async t => {
   migrations.init(0);
   const db = init();
