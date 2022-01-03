@@ -27,7 +27,7 @@ test.serial("if voting endpoint throws on invalid optionId", async t => {
 
   const response = await fastify.inject({
     method: "POST",
-    url: "/votes/",
+    url: "/api/v1/votes/",
     body: [
       {
         token,
@@ -69,7 +69,7 @@ test.serial("if voting endpoint throws on invalid token", async t => {
 
   const response = await fastify.inject({
     method: "POST",
-    url: "/votes/",
+    url: "/api/v1/votes/",
     body: [
       {
         token: "invalid token",
@@ -111,7 +111,7 @@ test.serial("if voting works", async t => {
 
   const response = await fastify.inject({
     method: "POST",
-    url: "/votes/",
+    url: "/api/v1/votes/",
     body: [
       {
         token,
@@ -127,7 +127,7 @@ test.serial("if handling allocations works", async t => {
 
   const response = await fastify.inject({
     method: "POST",
-    url: "/stills/",
+    url: "/api/v1/stills/",
     body: {
       email: "example@example.com"
     }
@@ -144,7 +144,7 @@ test.serial(
 
     const response1 = await fastify.inject({
       method: "POST",
-      url: "/stills/",
+      url: "/api/v1/stills/",
       body: {
         email: "example@example.com"
       }
@@ -155,7 +155,7 @@ test.serial(
 
     const response2 = await fastify.inject({
       method: "POST",
-      url: "/stills/",
+      url: "/api/v1/stills/",
       body: {
         email: "example@example.com"
       }
@@ -172,7 +172,7 @@ test.serial(
 
     const response = await fastify.inject({
       method: "get",
-      url: "/ballotbox/",
+      url: "/api/v1/ballotbox/",
       query: {
         tokens: ["a", "b"]
       }
@@ -208,7 +208,7 @@ test.serial(
 
     const response = await fastify.inject({
       method: "POST",
-      url: "/stills/",
+      url: "/api/v1/stills/",
       body: {
         email: "example@example.com"
       }

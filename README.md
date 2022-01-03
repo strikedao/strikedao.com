@@ -37,5 +37,5 @@ curl \
   -X PATCH \
   --data '{"email":"your@email.com"}' \
   -H "Content-Type: application/json" \
-  "http://localhost:5000/stills/"
+  "http://localhost:5000/api/v1/stills/"
 ```

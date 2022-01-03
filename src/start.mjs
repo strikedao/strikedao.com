@@ -73,62 +73,67 @@ fastify.get("/about", async (request, reply) => {
     .send(content);
 });
 
-// API Endpoints
-fastify.get(
-  "/ballotbox/",
-  {
-    schema: {
-      querystring: {
-        type: "object",
-        required: ["tokens"],
-        properties: {
-          tokens: { type: "array" }
-        }
-      }
-    }
-  },
-  serveBallotBox
-);
+fastify.register(apiEndpointsV1, {prefix: '/api/v1'})
 
-fastify.post(
-  "/votes/",
-  {
-    schema: {
-      body: {
-        type: "array",
-        items: {
+function apiEndpointsV1(fastify, opts, done) {
+  fastify.get(
+    "/ballotbox/",
+    {
+      schema: {
+        querystring: {
           type: "object",
+          required: ["tokens"],
           properties: {
-            token: {
-              type: "string"
+            tokens: { type: "array" }
+          }
+        }
+      }
+    },
+    serveBallotBox
+  );
+  
+  fastify.post(
+    "/votes/",
+    {
+      schema: {
+        body: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              token: {
+                type: "string"
+              },
+              optionId: {
+                type: "string"
+              }
             },
-            optionId: {
-              type: "string"
-            }
-          },
-          required: ["token", "optionId"]
+            required: ["token", "optionId"]
+          }
         }
       }
-    }
-  },
-  handleVote
-);
+    },
+    handleVote
+  );
+  
+  fastify.post(
+    "/stills/",
+    {
+      schema: {
+        body: {
+          type: "object",
+          required: ["email"],
+          properties: {
+            email: { type: "string" }
+          }
+        }
+      }
+    },
+    handleAllocate
+  );
 
-fastify.post(
-  "/stills/",
-  {
-    schema: {
-      body: {
-        type: "object",
-        required: ["email"],
-        properties: {
-          email: { type: "string" }
-        }
-      }
-    }
-  },
-  handleAllocate
-);
+  done()
+}
 
 export async function boot() {
   fastify.log.info(`Initializing database.`);

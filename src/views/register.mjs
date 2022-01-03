@@ -16,7 +16,7 @@ export default html`
     <body>
       <${Navigation} />
       <section class="register">
-        <form action="/stills/" method="post">
+        <form action="/api/v1/stills/" method="post">
           <input
             required
             name="email"
