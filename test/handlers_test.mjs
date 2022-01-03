@@ -1,13 +1,126 @@
 // @format
 import test from "ava";
 
-import { init, migrations, stills } from "../src/db.mjs";
+import { init, questions, migrations, stills } from "../src/db.mjs";
 import { fastify, initDB } from "../src/start.mjs";
 import { delDB } from "./utils.mjs";
 import config from "../config.mjs";
 
 test.afterEach.always(delDB);
 test.before(delDB);
+
+test.serial("if voting endpoint throws on invalid optionId", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  await stills.init();
+  await questions.init();
+  const db = init();
+
+  const { token } = db
+    .prepare("SELECT priority, token FROM stills where priority = 0")
+    .get();
+  t.truthy(token);
+  const email = "example@example.com";
+  stills.allocate(token, email);
+
+  const response = await fastify.inject({
+    method: "POST",
+    url: "/votes/",
+    body: [
+      {
+        token,
+        optionId: "non-existent"
+      }
+    ]
+  });
+  t.is(response.statusCode, 401);
+});
+
+test.serial("if voting endpoint throws on invalid token", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  await stills.init();
+  await questions.init();
+  const db = init();
+
+  const { token } = db
+    .prepare("SELECT priority, token FROM stills where priority = 0")
+    .get();
+  t.truthy(token);
+  const email = "example@example.com";
+  stills.allocate(token, email);
+
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+  const question = questions.getWithOptions(qs[0].ksuid);
+  const option1 = question.options[0];
+
+  const response = await fastify.inject({
+    method: "POST",
+    url: "/votes/",
+    body: [
+      {
+        token: "invalid token",
+        optionId: option1.ksuid
+      }
+    ]
+  });
+  t.is(response.statusCode, 401);
+});
+
+test.serial("if voting works", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  await stills.init();
+  await questions.init();
+  const db = init();
+
+  const { token } = db
+    .prepare("SELECT priority, token FROM stills where priority = 0")
+    .get();
+  t.truthy(token);
+  const email = "example@example.com";
+  stills.allocate(token, email);
+
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+  const question = questions.getWithOptions(qs[0].ksuid);
+  const option1 = question.options[0];
+
+  const response = await fastify.inject({
+    method: "POST",
+    url: "/votes/",
+    body: [
+      {
+        token,
+        optionId: option1.ksuid
+      }
+    ]
+  });
+  t.is(response.statusCode, 200);
+});
 
 test.serial("if handling allocations works", async t => {
   await initDB();

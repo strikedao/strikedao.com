@@ -3,7 +3,7 @@ import pino from "pino";
 import { Worker } from "worker_threads";
 import { once } from "events";
 
-import { stills } from "./db.mjs";
+import { stills, votes } from "./db.mjs";
 import enUS from "./locales/en-US.mjs";
 import { link } from "./tokens.mjs";
 
@@ -11,6 +11,23 @@ const logger = pino({ level: "info" });
 const mailWorkerPath = "./src/workers/send.mjs";
 
 export async function serveBallotBox(request, reply) {
+  return reply.code(200).send();
+}
+
+export async function handleVote(request, reply) {
+  const promises = request.body.map(
+    async ({ optionId, token }) => await votes.vote(optionId, token)
+  );
+  const results = await Promise.allSettled(promises);
+  const rejected = results.filter(result => result.status === "rejected");
+
+  if (rejected.length > 0) {
+    return reply
+      .code(401)
+      .send(
+        `"${rejected.length}" credits couldn't be counted towards voting choice`
+      );
+  }
   return reply.code(200).send();
 }
 

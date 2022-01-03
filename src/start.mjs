@@ -12,7 +12,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-import { serveBallotBox, handleAllocate } from "./handlers.mjs";
+import { serveBallotBox, handleVote, handleAllocate } from "./handlers.mjs";
 import index from "./views/index.mjs";
 import register from "./views/register.mjs";
 import contact from "./views/contact.mjs";
@@ -88,6 +88,30 @@ fastify.get(
     }
   },
   serveBallotBox
+);
+
+fastify.post(
+  "/votes/",
+  {
+    schema: {
+      body: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            token: {
+              type: "string"
+            },
+            optionId: {
+              type: "string"
+            }
+          },
+          required: ["token", "optionId"]
+        }
+      }
+    }
+  },
+  handleVote
 );
 
 fastify.post(
