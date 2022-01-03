@@ -7,8 +7,8 @@ const config = {
     author: "Department of Decentralization, Hito Steyerl, Tim Daubenschütz"
   },
   stills: {
-    quantity: 693,
-    perEmail: 10
+    quantity: 1386,
+    perEmail: 25
   },
   questions: [
     {
