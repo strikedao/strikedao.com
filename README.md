@@ -9,8 +9,6 @@ Clone the repository on your machine and `cd` into the folder.
 ```bash
 cp .env-copy .env
 # You might need to create a mailgun account or mock that part away
-apt-get update
-sudo apt-get install build-essential
 make setup
 pm2 start
 ```
