@@ -12,12 +12,12 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-import { serveBallotBox, handleVote, handleAllocate } from "./handlers.mjs";
 import index from "./views/index.mjs";
 import register from "./views/register.mjs";
 import contact from "./views/contact.mjs";
 import markdown from "./views/markdown.mjs";
 import success from "./views/success.mjs";
+import apiV1 from './api/v1/index.mjs'
 
 const { SERVER_PORT, NODE_ENV } = process.env;
 
@@ -73,67 +73,7 @@ fastify.get("/about", async (request, reply) => {
     .send(content);
 });
 
-fastify.register(apiEndpointsV1, {prefix: '/api/v1'})
-
-function apiEndpointsV1(fastify, opts, done) {
-  fastify.get(
-    "/ballotbox/",
-    {
-      schema: {
-        querystring: {
-          type: "object",
-          required: ["tokens"],
-          properties: {
-            tokens: { type: "array" }
-          }
-        }
-      }
-    },
-    serveBallotBox
-  );
-  
-  fastify.post(
-    "/votes/",
-    {
-      schema: {
-        body: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              token: {
-                type: "string"
-              },
-              optionId: {
-                type: "string"
-              }
-            },
-            required: ["token", "optionId"]
-          }
-        }
-      }
-    },
-    handleVote
-  );
-  
-  fastify.post(
-    "/stills/",
-    {
-      schema: {
-        body: {
-          type: "object",
-          required: ["email"],
-          properties: {
-            email: { type: "string" }
-          }
-        }
-      }
-    },
-    handleAllocate
-  );
-
-  done()
-}
+fastify.register(apiV1, {prefix: '/api/v1'})
 
 export async function boot() {
   fastify.log.info(`Initializing database.`);

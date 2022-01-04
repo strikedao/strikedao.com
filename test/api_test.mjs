@@ -1,4 +1,5 @@
 // @format
+// Test all the API routes
 import test from "ava";
 
 import { init, questions, migrations, stills } from "../src/db.mjs";
