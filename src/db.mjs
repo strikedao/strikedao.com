@@ -45,7 +45,7 @@ export function init(options) {
 }
 
 export const migrations = {
-  init: async function(num) {
+  init: async function (num) {
     const db = init();
     const dirPath = path.resolve(__dirname, `${database.migrations.path}`);
     const files = readdirSync(dirPath);
@@ -78,7 +78,7 @@ export const migrations = {
 };
 
 export const votes = {
-  listInOrder: function() {
+  listInOrder: function () {
     const db = init();
     let l = db
       .prepare(
@@ -104,7 +104,7 @@ export const votes = {
       .sort((a, b) => a.pksuid.compare(b.pksuid));
     return l;
   },
-  vote: async function(optionId, token) {
+  vote: async function (optionId, token) {
     const db = init();
     const ksuid = await KSUID.random();
     db.prepare(
@@ -119,10 +119,42 @@ export const votes = {
       token,
       ksuid: ksuid.string
     });
+  },
+  tally: async function (questionId) {
+    const db = init();
+    return db
+      .prepare(
+        `
+          SELECT 
+            ksuid 
+          FROM 
+            options 
+          WHERE
+            options.questionID = @id
+          `
+      )
+      .all({ id: questionId })
+      .map(({ ksuid: optionID }) => {
+        return {
+          optionID,
+          ...db
+            .prepare(
+              `
+            SELECT
+              COUNT(optionID) AS votes
+            FROM
+              votes
+            WHERE
+              votes.optionID = @id
+            `
+            )
+            .get({ id: optionID })
+        };
+      });
   }
 };
 
-const getQuestionById = function(id) {
+const getQuestionById = function (id) {
   const db = init();
   return db
     .prepare(
@@ -140,7 +172,7 @@ const getQuestionById = function(id) {
     .get({ id });
 };
 
-const getQuestionWithOptions = function(id) {
+const getQuestionWithOptions = function (id) {
   const question = getQuestionById(id);
 
   const db = init();
@@ -163,7 +195,7 @@ const getQuestionWithOptions = function(id) {
 export const questions = {
   get: getQuestionById,
   getWithOptions: getQuestionWithOptions,
-  init: async function() {
+  init: async function () {
     const db = init();
     for (let question of config.questions) {
       const qksuid = await KSUID.random();
@@ -201,7 +233,7 @@ export const questions = {
 };
 
 export const stills = {
-  doesEmailExist: function(email) {
+  doesEmailExist: function (email) {
     const db = init();
     const { emailFlag } = db
       .prepare(
@@ -222,7 +254,7 @@ export const stills = {
       });
     return emailFlag === 1;
   },
-  getUnclaimed: function() {
+  getUnclaimed: function () {
     const limit = config.stills.perEmail;
     const db = init();
 
@@ -247,7 +279,7 @@ export const stills = {
       return stills;
     }
   },
-  allocate: function(token, email) {
+  allocate: function (token, email) {
     const db = init();
 
     db.prepare(
@@ -266,7 +298,7 @@ export const stills = {
       email
     });
   },
-  init: async function() {
+  init: async function () {
     const db = init();
 
     const statement = db.prepare(`
@@ -289,7 +321,7 @@ export const stills = {
   }
 };
 
-stills.allocateMany = function(email) {
+stills.allocateMany = function (email) {
   const db = init();
   const list = [];
 

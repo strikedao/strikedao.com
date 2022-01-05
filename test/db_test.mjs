@@ -589,3 +589,47 @@ test.serial("if migration 1 and two can be applied", async t => {
     }
   ]);
 });
+
+test.serial("if votes can be tallied", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  await stills.init();
+  await questions.init();
+
+  const db = init();
+  const tokens = db
+    .prepare("SELECT token FROM stills LIMIT 2")
+    .all()
+    .map(({ token }) => token);
+  t.truthy(tokens.length > 0);
+  const email = "example@example.com";
+  stills.allocate(tokens[0], email);
+  stills.allocate(tokens[1], email);
+
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+
+  const question = questions.getWithOptions(qs[0].ksuid);
+  await votes.vote(question.options[0].ksuid, tokens[0]);
+  await votes.vote(question.options[0].ksuid, tokens[1]);
+  await votes.vote(question.options[1].ksuid, tokens[0]);
+
+  const finalTally = question.options.map(({ ksuid }) => ({
+    optionID: ksuid,
+    votes: 0
+  }));
+  finalTally[0].votes = 2;
+  finalTally[1].votes = 1;
+
+  t.deepEqual(await votes.tally(question.ksuid), finalTally);
+});
