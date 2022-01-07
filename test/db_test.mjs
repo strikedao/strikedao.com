@@ -9,11 +9,54 @@ import { delDB } from "./utils.mjs";
 test.afterEach.always(delDB);
 test.before(delDB);
 
+test.serial("to ensure that token can only be used once", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  migrations.init(4);
+  await stills.init();
+  await questions.init();
+
+  const db = init();
+
+  const tokens = db
+    .prepare("SELECT token FROM stills LIMIT 1")
+    .all()
+    .map(({ token }) => token);
+  const email = "example@example.com";
+  stills.allocate(tokens[0], email);
+
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+
+  const question = questions.getWithOptions(qs[0].ksuid);
+  await votes.vote(question.options[0].ksuid, tokens[0]);
+  await t.throwsAsync(
+    async () => await votes.vote(question.options[0].ksuid, tokens[0])
+  );
+  await t.throwsAsync(
+    async () => await votes.vote(question.options[1].ksuid, tokens[0])
+  );
+  await t.throwsAsync(
+    async () => await votes.vote(question.options[2].ksuid, tokens[0])
+  );
+});
+
 test.serial("if votes can be listed by creation date", async t => {
   migrations.init(0);
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await stills.init();
   await questions.init();
 
@@ -85,6 +128,7 @@ test.serial("if stills can be generated with tokens in db", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await stills.init();
 
   const db = init();
@@ -99,6 +143,7 @@ test.serial(
     migrations.init(1);
     migrations.init(2);
     migrations.init(3);
+    migrations.init(4);
     await stills.init();
 
     const db = init();
@@ -113,6 +158,7 @@ test.serial("if allocating many tokens at once is possible", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await stills.init();
 
   const db = init();
@@ -135,6 +181,7 @@ test.serial(
     migrations.init(1);
     migrations.init(2);
     migrations.init(3);
+    migrations.init(4);
     await stills.init();
 
     const db = init();
@@ -164,6 +211,7 @@ test.serial(
     migrations.init(1);
     migrations.init(2);
     migrations.init(3);
+    migrations.init(4);
     await stills.init();
 
     const db = init();
@@ -191,6 +239,7 @@ test.serial("if still email can be set by knowing its token", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await stills.init();
 
   const db = init();
@@ -213,6 +262,7 @@ test.serial(
     migrations.init(1);
     migrations.init(2);
     migrations.init(3);
+    migrations.init(4);
     await stills.init();
 
     const db = init();
@@ -232,6 +282,7 @@ test.serial("if questions with options can be get by id", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await questions.init();
 
   const db = init();
@@ -265,6 +316,7 @@ test.serial("if questions can be get by id", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await questions.init();
 
   const db = init();
@@ -296,6 +348,7 @@ test.serial(
     migrations.init(1);
     migrations.init(2);
     migrations.init(3);
+    migrations.init(4);
     await stills.init();
     await questions.init();
 
@@ -336,6 +389,7 @@ test.serial(
     migrations.init(1);
     migrations.init(2);
     migrations.init(3);
+    migrations.init(4);
     await stills.init();
     await questions.init();
 
@@ -373,6 +427,7 @@ test.serial("if votes can be cast for an option using a token", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await stills.init();
   await questions.init();
 
@@ -430,6 +485,7 @@ test.serial(
     migrations.init(1);
     migrations.init(2);
     migrations.init(3);
+    migrations.init(4);
     await stills.init();
     await questions.init();
 
@@ -459,6 +515,7 @@ test.serial("if migration 1 and two can be applied", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   const db = init();
 
   db.prepare(

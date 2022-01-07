@@ -96,6 +96,7 @@ export async function initDB() {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
 
   const db = init();
   const stillsDB = db.prepare("SELECT COUNT(*) as amount FROM stills").get();

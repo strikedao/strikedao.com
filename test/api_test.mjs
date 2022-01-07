@@ -15,6 +15,7 @@ test.serial("if voting endpoint throws on invalid optionId", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await stills.init();
   await questions.init();
   const db = init();
@@ -44,6 +45,7 @@ test.serial("if voting endpoint throws on invalid token", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await stills.init();
   await questions.init();
   const db = init();
@@ -86,6 +88,7 @@ test.serial("if voting works", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await stills.init();
   await questions.init();
   const db = init();
@@ -190,6 +193,7 @@ test.serial(
     migrations.init(1);
     migrations.init(2);
     migrations.init(3);
+    migrations.init(4);
     await stills.init();
 
     const db = init();
