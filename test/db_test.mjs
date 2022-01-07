@@ -652,6 +652,7 @@ test.serial("if votes can be tallied", async t => {
   migrations.init(1);
   migrations.init(2);
   migrations.init(3);
+  migrations.init(4);
   await stills.init();
   await questions.init();
 
@@ -679,14 +680,13 @@ test.serial("if votes can be tallied", async t => {
   const question = questions.getWithOptions(qs[0].ksuid);
   await votes.vote(question.options[0].ksuid, tokens[0]);
   await votes.vote(question.options[0].ksuid, tokens[1]);
-  await votes.vote(question.options[1].ksuid, tokens[0]);
 
   const finalTally = question.options.map(({ ksuid }) => ({
     optionID: ksuid,
     votes: 0
   }));
   finalTally[0].votes = 2;
-  finalTally[1].votes = 1;
+  finalTally[1].votes = 0;
 
   t.deepEqual(await votes.tally(question.ksuid), finalTally);
 });
