@@ -4,20 +4,17 @@
   "description": "Strike is a autonomous system making use of quadratic voting mechanisms",
   "main": "./src/listen.mjs",
   "scripts": {
-    "dev": "nodemon --ext 'mjs'",
+    "build:frontend": "esbuild ./client/src/VotingApp.js --bundle --format=esm --outfile=./src/public/bundle.js",
+    "watch:frontend": "esbuild ./client/src/VotingApp.js --bundle --format=esm --outfile=./src/public/bundle.js --watch",
+    "watch:server": "nodemon --ext 'mjs'",
+    "dev": "concurrently \"npm run watch:server\" \"npm run watch:frontend\"",
     "test": "ava --serial --verbose",
     "connect": "source .env && ssh root@$IPV4",
     "deploy": "source .env && rsync -avz . root@$IPV4:./strike --exclude \"strike.db\" --exclude=\"node_modules\" --exclude=\".git\""
   },
   "ava": {
-    "nodeArguments": [
-      "--loader=esmock",
-      "--no-warnings"
-    ],
-    "files": [
-      "test/**/*",
-      "!test/utils.mjs"
-    ]
+    "nodeArguments": ["--loader=esmock", "--no-warnings"],
+    "files": ["test/**/*", "!test/utils.mjs"]
   },
   "repository": {
     "type": "git",
@@ -52,10 +49,13 @@
     "markdown-it": "12.2.0",
     "mjml": "4.11.0",
     "nodemailer": "6.6.3",
+    "preact": "10.6.4",
     "vhtml": "2.2.0"
   },
   "devDependencies": {
     "ava": "3.15.0",
+    "concurrently": "7.0.0",
+    "esbuild": "0.14.11",
     "esmock": "0.4.0",
     "nodemon": "2.0.13"
   }

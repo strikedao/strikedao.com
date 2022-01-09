@@ -17,7 +17,8 @@ import register from "./views/register.mjs";
 import contact from "./views/contact.mjs";
 import markdown from "./views/markdown.mjs";
 import success from "./views/success.mjs";
-import apiV1 from './api/v1/index.mjs'
+import vote from "./views/vote.mjs";
+import apiV1 from "./api/v1/index.mjs";
 
 const { SERVER_PORT, NODE_ENV } = process.env;
 
@@ -58,6 +59,13 @@ fastify.get("/success", (request, reply) => {
     .send(success);
 });
 
+fastify.get("/vote", (request, reply) => {
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(vote);
+});
+
 fastify.get("/contact", (request, reply) => {
   return reply
     .code(200)
@@ -73,7 +81,7 @@ fastify.get("/about", async (request, reply) => {
     .send(content);
 });
 
-fastify.register(apiV1, {prefix: '/api/v1'})
+fastify.register(apiV1, { prefix: "/api/v1" });
 
 export async function boot() {
   fastify.log.info(`Initializing database.`);
