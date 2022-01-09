@@ -12,7 +12,9 @@ const config = {
 
 export default html`
   <html>
-    ${head(config)}
+    <head>
+      ${head(config)}
+    </head>
     <body>
       <${Navigation} />
       <section>

@@ -7,14 +7,12 @@ import config from "../../config.mjs";
 const { description, keywords, author } = config.website;
 
 export default ({ title } = {}) => html`
-  <head>
-    <link rel="stylesheet" href="public/normalize.css" />
-    <link rel="stylesheet" href="public/style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta charset="utf-8" />
-    <meta name="description" content=${description} />
-    <meta name="keywords" content=${keywords} />
-    <meta name="author" content=${author} />
-    <title>${title}</title>
-  </head>
+  <link rel="stylesheet" href="public/normalize.css" />
+  <link rel="stylesheet" href="public/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="description" content=${description} />
+  <meta name="keywords" content=${keywords} />
+  <meta name="author" content=${author} />
+  <title>${title}</title>
 `;

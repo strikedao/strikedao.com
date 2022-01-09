@@ -20,7 +20,9 @@ export default async name => {
   const rendered = md.render(content);
   return html`
     <html>
-      ${head()}
+      <head>
+        ${head()}
+      </head>
       <body>
         <${Navigation} />
         <section class="text-content">
