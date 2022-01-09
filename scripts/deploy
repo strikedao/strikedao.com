@@ -1,1 +1,0 @@
-rsync -avz . root@65.21.154.72:./fp --exclude="results" --exclude=".git" --exclude="output.mp4" --exclude="node_modules"

@@ -1,2 +1,0 @@
-#!/bin/bash
-i=1; shuf -z -e -- * | while IFS= read -rd '' f; do mv -- "$f" "out$((i++)).png"; done

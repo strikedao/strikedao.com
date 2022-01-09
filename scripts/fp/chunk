@@ -1,6 +1,0 @@
-#!/bin/bash
-CHUNKSIZE=0.5
-FRAMES=693
-ffmpeg -i video/1.mp4 -c:v libx264 -crf 22 -map 0 -segment_time $CHUNKSIZE \
-  -reset_timestamps 1 -g $FRAMES -sc_threshold 0 \
-  -force_key_frames "expr:gte(t,n_forced*$CHUNKSIZE)" -f segment temp/out%03d.mp4
