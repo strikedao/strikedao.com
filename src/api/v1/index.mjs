@@ -4,7 +4,6 @@ import { Worker } from "worker_threads";
 import { once } from "events";
 
 import { stills, votes, questions } from "../../db.mjs";
-import enUS from "../../locales/en-US.mjs";
 import { link } from "../../tokens.mjs";
 
 const logger = pino({ level: "info" });
@@ -53,7 +52,7 @@ export async function handleAllocate(request, reply) {
   const mailWorker = new Worker(mailWorkerPath, {
     workerData: {
       to: email,
-      subject: enUS.mail.allocate.subject,
+      subject: "Your Voting Credits",
       text,
       link: text
     }
