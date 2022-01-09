@@ -30,5 +30,7 @@ jobs:
       shell: bash
       env:
         STRIKE_ENV: ${{ secrets.environment }}
+    - uses: FedericoCarboni/setup-ffmpeg@v1
+      id: setup-ffmpeg
     - run: npm ci
     - run: npm run test
