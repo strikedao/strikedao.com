@@ -83,6 +83,55 @@ test.serial("if voting endpoint throws on invalid token", async t => {
   t.is(response.statusCode, 401);
 });
 
+test.serial("retrieving a non-existent question", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  migrations.init(4);
+  await stills.init();
+  await questions.init();
+  const db = init();
+  const response = await fastify.inject({
+    method: "GET",
+    url: `/api/v1/questions/doesntexist`
+  });
+  t.is(response.statusCode, 404);
+});
+
+test.serial("if retrieving a question from the JSON API works", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  migrations.init(4);
+  await stills.init();
+  await questions.init();
+  const db = init();
+
+  const { ksuid } = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+      LIMIT 1
+    `
+    )
+    .get();
+
+  const response = await fastify.inject({
+    method: "GET",
+    url: `/api/v1/questions/${ksuid}`
+  });
+  const body = JSON.parse(response.body);
+  t.truthy(body);
+  t.is(body.ksuid, ksuid);
+  t.truthy(body.options);
+  t.is(response.statusCode, 200);
+});
+
 test.serial("if voting works", async t => {
   migrations.init(0);
   migrations.init(1);

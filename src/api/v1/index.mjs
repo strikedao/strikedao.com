@@ -3,7 +3,7 @@ import pino from "pino";
 import { Worker } from "worker_threads";
 import { once } from "events";
 
-import { stills, votes } from "../../db.mjs";
+import { stills, votes, questions } from "../../db.mjs";
 import enUS from "../../locales/en-US.mjs";
 import { link } from "../../tokens.mjs";
 
@@ -19,7 +19,7 @@ export async function handleVote(request, reply) {
     async ({ optionId, token }) => await votes.vote(optionId, token)
   );
   const results = await Promise.allSettled(promises);
-  const rejected = results.filter((result) => result.status === "rejected");
+  const rejected = results.filter(result => result.status === "rejected");
 
   if (rejected.length > 0) {
     return reply
@@ -55,8 +55,8 @@ export async function handleAllocate(request, reply) {
       to: email,
       subject: enUS.mail.allocate.subject,
       text,
-      link: text,
-    },
+      link: text
+    }
   });
 
   const [exitCode] = await once(mailWorker, "exit");
@@ -70,7 +70,21 @@ export async function handleAllocate(request, reply) {
   }
 }
 
+export function handleGetQuestion(request, reply) {
+  const { id } = request.params;
+  let q;
+  try {
+    q = questions.getWithOptions(id);
+  } catch (err) {
+    logger.error(err.toString());
+    return reply.code(404).send("Not Found");
+  }
+  return reply.code(200).send(q);
+}
+
 export default (fastify, opts, done) => {
+  fastify.get("/questions/:id", handleGetQuestion);
+
   fastify.get(
     "/ballotbox/",
     {
@@ -79,10 +93,10 @@ export default (fastify, opts, done) => {
           type: "object",
           required: ["tokens"],
           properties: {
-            tokens: { type: "array" },
-          },
-        },
-      },
+            tokens: { type: "array" }
+          }
+        }
+      }
     },
     serveBallotBox
   );
@@ -97,16 +111,16 @@ export default (fastify, opts, done) => {
             type: "object",
             properties: {
               token: {
-                type: "string",
+                type: "string"
               },
               optionId: {
-                type: "string",
-              },
+                type: "string"
+              }
             },
-            required: ["token", "optionId"],
-          },
-        },
-      },
+            required: ["token", "optionId"]
+          }
+        }
+      }
     },
     handleVote
   );
@@ -119,10 +133,10 @@ export default (fastify, opts, done) => {
           type: "object",
           required: ["email"],
           properties: {
-            email: { type: "string" },
-          },
-        },
-      },
+            email: { type: "string" }
+          }
+        }
+      }
     },
     handleAllocate
   );

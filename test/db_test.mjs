@@ -9,6 +9,19 @@ import { delDB } from "./utils.mjs";
 test.afterEach.always(delDB);
 test.before(delDB);
 
+test.serial("if question with options query throws", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  migrations.init(4);
+  await stills.init();
+  await questions.init();
+  const db = init();
+
+  t.throws(() => questions.getWithOptions("non-existent"));
+});
+
 test.serial("to ensure that token can only be used once", async t => {
   migrations.init(0);
   migrations.init(1);
