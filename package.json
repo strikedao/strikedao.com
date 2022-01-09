@@ -4,8 +4,8 @@
   "description": "Strike is a autonomous system making use of quadratic voting mechanisms",
   "main": "./src/listen.mjs",
   "scripts": {
-    "build:frontend": "esbuild ./client/src/VotingApp.js --bundle --format=esm --outfile=./src/public/bundle.js",
-    "watch:frontend": "esbuild ./client/src/VotingApp.js --bundle --format=esm --outfile=./src/public/bundle.js --watch",
+    "build:frontend": "esbuild ./client/src/VotingApp.mjs --minify --bundle --format=esm --outfile=./src/public/bundle.js",
+    "watch:frontend": "esbuild ./client/src/VotingApp.mjs --bundle --format=esm --outfile=./src/public/bundle.js --watch",
     "watch:server": "nodemon --ext 'mjs'",
     "dev": "concurrently \"npm run watch:server\" \"npm run watch:frontend\"",
     "test": "ava --serial --verbose",
