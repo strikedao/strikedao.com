@@ -13,8 +13,14 @@
     "deploy": "source .env && rsync -avz . root@$IPV4:./strike --exclude \"strike.db\" --exclude=\"node_modules\" --exclude=\".git\""
   },
   "ava": {
-    "nodeArguments": ["--loader=esmock", "--no-warnings"],
-    "files": ["test/**/*", "!test/utils.mjs"]
+    "nodeArguments": [
+      "--loader=esmock",
+      "--no-warnings"
+    ],
+    "files": [
+      "test/**/*",
+      "!test/utils.mjs"
+    ]
   },
   "repository": {
     "type": "git",
@@ -39,6 +45,7 @@
   "dependencies": {
     "better-sqlite3": "7.4.3",
     "bs58": "4.0.1",
+    "cross-fetch": "3.1.4",
     "dotenv": "10.0.0",
     "fastify": "3.22.0",
     "fastify-formbody": "5.2.0",

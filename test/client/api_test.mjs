@@ -1,7 +1,7 @@
 // @format
 import test from "ava";
 
-import { getParam } from "../../client/src/browser.mjs";
+import { getParam } from "../../client/src/api.mjs";
 
 test("if list can be extracted", t => {
   const search = "?token=abc&token=def&lol=haha";
