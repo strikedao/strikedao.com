@@ -197,6 +197,22 @@ const getQuestionWithOptions = function(id) {
 };
 
 export const questions = {
+  listWithLimit: function(limit) {
+    const db = init();
+    return db
+      .prepare(
+        `
+      SELECT
+        *
+      FROM
+        questions
+      LIMIT
+        @limit
+
+    `
+      )
+      .all({ limit });
+  },
   get: getQuestionById,
   getWithOptions: getQuestionWithOptions,
   init: async function() {

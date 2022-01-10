@@ -9,6 +9,21 @@ import { delDB } from "./utils.mjs";
 test.afterEach.always(delDB);
 test.before(delDB);
 
+test.serial("if getting question with limit works", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  migrations.init(4);
+  await stills.init();
+  await questions.init();
+  const db = init();
+
+  const [question] = questions.listWithLimit(1);
+  t.truthy(question);
+  t.truthy(question.content && question.ksuid, question.title);
+});
+
 test.serial("if question with options query throws", async t => {
   migrations.init(0);
   migrations.init(1);
