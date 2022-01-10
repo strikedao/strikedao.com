@@ -21,5 +21,5 @@ export function generate(size) {
 export function link(tokens, questionId) {
   tokens = tokens.map(t => ["tokens", t]);
   const params = new URLSearchParams([...tokens, ["questionId", questionId]]);
-  return `https://${HOSTNAME}/vote/?${params.toString()}`;
+  return `https://${HOSTNAME}/vote?${params.toString()}`;
 }

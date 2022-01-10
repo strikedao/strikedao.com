@@ -21,6 +21,6 @@ test("if generating a link from tokens works", async t => {
   t.truthy(HOSTNAME);
   t.is(
     link(["a", "b"], "abc"),
-    `https://${HOSTNAME}/vote/?tokens=a&tokens=b&questionId=abc`
+    `https://${HOSTNAME}/vote?tokens=a&tokens=b&questionId=abc`
   );
 });
