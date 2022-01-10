@@ -3,8 +3,9 @@ import { useState, useEffect } from "preact/hooks";
 import { html } from "htm/preact";
 
 import { getParam, v1 } from "./api.mjs";
+import VotingItem from "./components/VotingItem.mjs";
 
-function App() {
+function VotingApp() {
   const tokens = getParam(location.search, "tokens");
   const questionId = getParam(location.search, "questionId");
   const [question, setQuestion] = useState(null);
@@ -14,19 +15,39 @@ function App() {
   }, []);
 
   if (question) {
+    console.log(question);
+    console.log(question.options);
+
+    const votingItemList = question.options.map((props, i) =>
+      html`
+        <${VotingItem} content="${props.content}" />
+      `
+    );
+
     return html`
-      <div>${question.title}</div>
+      <div class="voting-app-container">
+        <h2>${question.title}</h2>
+        <div class="voting-items-list-container">
+          ${votingItemList}
+        </div>
+      </div>
     `;
   }
 
   return html`
-    <div>${questionId}</div>
+    <div>
+        ${questionId}
+    </div>
   `;
 }
 
 render(
   html`
-    <${App} />
+    <${VotingApp} />
   `,
   document.querySelector("#app")
 );
+/*
+{$question.options.map((props, i) =>
+<VotingItem {...props} key={i}/>
+))}*/

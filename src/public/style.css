@@ -70,6 +70,44 @@ p {
   align-self: flex-start;
 }
 
+/* Voting App */
+.voting-app-container {
+  display:flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content:center;
+  text-align: center;
+}
+
+.voting-items-list-container {
+  display:flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.voting-item {
+  padding: 8px 64px;
+  margin: 8px 16px;
+  border: 1px solid white;
+}
+
+.voting-item p {
+  font-size: 32px;
+  font-family: var(--logo-font);
+}
+
+.voting-item input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.voting-item input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Voting App END */
+
 @media only screen and (max-width: 600px) {
   section {
     padding: 0;
