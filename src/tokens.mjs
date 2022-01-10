@@ -18,7 +18,8 @@ export function generate(size) {
   });
 }
 
-export function link(tokens) {
-  const params = new URLSearchParams(tokens.map(t => ["tokens", t]));
+export function link(tokens, questionId) {
+  tokens = tokens.map(t => ["tokens", t]);
+  const params = new URLSearchParams([...tokens, ["questionId", questionId]]);
   return `https://${HOSTNAME}/vote/?${params.toString()}`;
 }

@@ -48,7 +48,8 @@ export async function handleAllocate(request, reply) {
     return reply.code(410).send();
   }
 
-  const text = link(tokens);
+  const [question] = questions.listWithLimit(1);
+  const text = link(tokens, question.ksuid);
   const mailWorker = new Worker(mailWorkerPath, {
     workerData: {
       to: email,

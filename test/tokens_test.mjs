@@ -19,5 +19,8 @@ test("if generating a crypto token works", async t => {
 
 test("if generating a link from tokens works", async t => {
   t.truthy(HOSTNAME);
-  t.is(link(["a", "b"]), `https://${HOSTNAME}/vote/?tokens=a&tokens=b`);
+  t.is(
+    link(["a", "b"], "abc"),
+    `https://${HOSTNAME}/vote/?tokens=a&tokens=b&questionId=abc`
+  );
 });
