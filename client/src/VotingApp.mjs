@@ -34,6 +34,11 @@ function VotingApp() {
         <div class="${classes.votingButtonContainer}">
           <button class="${classes.votingButton}" onClick="${console.log()}">Vote</button>
         </div>
+        <div class="${classes.votingFooterContainer}">
+          <div class="${classes.votingFooter}">
+            <div class="${classes.votingProgressbar}"></div>
+          </div>
+        </div>
       </div>
     `;
   }

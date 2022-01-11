@@ -15,11 +15,11 @@ const style = {
     flexDirection: "column",
     alignContent: "center",
     textAlign: "center",
-    margin: "0 16px",
   },
   votingItemList: {
     display: "grid",
     padding:0,
+    margin: "0 16px",
     justifyContent: "center",
     gridTemplateColumns: "repeat(1, minmax(280px, 1fr))",
 
@@ -36,6 +36,21 @@ const style = {
   votingButton: {
     fontSize: 28,
     width: 280
+  },
+  votingFooterContainer: {
+    position: "absolute",
+    width: "100%",
+    bottom:0,
+  },
+  votingFooter: {
+    borderTop: "1px solid white",
+    borderBottom: "1px solid white",
+    backgroundColor: "black"
+  },
+  votingProgressbar: {
+    height: 24,
+    width: "50%",
+    backgroundColor: "white"
   },
   // VotingItem.mjs
   votingItem: {
