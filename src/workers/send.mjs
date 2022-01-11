@@ -24,7 +24,10 @@ const hydratedHTML = template(fileContent)({
 });
 const { html } = mjml(hydratedHTML);
 
-if(process.env.NODE_ENV === 'test') 
+// NOTE: Not having Mailgun setup in the `.env` file would stall this
+// subprocess test/workers/send_test.mjs. The following line helps to debug and
+// test without the need of a Mailgun account.
+if(process.env.NODE_ENV === 'test')
   to && subject && text ? exit(0) : exit(1);
 
 send(to, subject, text, html)
