@@ -1,9 +1,10 @@
 import { render, Component } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { html } from "htm/preact";
-
 import { getParam, v1 } from "./api.mjs";
 import VotingItem from "./components/VotingItem.mjs";
+import { classes} from "./VotingStyles.mjs";
+
 
 function VotingApp() {
   const tokens = getParam(location.search, "tokens");
@@ -20,15 +21,18 @@ function VotingApp() {
 
     const votingItemList = question.options.map((props, i) =>
       html`
-        <${VotingItem} content="${props.content}" />
+        <${VotingItem} content="${props.content}" styles="${classes}"/>
       `
     );
 
     return html`
-      <div class="voting-app-container">
+      <div class="${classes.votingAppContainer}">
         <h2>${question.title}</h2>
-        <div class="voting-items-list-container">
+        <ul class="${classes.votingItemList}">
           ${votingItemList}
+        </ul>
+        <div class="${classes.votingButtonContainer}">
+          <button class="${classes.votingButton}" onClick="${console.log()}">Vote</button>
         </div>
       </div>
     `;
