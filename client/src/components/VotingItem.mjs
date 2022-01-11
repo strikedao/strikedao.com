@@ -1,7 +1,6 @@
 import { html } from "htm/preact";
 import NominalAllocator from "preact-nominal-allocator";
 
-
 function VotingItem (props) {
   const { content, styles } = props;
   return html`
@@ -10,7 +9,7 @@ function VotingItem (props) {
           <${NominalAllocator}
               min="${0}"
               max="${12}"
-              onUpdate="${console.log}"
+              onUpdate="${console.log()}"
               styles="${styles}"
           />
           <p class="${styles.votingItemText}">${content}</p>

@@ -5,7 +5,6 @@ import { getParam, v1 } from "./api.mjs";
 import VotingItem from "./components/VotingItem.mjs";
 import { classes} from "./VotingStyles.mjs";
 
-
 function VotingApp() {
   const tokens = getParam(location.search, "tokens");
   const questionId = getParam(location.search, "questionId");
@@ -56,7 +55,3 @@ render(
   `,
   document.querySelector("#app")
 );
-/*
-{$question.options.map((props, i) =>
-<VotingItem {...props} key={i}/>
-))}*/

@@ -1,14 +1,9 @@
 import { create } from "https://unpkg.com/jss@10.9.0";
 import preset from "https://unpkg.com/jss-preset-default@10.9.0";
-import NominalAllocator from "preact-nominal-allocator";
-
-/*'@media (min-width: 1024px)': {
-  width: 200
-}*/
 
 const jss = create(preset());
 const style = {
-  // VotingApp.mjs
+  // VotingApp
   votingAppContainer: {
     display: "flex",
     flexWrap: "wrap",
@@ -34,31 +29,18 @@ const style = {
     backgroundColor: "transparent",
   },
   votingButton: {
+    marginTop: 75,
     fontSize: 28,
     width: 280
   },
-  votingFooterContainer: {
-    position: "absolute",
-    width: "100%",
-    bottom:0,
-  },
-  votingFooter: {
-    borderTop: "1px solid white",
-    borderBottom: "1px solid white",
-    backgroundColor: "black"
-  },
-  votingProgressbar: {
-    height: 24,
-    width: "50%",
-    backgroundColor: "white"
-  },
-  // VotingItem.mjs
+  // VotingItem
   votingItem: {
     listStyleType: "none",
-    maxHeight: 280,
+    maxHeight: 320,
+    maxWidth: 320,
     position: "relative",
     margin: "8px 4px",
-    padding: "8px 64px",
+    padding: "32px 32px",
     border: "1px solid white",
     '@media (min-width: 1024px)': {
       margin: "8px 16px",
@@ -73,6 +55,22 @@ const style = {
     marginTop: 16,
     fontSize: 28,
     fontFamily: "var(--logo-font)",
+  },
+  // Footer
+  votingFooterContainer: {
+    position: "absolute",
+    width: "100%",
+    bottom:0,
+  },
+  votingFooter: {
+    borderTop: "1px solid white",
+    borderBottom: "1px solid white",
+    backgroundColor: "black"
+  },
+  votingProgressbar: {
+    height: 24,
+    width: "50%",
+    backgroundColor: "white"
   },
   // NominalAllocator
   allocatorContainer: {
