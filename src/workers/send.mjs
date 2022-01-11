@@ -24,6 +24,9 @@ const hydratedHTML = template(fileContent)({
 });
 const { html } = mjml(hydratedHTML);
 
+if(process.env.NODE_ENV === 'test') 
+  to && subject && text ? exit(0) : exit(1);
+
 send(to, subject, text, html)
   .then(() => exit(0))
   .catch(err => {
