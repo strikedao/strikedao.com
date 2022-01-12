@@ -23,6 +23,7 @@ function VotingApp() {
     );
 
     return html`
+    <div>
       <div class="${classes.votingAppContainer}">
         <h2 class="${classes.votingAppHeadline}">${question.title}</h2>
         <ul class="${classes.votingItemList}">
@@ -31,11 +32,12 @@ function VotingApp() {
         <div class="${classes.votingButtonContainer}">
           <button class="${classes.votingButton}" onClick="${(e) => console.log(e)}">Vote</button>
         </div>
-        <div>
-          <p class="${classes.votingCredits}">You have 45/12 Credits</p>
-        </div>
-        <div class="${classes.votingFooterContainer}">
-          <div class="${classes.votingFooter}">
+      </div>
+      <div class="${classes.votingFooterContainer}">
+          <div class="${classes.flexCenter}">
+            <p class="${classes.votingCredits}">You have 45/12 Credits</p>
+          </div>
+          <div class="${classes.votingProgressbarContainer}">
             <div class="${classes.votingProgressbar}"></div>
           </div>
         </div>

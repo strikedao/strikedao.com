@@ -6,6 +6,8 @@ const style = {
   // VotingApp
   votingAppContainer: {
     display: "flex",
+    maxWidth: 1280,
+    margin: "0 auto",
     flexWrap: "wrap",
     flexDirection: "column",
     alignContent: "center",
@@ -30,13 +32,13 @@ const style = {
   },
   votingButton: {
     marginTop: 50,
-    marginBottom: 75,
+    marginBottom: 50,
     fontSize: 28,
     width: 280
   },
   votingAppHeadline: {
     fontSize: 64,
-    padding: 0,
+    padding: "0 8px",
     maxWidth: 1110,
     textAlign: "center",
     wordWrap: "wrap",
@@ -45,6 +47,10 @@ const style = {
       padding: "0 80px",
       fontSize: 96,
     }
+  },
+  flexCenter: {
+    display: "flex",
+    justifyContent: "center"
   },
   // VotingItem
   votingItem: {
@@ -80,16 +86,19 @@ const style = {
     fontFamily: "var(--logo-font)",
     letterSpacing: 2,
     fontSize: 28,
-    marginBottom: 40
+    marginBottom: 8,
+    '@media (min-width: 1024px)': {
+      marginBottom: 20,
+    }
   },
   // Footer
   votingFooterContainer: {
-    position: "fixed",
+    position: "relative",
     width: "100%",
     bottom:0,
     left:0,
   },
-  votingFooter: {
+  votingProgressbarContainer: {
     borderTop: "2px solid white",
     borderBottom: "2px solid white",
     backgroundColor: "black"
