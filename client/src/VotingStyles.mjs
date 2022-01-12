@@ -1,9 +1,8 @@
-import { create } from "https://unpkg.com/jss@10.9.0";
-import preset from "https://unpkg.com/jss-preset-default@10.9.0";
+import { create }  from 'jss'
+import preset from 'jss-preset-default'
 
 const jss = create(preset());
 const style = {
-  // VotingApp
   votingAppContainer: {
     display: "flex",
     maxWidth: 1280,
@@ -52,7 +51,6 @@ const style = {
     display: "flex",
     justifyContent: "center"
   },
-  // VotingItem
   votingItem: {
     listStyleType: "none",
     maxWidth: "100%",
@@ -91,7 +89,6 @@ const style = {
       marginBottom: 20,
     }
   },
-  // Footer
   votingFooterContainer: {
     position: "relative",
     width: "100%",
@@ -108,7 +105,6 @@ const style = {
     width: "50%",
     backgroundColor: "white"
   },
-  // NominalAllocator
   allocatorContainer: {
     display: "flex",
     justifyContent: "space-between",
