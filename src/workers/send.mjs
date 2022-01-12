@@ -2,7 +2,7 @@
 import { readFileSync } from "fs";
 import { workerData, isMainThread } from "worker_threads";
 import pino from "pino";
-import { exit } from "process";
+import { exit, env } from "process";
 import template from "lodash.template";
 import mjml from "mjml";
 
@@ -22,6 +22,10 @@ const { to, subject, text, link } = workerData;
 const hydratedHTML = template(fileContent)({
   link
 });
+if(env.NODE_ENV !== "production") {
+  logger.info(link);
+}
+
 const { html } = mjml(hydratedHTML);
 
 // NOTE: Not having Mailgun setup in the `.env` file would stall this
