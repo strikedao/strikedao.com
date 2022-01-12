@@ -15,8 +15,6 @@ function VotingApp() {
   }, []);
 
   if (question) {
-    console.log(question);
-    console.log(question.options);
 
     const votingItemList = question.options.map((props, i) =>
       html`
@@ -26,12 +24,15 @@ function VotingApp() {
 
     return html`
       <div class="${classes.votingAppContainer}">
-        <h2>${question.title}</h2>
+        <h2 class="${classes.votingAppHeadline}">${question.title}</h2>
         <ul class="${classes.votingItemList}">
           ${votingItemList}
         </ul>
         <div class="${classes.votingButtonContainer}">
-          <button class="${classes.votingButton}" onClick="${console.log()}">Vote</button>
+          <button class="${classes.votingButton}" onClick="${(e) => console.log(e)}">Vote</button>
+        </div>
+        <div>
+          <p class="${classes.votingCredits}">You have 45/12 Credits</p>
         </div>
         <div class="${classes.votingFooterContainer}">
           <div class="${classes.votingFooter}">

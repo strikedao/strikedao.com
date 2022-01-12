@@ -9,12 +9,12 @@ function VotingItem (props) {
           <${NominalAllocator}
               min="${0}"
               max="${12}"
-              onUpdate="${console.log()}"
+              onUpdate="${console.log}"
               styles="${styles}"
           />
           <p class="${styles.votingItemText}">${content}</p>
       </li>
-      <a class="${styles.votingItemLink}">Learn more -></a>
+      <a class="${styles.votingItemLink}">Learn more (Arrow)</a>
     </div>
   `;
 }
