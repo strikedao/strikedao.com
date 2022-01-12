@@ -18,6 +18,7 @@ import contact from "./views/contact.mjs";
 import markdown from "./views/markdown.mjs";
 import success from "./views/success.mjs";
 import vote from "./views/vote.mjs";
+import result from './views/result.mjs'
 import apiV1 from "./api/v1/index.mjs";
 
 const { SERVER_PORT, NODE_ENV } = process.env;
@@ -79,6 +80,23 @@ fastify.get("/about", async (request, reply) => {
     .code(200)
     .type("text/html")
     .send(content);
+});
+
+fastify.get("/result", (request, reply) => {
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(
+      result(
+        [
+          { optionID: 1, votes: 950, text: "Bundeskunsthalle’s proposal" },
+          { optionID: 3, votes: 130, text: "Public good's proposal" },
+          { optionID: 2, votes: 340, text: "DoD’s proposal" }
+        ],
+        1420,
+        50
+      )
+    );
 });
 
 fastify.register(apiV1, { prefix: "/api/v1" });
