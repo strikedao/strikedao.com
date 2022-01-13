@@ -258,3 +258,39 @@ a.secondary {
 * > a ~ a:last-child {
   margin-top: 1.5em;
 }
+
+.result-visual {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-evenly;
+}
+
+.result-visual > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.result-visual__svgContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 700;
+  text-align: center;
+}
+
+.result-visual svg {
+  stroke-width: 2px;
+  --svg-normalizer: 0.13;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+@media only screen and (max-width: 600px) {
+  .result-visual svg {
+    --svg-normalizer: 0.2;
+    font-size: 16px;
+  }
+}
