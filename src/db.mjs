@@ -6,10 +6,12 @@ import sqlite3 from "better-sqlite3";
 import { fileURLToPath } from "url";
 import { env } from "process";
 import KSUID from "ksuid";
+import pino from "pino";
 
 import { generate } from "./tokens.mjs";
 import config from "../config.mjs";
 
+const logger = pino({ level: "info" });
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let verbose;
@@ -119,6 +121,9 @@ export const votes = {
       token,
       ksuid: ksuid.string
     });
+    logger.info(
+      `Storing vote: optionId: "${optionId}", token: "${token}", ksuid: "${ksuid}"`
+    );
   },
   tally: async function(questionId) {
     const db = init();
