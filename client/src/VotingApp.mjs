@@ -4,21 +4,32 @@ import { html } from "htm/preact";
 import { getParam, v1 } from "./api.mjs";
 import VotingItem from "./components/VotingItem.mjs";
 import { classes } from "./VotingStyles.mjs";
+import { calculateCost } from "../../src/voting.mjs";
 
 function VotingApp() {
   const tokens = getParam(location.search, "tokens");
   const questionId = getParam(location.search, "questionId");
   const [question, setQuestion] = useState(null);
+  const [votes, setVotes] = useState([]);
 
   useEffect(async () => {
     setQuestion(await v1.question.getWithOptions(questionId));
   }, []);
 
+  const onUpdateVotes = index => {
+    return value => {
+      let newVotes = [...value];
+      newVotes[index] = value;
+      setVotes(newVotes);
+      /*calculateCost(newVotes);*/
+    }
+  };
+
   if (question) {
     const votingItemList = question.options.map(
       (props, i) =>
         html`
-          <${VotingItem} content="${props.content}" styles="${classes}" />
+          <${VotingItem} content="${props.content}" styles="${classes}" onUpdate="${onUpdateVotes(i)}" />
         `
     );
 
