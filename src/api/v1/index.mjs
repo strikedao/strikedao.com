@@ -43,9 +43,7 @@ export async function handleVote(request, reply) {
     aggregatedVotes = aggregateVotes(request.body);
   } catch {
     logger.error(`Too many optionIds presented: "${request.body.length}"`);
-    return reply.redirect(
-      `/error?message=${encodeURI("too many option ids. Status: 400")}`
-    );
+    return reply.code(400).send(`Bad Request`);
   }
 
   try {
@@ -54,9 +52,7 @@ export async function handleVote(request, reply) {
     logger.error(
       `Encountered error when calculating cost of vote: "${err.toString()}"`
     );
-    return reply.redirect(
-      `/error?message=${encodeURI("cost forbidden (too high). Status: 400")}`
-    );
+    return reply.code(400).send(`Bad Request`);
   }
 
   const promises = request.body.map(
@@ -69,9 +65,7 @@ export async function handleVote(request, reply) {
     logger.error(
       `"${rejected.length}" credits couldn't be counted towards voting choice`
     );
-    return reply.redirect(
-      `/error?message=${encodeURI("not all votes were counted. Status: 400")}`
-    );
+    return reply.code(401).send("Unauthorized");
   }
   return reply.code(200).send("OK");
 }
@@ -123,7 +117,7 @@ export function handleGetQuestion(request, reply) {
     q = questions.getWithOptions(id);
   } catch (err) {
     logger.error(err.toString());
-    return reply.redirect(`/error?message=${encodeURI("Status: 404")}`);
+    return reply.code(404).send("Not Found");
   }
   return reply.code(200).send(q);
 }

@@ -22,6 +22,11 @@ export const v1 = {
   question: {
     getWithOptions: async function(id) {
       const res = await fetch(`/api/v1/questions/${id}`);
+      if (res.status !== 200) {
+        throw new Error(
+          `Couldn't find question resource: Status: "${res.status}"`
+        );
+      }
       return await res.json();
     }
   },

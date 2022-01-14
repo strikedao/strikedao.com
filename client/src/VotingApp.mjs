@@ -11,7 +11,15 @@ function VotingApp() {
   const [question, setQuestion] = useState(null);
 
   useEffect(async () => {
-    setQuestion(await v1.question.getWithOptions(questionId));
+    let question;
+    try {
+      question = await v1.question.getWithOptions(questionId);
+    } catch (err) {
+      window.location.href = `/error?message=${encodeURIComponent(
+        err.toString()
+      )}`;
+    }
+    setQuestion(question);
   }, []);
 
   const handleSubmit = async () => {
