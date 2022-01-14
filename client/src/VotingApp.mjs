@@ -14,6 +14,24 @@ function VotingApp() {
     setQuestion(await v1.question.getWithOptions(questionId));
   }, []);
 
+  const handleSubmit = async () => {
+    // TODO: The following is a mock and must be removed when the actual
+    // functionality is implemented.
+    const choices = question.options.map(({ ksuid }, i) => ({
+      optionId: ksuid,
+      token: tokens[i]
+    }));
+
+    // NOTE: From hereon the functionality is production-ready.
+    try {
+      await v1.votes(choices);
+      // TODO: Update UI e.g. by redirecting
+    } catch (err) {
+      // TODO: Here we have to handle the case that votes weren't stored.
+      console.log(err);
+    }
+  };
+
   if (question) {
     const votingItemList = question.options.map(
       (props, i) =>
@@ -30,10 +48,7 @@ function VotingApp() {
             ${votingItemList}
           </ul>
           <div class="${classes.votingButtonContainer}">
-            <button
-              class="${classes.votingButton}"
-              onClick="${e => console.log(e)}"
-            >
+            <button class="${classes.votingButton}" onClick="${handleSubmit}">
               Vote
             </button>
           </div>

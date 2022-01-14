@@ -18,7 +18,7 @@ import contact from "./views/contact.mjs";
 import markdown from "./views/markdown.mjs";
 import success from "./views/success.mjs";
 import vote from "./views/vote.mjs";
-import result from './views/result.mjs'
+import result from "./views/result.mjs";
 import apiV1 from "./api/v1/index.mjs";
 
 const { SERVER_PORT, NODE_ENV } = process.env;

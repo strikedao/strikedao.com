@@ -67,7 +67,7 @@ export async function handleVote(request, reply) {
     );
     return reply.code(401).send("Unauthorized");
   }
-  return reply.code(200).send();
+  return reply.code(200).send("OK");
 }
 
 export async function handleAllocate(request, reply) {
@@ -142,7 +142,7 @@ export default (fastify, opts, done) => {
   );
 
   fastify.post(
-    "/votes/",
+    "/votes",
     {
       schema: {
         body: {

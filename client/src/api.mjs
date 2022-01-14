@@ -24,5 +24,21 @@ export const v1 = {
       const res = await fetch(`/api/v1/questions/${id}`);
       return await res.json();
     }
+  },
+  // choices :: [{optionId: string, token: string}, ...], for more details see
+  // POST /votes endpoint schema
+  votes: async function(choices) {
+    const res = await fetch(`/api/v1/votes`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(choices)
+    });
+
+    if (res.statusCode !== 200) {
+      throw new Error("Sending votes didn't work");
+    }
   }
 };
