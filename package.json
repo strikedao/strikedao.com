@@ -13,14 +13,8 @@
     "deploy": "source .env && rsync -avz . root@$IPV4:./strike --exclude \"strike.db\" --exclude=\"node_modules\" --exclude=\".git\""
   },
   "ava": {
-    "nodeArguments": [
-      "--loader=esmock",
-      "--no-warnings"
-    ],
-    "files": [
-      "test/**/*",
-      "!test/utils.mjs"
-    ]
+    "nodeArguments": ["--loader=esmock", "--no-warnings"],
+    "files": ["test/**/*", "!test/utils.mjs"]
   },
   "repository": {
     "type": "git",
@@ -37,7 +31,7 @@
     "goerli"
   ],
   "author": "Tim Daubenschütz <tim@daubenschuetz.de> (https://timdaub.github.io)",
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-only",
   "bugs": {
     "url": "https://github.com/TimDaub/strike/issues"
   },
