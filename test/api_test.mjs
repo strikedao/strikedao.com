@@ -317,7 +317,8 @@ test.serial(
       }
     });
 
-    t.is(response2.statusCode, 403);
+    // NOTE: We redirect to an error page.
+    t.is(response2.statusCode, 302);
   }
 );
 
@@ -371,6 +372,7 @@ test.serial(
       }
     });
 
-    t.is(response.statusCode, 410);
+    // NOTE: We redirect to an error page
+    t.is(response.statusCode, 302);
   }
 );
