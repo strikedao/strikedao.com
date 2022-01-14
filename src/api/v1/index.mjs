@@ -5,6 +5,8 @@ import { once } from "events";
 
 import { stills, votes, questions } from "../../db.mjs";
 import { link } from "../../tokens.mjs";
+import config from "../../../config.mjs";
+import { calculateCost } from "../../voting.mjs";
 
 const logger = pino({ level: "info" });
 const mailWorkerPath = "./src/workers/send.mjs";
@@ -13,7 +15,46 @@ export async function serveBallotBox(request, reply) {
   return reply.code(200).send();
 }
 
+export function aggregateVotes(choices) {
+  const votes = {};
+
+  for (let { optionId } of choices) {
+    if (typeof votes[optionId] === "undefined") {
+      votes[optionId] = 1;
+    } else {
+      votes[optionId] += 1;
+    }
+  }
+  const votesList = Object.values(votes);
+  const MAX_OPTIONS = config.questions[0].options.length;
+  if (votesList.length > MAX_OPTIONS) {
+    throw new Error(`Too many options "${votesList}"`);
+  } else if (votesList.length < MAX_OPTIONS) {
+    const diff = MAX_OPTIONS - votesList.length;
+    return [...votesList, ...new Array(diff).fill(0)];
+  } else {
+    return votesList;
+  }
+}
+
 export async function handleVote(request, reply) {
+  let aggregatedVotes;
+  try {
+    aggregatedVotes = aggregateVotes(request.body);
+  } catch {
+    logger.error(`Too many optionIds presented: "${request.body.length}"`);
+    return reply.code(400).send(`Bad Request`);
+  }
+
+  try {
+    calculateCost(aggregatedVotes);
+  } catch (err) {
+    logger.error(
+      `Encountered error when calculating cost of vote: "${err.toString()}"`
+    );
+    return reply.code(400).send(`Bad Request`);
+  }
+
   const promises = request.body.map(
     async ({ optionId, token }) => await votes.vote(optionId, token)
   );
@@ -21,11 +62,10 @@ export async function handleVote(request, reply) {
   const rejected = results.filter(result => result.status === "rejected");
 
   if (rejected.length > 0) {
-    return reply
-      .code(401)
-      .send(
-        `"${rejected.length}" credits couldn't be counted towards voting choice`
-      );
+    logger.error(
+      `"${rejected.length}" credits couldn't be counted towards voting choice`
+    );
+    return reply.code(401).send("Unauthorized");
   }
   return reply.code(200).send();
 }

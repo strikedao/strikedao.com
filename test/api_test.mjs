@@ -4,11 +4,37 @@ import test from "ava";
 
 import { init, questions, migrations, stills } from "../src/db.mjs";
 import { fastify, initDB } from "../src/start.mjs";
+import { aggregateVotes } from "../src/api/v1/index.mjs";
 import { delDB } from "./utils.mjs";
 import config from "../config.mjs";
 
 test.afterEach.always(delDB);
 test.before(delDB);
+
+test("if aggregating votes works", t => {
+  t.deepEqual(
+    aggregateVotes([{ optionId: 0 }, { optionId: 0 }, { optionId: 1 }]),
+    [2, 1, 0]
+  );
+  t.deepEqual(
+    aggregateVotes([
+      { optionId: 0 },
+      { optionId: 0 },
+      { optionId: 1 },
+      { optionId: 2 }
+    ]),
+    [2, 1, 1]
+  );
+  t.throws(() =>
+    aggregateVotes([
+      { optionId: 0 },
+      { optionId: 0 },
+      { optionId: 1 },
+      { optionId: 2 },
+      { optionId: 3 }
+    ])
+  );
+});
 
 test.serial("if voting endpoint throws on invalid optionId", async t => {
   migrations.init(0);
@@ -130,6 +156,83 @@ test.serial("if retrieving a question from the JSON API works", async t => {
   t.is(body.ksuid, ksuid);
   t.truthy(body.options);
   t.is(response.statusCode, 200);
+});
+
+test.serial("if voting throws cost exceeds", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  migrations.init(4);
+  await stills.init();
+  await questions.init();
+  const db = init();
+
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+  const choices = [];
+  for (let i = 0; i < config.stills.perEmail + 1; i++) {
+    choices.push({ optionId: "a", token: i });
+  }
+  const response = await fastify.inject({
+    method: "POST",
+    url: "/api/v1/votes/",
+    body: choices
+  });
+  t.is(response.statusCode, 400);
+});
+
+test.serial("if voting throws when too many options are submitted", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  migrations.init(4);
+  await stills.init();
+  await questions.init();
+  const db = init();
+
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+  const response = await fastify.inject({
+    method: "POST",
+    url: "/api/v1/votes/",
+    body: [
+      {
+        optionId: "a",
+        token: "abc"
+      },
+      {
+        optionId: "b",
+        token: "abc"
+      },
+      {
+        optionId: "c",
+        token: "abc"
+      },
+      {
+        optionId: "d",
+        token: "abc"
+      }
+    ]
+  });
+  t.is(response.statusCode, 400);
 });
 
 test.serial("if voting works", async t => {

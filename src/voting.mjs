@@ -5,13 +5,20 @@ export function cost(x) {
   return Math.pow(x, 2);
 }
 
-// NOTE: options :: [{optionId: number, votes: number}, ...]
-export function calculateCost(options) {
+// NOTE: options :: [number, ...]
+export function calculateCost(credits) {
   const MAX_COST = config.stills.perEmail;
+  const MAX_OPTIONS = config.questions[0].options.length;
+  if (credits.length > MAX_OPTIONS) {
+    throw new Error(`Too many options "${credits.length}"`);
+  }
 
   let aggregatedCost = 0;
-  for (let { votes } of options) {
-    aggregatedCost += cost(votes);
+  for (let credit of credits) {
+    if (credit < 0) {
+      throw new Error(`Found negative credit "${credits}"`);
+    }
+    aggregatedCost += cost(credit);
   }
 
   if (aggregatedCost > MAX_COST) {
