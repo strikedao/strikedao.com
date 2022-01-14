@@ -25,10 +25,11 @@ function VotingApp() {
     // NOTE: From hereon the functionality is production-ready.
     try {
       await v1.votes(choices);
-      // TODO: Update UI e.g. by redirecting
+      window.location.href = `/done`;
     } catch (err) {
-      // TODO: Here we have to handle the case that votes weren't stored.
-      console.log(err);
+      window.location.href = `/error?message=${encodeURIComponent(
+        err.toString()
+      )}`;
     }
   };
 

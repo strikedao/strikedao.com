@@ -37,8 +37,8 @@ export const v1 = {
       body: JSON.stringify(choices)
     });
 
-    if (res.statusCode !== 200) {
-      throw new Error("Sending votes didn't work");
+    if (res.status !== 200) {
+      throw new Error(`Sending votes didn't work! Status "${res.status}"`);
     }
   }
 };

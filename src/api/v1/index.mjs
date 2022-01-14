@@ -43,7 +43,9 @@ export async function handleVote(request, reply) {
     aggregatedVotes = aggregateVotes(request.body);
   } catch {
     logger.error(`Too many optionIds presented: "${request.body.length}"`);
-    return reply.code(400).send(`Bad Request`);
+    return reply.redirect(
+      `/error?message=${encodeURI("too many option ids. Status: 400")}`
+    );
   }
 
   try {
@@ -52,7 +54,9 @@ export async function handleVote(request, reply) {
     logger.error(
       `Encountered error when calculating cost of vote: "${err.toString()}"`
     );
-    return reply.code(400).send(`Bad Request`);
+    return reply.redirect(
+      `/error?message=${encodeURI("cost forbidden (too high). Status: 400")}`
+    );
   }
 
   const promises = request.body.map(
@@ -65,7 +69,9 @@ export async function handleVote(request, reply) {
     logger.error(
       `"${rejected.length}" credits couldn't be counted towards voting choice`
     );
-    return reply.code(401).send("Unauthorized");
+    return reply.redirect(
+      `/error?message=${encodeURI("not all votes were counted. Status: 400")}`
+    );
   }
   return reply.code(200).send("OK");
 }
@@ -75,7 +81,7 @@ export async function handleAllocate(request, reply) {
 
   const emailExists = stills.doesEmailExist(email);
   if (emailExists) {
-    return reply.code(403).send("Forbidden");
+    return reply.redirect(`/error?message=${encodeURI("Status: 403")}`);
   }
 
   let tokens;
@@ -85,7 +91,7 @@ export async function handleAllocate(request, reply) {
     logger.error(
       `Couldn't allocate stills to email with error: "${err.toString()}"`
     );
-    return reply.code(410).send();
+    return reply.redirect(`/error?message=${encodeURI("Status: 410")}`);
   }
 
   const [question] = questions.listWithLimit(1);
@@ -106,7 +112,7 @@ export async function handleAllocate(request, reply) {
     // option yet, which is why we're redirecting to the root page.
     return reply.redirect("/success");
   } else {
-    return reply.code(500).send("Internal Server Error");
+    return reply.redirect(`/error?message=${encodeURI("Status: 500")}`);
   }
 }
 
@@ -117,7 +123,7 @@ export function handleGetQuestion(request, reply) {
     q = questions.getWithOptions(id);
   } catch (err) {
     logger.error(err.toString());
-    return reply.code(404).send("Not Found");
+    return reply.redirect(`/error?message=${encodeURI("Status: 404")}`);
   }
   return reply.code(200).send(q);
 }

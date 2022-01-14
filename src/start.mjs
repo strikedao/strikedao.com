@@ -9,6 +9,9 @@ import fastifyFormbody from "fastify-formbody";
 import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import htm from "htm";
+import vhtml from "vhtml";
+const html = htm.bind(vhtml);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -16,7 +19,7 @@ import index from "./views/index.mjs";
 import register from "./views/register.mjs";
 import contact from "./views/contact.mjs";
 import markdown from "./views/markdown.mjs";
-import success from "./views/success.mjs";
+import message from "./views/message.mjs";
 import vote from "./views/vote.mjs";
 import result from "./views/result.mjs";
 import apiV1 from "./api/v1/index.mjs";
@@ -57,7 +60,52 @@ fastify.get("/success", (request, reply) => {
   return reply
     .code(200)
     .type("text/html")
-    .send(success);
+    .send(
+      message(html`
+        <h2 style="margin-bottom: 0;">Thank You!</h2>
+        <p>
+          We just sent you an email.
+        </p>
+        <a style="margin-top: 5em;" href="/">
+          <button>Back to homepage</button>
+        </a>
+        <a href="/register" class="secondary">
+          Send me another email
+        </a>
+      `)
+    );
+});
+
+fastify.get("/done", (request, reply) => {
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(
+      message(html`
+        <h2 style="margin-bottom: 0;">Thank You!</h2>
+        <p>
+          We will let you know when the results are ready. You're also invited
+          to the live event.
+        </p>
+      `)
+    );
+});
+
+fastify.get("/error", (request, reply) => {
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(
+      message(html`
+        <h2 style="margin-bottom: 0;">Error!</h2>
+        <p>
+          Something went wrong! Please contact us or try again.
+        </p>
+        <a style="margin-top: 5em;" href="/">
+          <button>Back to homepage</button>
+        </a>
+      `)
+    );
 });
 
 fastify.get("/vote", (request, reply) => {
