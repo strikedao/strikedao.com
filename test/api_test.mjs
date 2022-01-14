@@ -55,7 +55,7 @@ test.serial("if voting endpoint throws on invalid optionId", async t => {
 
   const response = await fastify.inject({
     method: "POST",
-    url: "/api/v1/votes/",
+    url: "/api/v1/votes",
     body: [
       {
         token,
@@ -98,7 +98,7 @@ test.serial("if voting endpoint throws on invalid token", async t => {
 
   const response = await fastify.inject({
     method: "POST",
-    url: "/api/v1/votes/",
+    url: "/api/v1/votes",
     body: [
       {
         token: "invalid token",
@@ -184,7 +184,7 @@ test.serial("if voting throws cost exceeds", async t => {
   }
   const response = await fastify.inject({
     method: "POST",
-    url: "/api/v1/votes/",
+    url: "/api/v1/votes",
     body: choices
   });
   t.is(response.statusCode, 400);
@@ -212,7 +212,7 @@ test.serial("if voting throws when too many options are submitted", async t => {
     .all();
   const response = await fastify.inject({
     method: "POST",
-    url: "/api/v1/votes/",
+    url: "/api/v1/votes",
     body: [
       {
         optionId: "a",
@@ -267,7 +267,7 @@ test.serial("if voting works", async t => {
 
   const response = await fastify.inject({
     method: "POST",
-    url: "/api/v1/votes/",
+    url: "/api/v1/votes",
     body: [
       {
         token,
