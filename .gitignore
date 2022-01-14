@@ -8,6 +8,7 @@ node_modules
 strike.db
 test.db
 test.db-journal
+test.db-*
 test.html
 src/public/result.mp4
 src/public/bundle.js

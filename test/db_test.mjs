@@ -145,6 +145,10 @@ test.serial("if init allows overwriting options", async t => {
     "better-sqlite3": {
       default: (name, options) => {
         t.is(options.verbose, null);
+
+        return {
+          pragma: () => {}
+        }
       }
     }
   });
