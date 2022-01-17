@@ -1,7 +1,5 @@
 # strike
 
-- Launch: March 15, 2021 (to-be-confirmed)
-
 ## installation
 
 Clone the repository on your machine and `cd` into the folder.

@@ -115,15 +115,16 @@ fastify.get("/vote", (request, reply) => {
     .send(vote);
 });
 
-fastify.get("/contact", (request, reply) => {
+fastify.get("/about", async (request, reply) => {
+  const content = await markdown("about.md");
   return reply
     .code(200)
     .type("text/html")
-    .send(contact);
+    .send(content);
 });
 
-fastify.get("/about", async (request, reply) => {
-  const content = await markdown("about.md");
+fastify.get("/contact", async (request, reply) => {
+  const content = await markdown("contact.md");
   return reply
     .code(200)
     .type("text/html")
