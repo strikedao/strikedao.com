@@ -12,19 +12,24 @@ import config from "../../config.mjs";
 const MAX_CREDITS = config.stills.perEmail;
 
 function VotingApp() {
+  //TODO: What if the number of tokens and the max_credits aren't equal?
   const tokens = getParam(location.search, "tokens");
   const questionId = getParam(location.search, "questionId");
   const [question, setQuestion] = useState(null);
   const [votes, setVotes] = useState([0, 0, 0]);
   const [maxima, setMaxima] = useState([5, 5, 5]);
   const [credits, setCredits] = useState(MAX_CREDITS);
+  const [progress, setProgress] = useState(0);
+  const [allowSubmit, setAllowSubmit] = useState(false);
 
   const handleUpdate = index => {
     return value => {
       let nextVotes = [...votes];
       nextVotes[index] = value;
       setVotes(nextVotes);
-      setCredits(MAX_CREDITS - calculateCost(nextVotes));
+      const cost = calculateCost(nextVotes);
+      setCredits(MAX_CREDITS - cost);
+      setProgress(cost / MAX_CREDITS);
 
       const nextMaxima = [...maxima];
       const votesCopy = [...nextVotes];
@@ -41,6 +46,7 @@ function VotingApp() {
         }
       }
       setMaxima(nextMaxima);
+      setAllowSubmit(JSON.stringify(nextVotes) === JSON.stringify(nextMaxima));
     };
   };
 
@@ -57,14 +63,19 @@ function VotingApp() {
   }, []);
 
   const handleSubmit = async () => {
-    // TODO: The following is a mock and must be removed when the actual
-    // functionality is implemented.
-    const choices = question.options.map(({ ksuid }, i) => ({
-      optionId: ksuid,
-      token: tokens[i]
-    }));
+    const choices = [];
+    const tokenCopy = [...tokens];
+    for (let index in votes) {
+      let credits = Math.pow(votes[index], 2);
+      while (credits > 0) {
+        choices.push({
+          optionId: question.options[index].ksuid,
+          token: tokenCopy.pop()
+        });
+        credits -= 1;
+      }
+    }
 
-    // NOTE: From hereon the functionality is production-ready.
     try {
       await v1.votes(choices);
       window.location.href = `/done`;
@@ -97,17 +108,26 @@ function VotingApp() {
             ${votingItemList}
           </ul>
           <div class="${classes.votingButtonContainer}">
-            <button class="${classes.votingButton}" onClick="${handleSubmit}">
-              Vote
+            <button
+              disabled=${!allowSubmit}
+              class="${classes.votingButton}"
+              onClick="${handleSubmit}"
+            >
+              ${allowSubmit ? "Vote" : `${credits} voting credits left`}
             </button>
           </div>
         </div>
         <div class="${classes.votingFooterContainer}">
           <div class="${classes.flexCenter}">
-            <p class="${classes.votingCredits}">You have 45/12 Credits</p>
+            <p class="${classes.votingCredits}">
+              You have ${credits}/${MAX_CREDITS} Credits
+            </p>
           </div>
           <div class="${classes.votingProgressbarContainer}">
-            <div class="${classes.votingProgressbar}"></div>
+            <div
+              style=${{ width: `${progress * 100}%` }}
+              class="${classes.votingProgressbar}"
+            ></div>
           </div>
         </div>
         <div style="margin-bottom: 10vh">

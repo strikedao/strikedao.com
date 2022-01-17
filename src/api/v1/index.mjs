@@ -15,7 +15,7 @@ export async function serveBallotBox(request, reply) {
   return reply.code(200).send();
 }
 
-export function aggregateVotes(choices) {
+export function aggregateCredits(choices) {
   const votes = {};
 
   for (let { optionId } of choices) {
@@ -38,16 +38,18 @@ export function aggregateVotes(choices) {
 }
 
 export async function handleVote(request, reply) {
-  let aggregatedVotes;
+  let aggregatedCredits;
   try {
-    aggregatedVotes = aggregateVotes(request.body);
+    aggregatedCredits = aggregateCredits(request.body);
   } catch {
     logger.error(`Too many optionIds presented: "${request.body.length}"`);
     return reply.code(400).send(`Bad Request`);
   }
 
+  aggregatedCredits = aggregatedCredits.map(vote => Math.sqrt(vote));
+
   try {
-    calculateCost(aggregatedVotes);
+    calculateCost(aggregatedCredits);
   } catch (err) {
     logger.error(
       `Encountered error when calculating cost of vote: "${err.toString()}"`

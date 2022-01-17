@@ -8,15 +8,16 @@ import { CronJob } from "cron";
 const logger = pino({ level: "info" });
 
 export async function run() {
-	const db = init();
-	const priorities = votes.listInOrder().map(({ priority }) => priority);
-	if (priorities.length > 0) {
-		logger.info("Rerendering video...");
-		return await render(priorities);
-	} else {
-		logger.info("Renderer received empty list of priorities");
-		return;
-	}
+  const db = init();
+  const priorities = votes.listInOrder().map(({ priority }) => priority);
+  if (priorities.length > 0) {
+    logger.info("Start rerendering video...");
+    await render(priorities);
+    logger.info("Done rendering.");
+  } else {
+    logger.info("Renderer received empty list of priorities");
+    return;
+  }
 }
 
 const job = new CronJob("* * * * *", run, null, true, "UTC");
