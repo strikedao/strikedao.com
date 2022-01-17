@@ -148,7 +148,7 @@ test.serial("if init allows overwriting options", async t => {
 
         return {
           pragma: () => {}
-        }
+        };
       }
     }
   });
@@ -330,7 +330,7 @@ test.serial("if questions with options can be get by id", async t => {
     .all();
 
   t.truthy(qs);
-  t.is(qs.length, 2);
+  t.is(qs.length, 1);
   const defaultId = qs[0].ksuid;
 
   const actualQuestion = questions.getWithOptions(defaultId);
@@ -364,7 +364,7 @@ test.serial("if questions can be get by id", async t => {
     .all();
 
   t.truthy(qs);
-  t.is(qs.length, 2);
+  t.is(qs.length, 1);
   const defaultId = qs[0].ksuid;
 
   const actualQuestion = questions.get(defaultId);

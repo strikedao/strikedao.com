@@ -138,8 +138,13 @@ fastify.get("/result", (request, reply) => {
     .send(
       result(
         [
+          // TODO:
+          // - add winning proposal name
+          // - add total votes
+          // - number of votes
+          //
           { optionID: 1, votes: 950, text: "Bundeskunsthalle’s proposal" },
-          { optionID: 3, votes: 130, text: "Public good's proposal" },
+          { optionID: 3, votes: 0, text: "Public good's proposal" },
           { optionID: 2, votes: 340, text: "DoD’s proposal" }
         ],
         1420,
