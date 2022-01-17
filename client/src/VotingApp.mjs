@@ -6,11 +6,43 @@ import { getParam, v1 } from "./api.mjs";
 import VotingItem from "./components/VotingItem.mjs";
 import ContentSection from "./components/ContentSection.mjs";
 import { classes } from "./VotingStyles.mjs";
+import { calculateCost } from "../../src/voting.mjs";
+import config from "../../config.mjs";
+
+const MAX_CREDITS = config.stills.perEmail;
 
 function VotingApp() {
   const tokens = getParam(location.search, "tokens");
   const questionId = getParam(location.search, "questionId");
   const [question, setQuestion] = useState(null);
+  const [votes, setVotes] = useState([0, 0, 0]);
+  const [maxima, setMaxima] = useState([5, 5, 5]);
+  const [credits, setCredits] = useState(MAX_CREDITS);
+
+  const handleUpdate = index => {
+    return value => {
+      let nextVotes = [...votes];
+      nextVotes[index] = value;
+      setVotes(nextVotes);
+      setCredits(MAX_CREDITS - calculateCost(nextVotes));
+
+      const nextMaxima = [...maxima];
+      const votesCopy = [...nextVotes];
+      for (let index in votes) {
+        const copy = [...votesCopy];
+        while (true) {
+          try {
+            calculateCost(copy);
+            copy[index] += 1;
+          } catch {
+            nextMaxima[index] = copy[index] - 1;
+            break;
+          }
+        }
+      }
+      setMaxima(nextMaxima);
+    };
+  };
 
   useEffect(async () => {
     let question;
@@ -47,7 +79,13 @@ function VotingApp() {
     const votingItemList = question.options.map(
       (props, i) =>
         html`
-          <${VotingItem} content="${props.name}" styles="${classes}" />
+          <${VotingItem}
+            min="0"
+            max=${maxima[i]}
+            onUpdate=${handleUpdate(i)}
+            content="${props.name}"
+            styles="${classes}"
+          />
         `
     );
 

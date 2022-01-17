@@ -7,9 +7,9 @@ function VotingItem(props) {
     <div>
       <li class="${styles.votingItem}">
         <${NominalAllocator}
-          min="${0}"
-          max="${12}"
-          onUpdate="${console.log}"
+          min="${props.min}"
+          max="${props.max}"
+          onUpdate="${props.onUpdate}"
           styles="${styles}"
         />
         <p class="${styles.votingItemText}">${content}</p>
