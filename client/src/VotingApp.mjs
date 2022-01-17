@@ -5,23 +5,30 @@ import { getParam, v1 } from "./api.mjs";
 import VotingItem from "./components/VotingItem.mjs";
 import { classes } from "./VotingStyles.mjs";
 import { calculateCost } from "../../src/voting.mjs";
+import config  from '../../config.mjs'
 
 function VotingApp() {
   const tokens = getParam(location.search, "tokens");
   const questionId = getParam(location.search, "questionId");
   const [question, setQuestion] = useState(null);
-  const [votes, setVotes] = useState([]);
+  const [votes, setVotes] = useState([0,0,0]);
+  const [credits, setCredits] = useState(config.stills.perEmail);
+
 
   useEffect(async () => {
     setQuestion(await v1.question.getWithOptions(questionId));
   }, []);
 
-  const onUpdateVotes = index => {
+  const votingUpdate = (index) => {
+    console.log("click");
     return value => {
-      let newVotes = [...value];
+      const creditsAvailable = config.stills.perEmail;
+      let newVotes = [...votes];
       newVotes[index] = value;
+      let cost = calculateCost(newVotes);
+      console.log(cost);
       setVotes(newVotes);
-      /*calculateCost(newVotes);*/
+      setCredits(creditsAvailable);
     }
   };
 
@@ -29,10 +36,9 @@ function VotingApp() {
     const votingItemList = question.options.map(
       (props, i) =>
         html`
-          <${VotingItem} content="${props.content}" styles="${classes}" onUpdate="${onUpdateVotes(i)}" />
+          <${VotingItem} content="${props.content}" styles="${classes}" onUpdate="${votingUpdate(i)}" maxCredits="${credits}"/>
         `
     );
-
     return html`
       <div>
         <div class="${classes.votingAppContainer}">
