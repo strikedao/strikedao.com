@@ -1,8 +1,10 @@
 import { render, Component } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { html } from "htm/preact";
+
 import { getParam, v1 } from "./api.mjs";
 import VotingItem from "./components/VotingItem.mjs";
+import ContentSection from "./components/ContentSection.mjs";
 import { classes } from "./VotingStyles.mjs";
 
 function VotingApp() {
@@ -45,7 +47,7 @@ function VotingApp() {
     const votingItemList = question.options.map(
       (props, i) =>
         html`
-          <${VotingItem} content="${props.content}" styles="${classes}" />
+          <${VotingItem} content="${props.name}" styles="${classes}" />
         `
     );
 
@@ -69,6 +71,17 @@ function VotingApp() {
           <div class="${classes.votingProgressbarContainer}">
             <div class="${classes.votingProgressbar}"></div>
           </div>
+        </div>
+        <div style="margin-bottom: 10vh">
+          ${question.options.map(option => {
+            return html`
+            <${ContentSection} name=${option.name} headline=${option.name}>
+              <p>
+                ${option.content}
+              </p>
+            </>
+          `;
+          })}
         </div>
       </div>
     `;

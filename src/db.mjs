@@ -145,10 +145,10 @@ export const votes = {
     return db
       .prepare(
         `
-          SELECT 
-            ksuid 
-          FROM 
-            options 
+          SELECT
+            ksuid
+          FROM
+            options
           WHERE
             options.questionID = @id
           `
@@ -205,6 +205,7 @@ const getQuestionWithOptions = function(id) {
       `
     SELECT
       ksuid,
+      name,
       content
     FROM
       options
