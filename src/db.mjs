@@ -55,10 +55,10 @@ export function init(options) {
   options = { ...database.options, ...options };
   const db = sqlite3(name, options);
 
-  if(db.pragma('journal_mode = WAL', { simple: true }) !== 'wal')
+  if (db.pragma("journal_mode = WAL", { simple: true }) !== "wal")
     console.info("Couldn't turn on WAL mode for sqlite3");
-  
-  return db
+
+  return db;
 }
 
 export const migrations = {

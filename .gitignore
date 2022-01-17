@@ -12,3 +12,5 @@ test.db-*
 test.html
 src/public/result.mp4
 src/public/bundle.js
+strike.db-shm
+strike.db-wal
