@@ -28,11 +28,7 @@ export default html`
           <p>
             We will send you an email with a link to participate in the STRIKE
             DAO voting process. In this process we will vote on different models
-            of governance of the
-            <a href="bundeskunsthalle.eth" target="_blank"
-              >Bundeskunsthalle.eth</a
-            >
-            domain.
+            of governance of the bundeskunsthalle.eth domain.
           </p>
           <input type="submit" value="Send me an Email" />
         </form>
