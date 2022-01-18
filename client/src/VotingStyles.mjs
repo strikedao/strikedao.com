@@ -97,7 +97,7 @@ const style = {
     }
   },
   votingFooterContainer: {
-    position: "relative",
+    position: "sticky",
     width: "100%",
     bottom: 0,
     left: 0
