@@ -7,6 +7,8 @@
     "build:frontend": "esbuild ./client/src/VotingApp.mjs --minify --bundle --format=esm --outfile=./src/public/bundle.js",
     "watch:frontend": "esbuild ./client/src/VotingApp.mjs --bundle --format=esm --outfile=./src/public/bundle.js --watch",
     "watch:server": "nodemon --ext 'mjs'",
+    "format": "prettier --check \"**/*.mjs\"",
+    "format:write": "prettier --write \"**/*.mjs\"",
     "dev": "concurrently \"npm run watch:server\" \"npm run watch:frontend\"",
     "test": "ava --serial --verbose",
     "connect": "source .env && ssh root@$IPV4",
@@ -68,6 +70,7 @@
     "concurrently": "7.0.0",
     "esbuild": "0.14.11",
     "esmock": "0.4.0",
-    "nodemon": "2.0.13"
+    "nodemon": "2.0.13",
+    "prettier": "^2.5.1"
   }
 }
