@@ -152,9 +152,9 @@ export const votes = {
     const result = db
       .prepare(
         `
-      SElECT optionID, SUM(votes) AS votes
+      SElECT optionID, SUM(votes) AS votes, name as text
       FROM (
-        SELECT email, optionID, questionID, SQRT(count(votes.token)) AS votes
+        SELECT email, optionID, questionID, SQRT(count(votes.token)) AS votes, name
         FROM votes
         INNER JOIN stills ON votes.token = stills.token
         INNER JOIN options ON votes.optionID = options.ksuid
