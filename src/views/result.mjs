@@ -30,9 +30,6 @@ export default (result, totalVotes, noOfVotes) => {
               type="video/mp4"
               width="100%"
             ></video>
-            <div
-              style="width: 75px; height: 7px; background-color: #F1F1F1;"
-            ></div>
           </section>
           <section>
             <p>

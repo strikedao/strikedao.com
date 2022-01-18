@@ -21,7 +21,13 @@ export default html`
     <body>
       <${Navigation} />
       <section class="hero">
-        <h1>STRIKE</h1>
+        <video
+          autoplay
+          loop
+          src="public/original.mp4"
+          type="video/mp4"
+          width="90%"
+        ></video>
         <p>
           ${config.paragraph}
         </p>
