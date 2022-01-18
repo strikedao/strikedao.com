@@ -7,7 +7,7 @@ import head from "./head.mjs";
 import Navigation from "./navigation.mjs";
 
 const config = {
-  title: "StrikeDAO - Result"
+  title: "StrikeDAO - Message"
 };
 
 export default body => html`

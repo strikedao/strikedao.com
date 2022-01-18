@@ -1,7 +1,7 @@
 //@format
 import dotenv from "dotenv";
 dotenv.config();
-import { init, migrations, stills, questions } from "./db.mjs";
+import { existsSync } from "fs";
 import Fastify from "fastify";
 import process from "process";
 import fastifyStatic from "fastify-static";
@@ -15,6 +15,7 @@ const html = htm.bind(vhtml);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+import { getName, init, migrations, stills, questions, votes } from "./db.mjs";
 import index from "./views/index.mjs";
 import register from "./views/register.mjs";
 import contact from "./views/contact.mjs";
@@ -23,6 +24,7 @@ import message from "./views/message.mjs";
 import vote from "./views/vote.mjs";
 import result from "./views/result.mjs";
 import apiV1 from "./api/v1/index.mjs";
+import config from "../config.mjs";
 
 const { SERVER_PORT, NODE_ENV } = process.env;
 
@@ -43,11 +45,17 @@ fastify.register(fastifyFormbody);
 
 // Visual Frontend Endpoints
 fastify.get("/", (request, reply) => {
-  return reply.code(200).type("text/html").send(index);
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(index);
 });
 
 fastify.get("/register", (request, reply) => {
-  return reply.code(200).type("text/html").send(register);
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(register);
 });
 
 fastify.get("/success", (request, reply) => {
@@ -98,39 +106,35 @@ fastify.get("/error", (request, reply) => {
 });
 
 fastify.get("/vote", (request, reply) => {
-  return reply.code(200).type("text/html").send(vote);
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(vote);
 });
 
 fastify.get("/about", async (request, reply) => {
   const content = await markdown("about.md");
-  return reply.code(200).type("text/html").send(content);
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(content);
 });
 
 fastify.get("/contact", async (request, reply) => {
   const content = await markdown("contact.md");
-  return reply.code(200).type("text/html").send(content);
-});
-
-fastify.get("/result", (request, reply) => {
   return reply
     .code(200)
     .type("text/html")
-    .send(
-      result(
-        [
-          // TODO:
-          // - add winning proposal name
-          // - add total votes
-          // - number of votes
-          //
-          { optionID: 1, votes: 950, text: "Bundeskunsthalle’s proposal" },
-          { optionID: 3, votes: 0, text: "Public good's proposal" },
-          { optionID: 2, votes: 340, text: "DoD’s proposal" }
-        ],
-        1420,
-        50
-      )
-    );
+    .send(content);
+});
+
+fastify.get("/result", (request, reply) => {
+  const { ksuid } = questions.getFirstQuestionId();
+  const results = votes.tally(ksuid);
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(result(results, config.stills.quantity, config.stills.perEmail));
 });
 
 fastify.register(apiV1, { prefix: "/api/v1" });
@@ -152,6 +156,12 @@ function server() {
 }
 
 export async function initDB() {
+  if (existsSync(getName())) {
+    console.info(
+      "Found existing database file and hence not reapplying migrations"
+    );
+    return;
+  }
   migrations.init(0);
   migrations.init(1);
   migrations.init(2);
