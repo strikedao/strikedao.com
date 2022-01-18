@@ -22,6 +22,7 @@ export default html`
       <${Navigation} />
       <section class="hero">
         <video
+          muted
           autoplay
           loop
           src="public/original.mp4"
