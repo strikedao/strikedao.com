@@ -20,7 +20,7 @@ export function getParam(search, name) {
 
 export const v1 = {
   question: {
-    getWithOptions: async function(id) {
+    getWithOptions: async function (id) {
       const res = await fetch(`/api/v1/questions/${id}`);
       if (res.status !== 200) {
         throw new Error(
@@ -32,7 +32,7 @@ export const v1 = {
   },
   // choices :: [{optionId: string, token: string}, ...], for more details see
   // POST /votes endpoint schema
-  votes: async function(choices) {
+  votes: async function (choices) {
     const res = await fetch(`/api/v1/votes`, {
       method: "POST",
       headers: {

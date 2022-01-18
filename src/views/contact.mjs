@@ -21,12 +21,8 @@ export default html`
     <body>
       <${Navigation} />
       <section>
-        <h2>
-          Contact
-        </h2>
-        <p>
-          ${config.paragraph}
-        </p>
+        <h2>Contact</h2>
+        <p>${config.paragraph}</p>
       </section>
     </body>
   </html>

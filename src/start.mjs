@@ -43,17 +43,11 @@ fastify.register(fastifyFormbody);
 
 // Visual Frontend Endpoints
 fastify.get("/", (request, reply) => {
-  return reply
-    .code(200)
-    .type("text/html")
-    .send(index);
+  return reply.code(200).type("text/html").send(index);
 });
 
 fastify.get("/register", (request, reply) => {
-  return reply
-    .code(200)
-    .type("text/html")
-    .send(register);
+  return reply.code(200).type("text/html").send(register);
 });
 
 fastify.get("/success", (request, reply) => {
@@ -63,15 +57,11 @@ fastify.get("/success", (request, reply) => {
     .send(
       message(html`
         <h2 style="margin-bottom: 0;">Thank You!</h2>
-        <p>
-          We just sent you an email.
-        </p>
+        <p>We just sent you an email.</p>
         <a style="margin-top: 5em;" href="/">
           <button>Back to homepage</button>
         </a>
-        <a href="/register" class="secondary">
-          Send me another email
-        </a>
+        <a href="/register" class="secondary"> Send me another email </a>
       `)
     );
 });
@@ -98,12 +88,8 @@ fastify.get("/error", (request, reply) => {
     .send(
       message(html`
         <h2 style="margin-bottom: 0;">Error!</h2>
-        <p>
-          Something went wrong! Please contact us or try again.
-        </p>
-        <p>
-          ${request.query.message}
-        </p>
+        <p>Something went wrong! Please contact us or try again.</p>
+        <p>${request.query.message}</p>
         <a style="margin-top: 5em;" href="/">
           <button>Back to homepage</button>
         </a>
@@ -112,26 +98,17 @@ fastify.get("/error", (request, reply) => {
 });
 
 fastify.get("/vote", (request, reply) => {
-  return reply
-    .code(200)
-    .type("text/html")
-    .send(vote);
+  return reply.code(200).type("text/html").send(vote);
 });
 
 fastify.get("/about", async (request, reply) => {
   const content = await markdown("about.md");
-  return reply
-    .code(200)
-    .type("text/html")
-    .send(content);
+  return reply.code(200).type("text/html").send(content);
 });
 
 fastify.get("/contact", async (request, reply) => {
   const content = await markdown("contact.md");
-  return reply
-    .code(200)
-    .type("text/html")
-    .send(content);
+  return reply.code(200).type("text/html").send(content);
 });
 
 fastify.get("/result", (request, reply) => {

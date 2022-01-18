@@ -17,9 +17,7 @@ export default body => html`
     </head>
     <body>
       <${Navigation} />
-      <section>
-        ${body}
-      </section>
+      <section>${body}</section>
     </body>
   </html>
 `;

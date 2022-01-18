@@ -133,12 +133,10 @@ function VotingApp() {
         <div style="margin-bottom: 10vh">
           ${question.options.map(option => {
             return html`
-            <${ContentSection} name=${option.name} headline=${option.name}>
-              <p>
-                ${option.content}
-              </p>
-            </>
-          `;
+              <${ContentSection} name=${option.name} headline=${option.name}>
+                <p>${option.content}</p>
+              </${ContentSection}>
+            `;
           })}
         </div>
       </div>
@@ -146,15 +144,8 @@ function VotingApp() {
   }
 
   return html`
-    <div>
-      ...loading data for voting, this can take a few seconds...
-    </div>
+    <div>...loading data for voting, this can take a few seconds...</div>
   `;
 }
 
-render(
-  html`
-    <${VotingApp} />
-  `,
-  document.querySelector("#app")
-);
+render(html` <${VotingApp} /> `, document.querySelector("#app"));

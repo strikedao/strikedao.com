@@ -18,9 +18,7 @@ export default function ContentSection(props) {
   const { name, headline, text } = props;
   return html`
     <section class=${classes.contentSection}>
-      <h2 class=${classes.headline} id=${name}>
-        ${headline}
-      </h2>
+      <h2 class=${classes.headline} id=${name}>${headline}</h2>
       ${props.children}
     </section>
   `;
