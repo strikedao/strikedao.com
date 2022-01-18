@@ -4,20 +4,20 @@ import test from "ava";
 
 import { init, questions, migrations, stills } from "../src/db.mjs";
 import { fastify, initDB } from "../src/start.mjs";
-import { aggregateVotes } from "../src/api/v1/index.mjs";
+import { aggregateCredits } from "../src/api/v1/index.mjs";
 import { delDB } from "./utils.mjs";
 import config from "../config.mjs";
 
 test.afterEach.always(delDB);
 test.before(delDB);
 
-test("if aggregating votes works", t => {
+test("if aggregating credits works", t => {
   t.deepEqual(
-    aggregateVotes([{ optionId: 0 }, { optionId: 0 }, { optionId: 1 }]),
+    aggregateCredits([{ optionId: 0 }, { optionId: 0 }, { optionId: 1 }]),
     [2, 1, 0]
   );
   t.deepEqual(
-    aggregateVotes([
+    aggregateCredits([
       { optionId: 0 },
       { optionId: 0 },
       { optionId: 1 },
@@ -26,7 +26,7 @@ test("if aggregating votes works", t => {
     [2, 1, 1]
   );
   t.throws(() =>
-    aggregateVotes([
+    aggregateCredits([
       { optionId: 0 },
       { optionId: 0 },
       { optionId: 1 },
