@@ -101,6 +101,9 @@ fastify.get("/error", (request, reply) => {
         <p>
           Something went wrong! Please contact us or try again.
         </p>
+        <p>
+          ${request.query.message}
+        </p>
         <a style="margin-top: 5em;" href="/">
           <button>Back to homepage</button>
         </a>
