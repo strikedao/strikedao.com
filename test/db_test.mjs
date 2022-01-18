@@ -690,35 +690,128 @@ test.serial("if votes can be tallied", async t => {
 
   const db = init();
   const tokens = db
-    .prepare("SELECT token FROM stills LIMIT 2")
+    .prepare("SELECT token FROM stills LIMIT 100")
     .all()
     .map(({ token }) => token);
   t.truthy(tokens.length > 0);
-  const email = "example@example.com";
-  stills.allocate(tokens[0], email);
-  stills.allocate(tokens[1], email);
+  let tokensAllocated = 0;
+
+  const emails = [
+    "john@example.com",
+    "jane@example.com",
+    "bob@example.com",
+    "ravi@example.com"
+  ];
+
+  // recorded tokens mantains how many tokens an email has used for an option
+  // recordedTokens: [email, optionID, token]
+  const recordedTokens = [];
+
+  const recordVote = (email, optionID, questionID) => {
+    // console.debug(
+    //   email,
+    //   "is voting for",
+    //   qs.find(q => q.ksuid === questionID).title,
+    //   "option",
+    //   optionID
+    // );
+    const tallyOption = recordedTokens.find(
+      tallyOption =>
+        tallyOption.optionID === optionID &&
+        tallyOption.email === email &&
+        tallyOption.questionID === questionID
+    );
+    if (tallyOption) {
+      tallyOption.tokens++;
+      return;
+    }
+
+    recordedTokens.push({ email, optionID, questionID, tokens: 1 });
+  };
 
   const qs = db
     .prepare(
       `
       SELECT
-        *
+      *
       FROM
-        questions
-    `
+      questions
+      `
     )
     .all();
 
-  const question = questions.getWithOptions(qs[0].ksuid);
-  await votes.vote(question.options[0].ksuid, tokens[0]);
-  await votes.vote(question.options[0].ksuid, tokens[1]);
+  // for every email, choose a random question
+  // and allocate 4 tokens on the first option
+  // and allocate 1 tokens on the second option
+  for (const email of emails) {
+    for (let i = 0; i < 5; i++) {
+      stills.allocate(tokens[tokensAllocated + i], email);
+    }
 
-  const finalTally = question.options.map(({ ksuid }) => ({
-    optionID: ksuid,
-    votes: 0
-  }));
-  finalTally[0].votes = 2;
-  finalTally[1].votes = 0;
+    const question = questions.getWithOptions(
+      qs[Math.floor(Math.random() * qs.length)].ksuid
+    );
 
-  t.deepEqual(await votes.tally(question.ksuid), finalTally);
+    await votes.vote(question.options[0].ksuid, tokens[tokensAllocated]);
+    recordVote(email, question.options[0].ksuid, question.ksuid);
+
+    await votes.vote(question.options[0].ksuid, tokens[tokensAllocated + 1]);
+    recordVote(email, question.options[0].ksuid, question.ksuid);
+
+    await votes.vote(question.options[0].ksuid, tokens[tokensAllocated + 2]);
+    recordVote(email, question.options[0].ksuid, question.ksuid);
+
+    await votes.vote(question.options[0].ksuid, tokens[tokensAllocated + 3]);
+    recordVote(email, question.options[0].ksuid, question.ksuid);
+
+    await votes.vote(question.options[1].ksuid, tokens[tokensAllocated + 4]);
+    recordVote(email, question.options[1].ksuid, question.ksuid);
+
+    tokensAllocated += 5;
+  }
+
+  // process recorded tokens, convert tokens into votes
+  // votes = sqrt(tokens)
+  // recordedVotes: [email, optionID, questionID, votes]
+  const recordedVotes = recordedTokens.map(tally => {
+    return {
+      email: tally.email,
+      optionID: tally.optionID,
+      questionID: tally.questionID,
+      votes: Math.round(Math.sqrt(tally.tokens))
+    };
+  });
+
+  // now that we have votes by each email,
+  // for every option, we can aggregate them
+  // recordedTally: [optionID, votes]
+  const recordedTally = [];
+
+  for (const vote of recordedVotes) {
+    const tallyOption = recordedTally.find(
+      tallyOption => tallyOption.optionID === vote.optionID
+    );
+    if (tallyOption) {
+      tallyOption.votes += vote.votes;
+      continue;
+    }
+
+    recordedTally.push({
+      optionID: vote.optionID,
+      votes: vote.votes
+    });
+  }
+
+  for (const q of qs) {
+    const tally = await votes.tally(q.ksuid);
+    // console.debug("Tally for", q.title, tally);
+
+    // Comparing each tally option because the order of the options is not guaranteed
+    tally.forEach(tallyOption => {
+      const recordedTallyOption = recordedTally.find(
+        v => v.optionID === tallyOption.optionID
+      );
+      t.deepEqual(recordedTallyOption, tallyOption);
+    });
+  }
 });

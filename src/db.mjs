@@ -62,7 +62,7 @@ export function init(options) {
 }
 
 export const migrations = {
-  init: async function(num) {
+  init: async function (num) {
     const db = init();
     const dirPath = path.resolve(__dirname, `${database.migrations.path}`);
     const files = readdirSync(dirPath);
@@ -95,7 +95,7 @@ export const migrations = {
 };
 
 export const votes = {
-  listInOrder: function() {
+  listInOrder: function () {
     const db = init();
     let l = db
       .prepare(
@@ -121,7 +121,7 @@ export const votes = {
       .sort((a, b) => a.pksuid.compare(b.pksuid));
     return l;
   },
-  vote: async function(optionId, token) {
+  vote: async function (optionId, token) {
     const db = init();
     const ksuid = await KSUID.random();
     db.prepare(
@@ -140,41 +140,30 @@ export const votes = {
       `Storing vote: optionId: "${optionId}", token: "${token}", ksuid: "${ksuid}"`
     );
   },
-  tally: async function(questionId) {
+  tally: async function (questionID) {
+    // Provided a question, this function returns the votes received by
+    // each option. For eg, [{ optionID: 1, votes: 2 }, { optionID: 2, votes: 3 }]
     const db = init();
     return db
       .prepare(
         `
-          SELECT
-            ksuid
-          FROM
-            options
-          WHERE
-            options.questionID = @id
-          `
+      SElECT optionID, SUM(votes) AS votes
+      FROM (
+        SELECT email, optionID, questionID, SQRT(count(votes.token)) AS votes
+        FROM votes
+        INNER JOIN stills ON votes.token = stills.token 
+        INNER JOIN options ON votes.optionID = options.ksuid 
+        WHERE questionID = @questionID
+        GROUP BY email, optionID
       )
-      .all({ id: questionId })
-      .map(({ ksuid: optionID }) => {
-        return {
-          optionID,
-          ...db
-            .prepare(
-              `
-            SELECT
-              COUNT(optionID) AS votes
-            FROM
-              votes
-            WHERE
-              votes.optionID = @id
-            `
-            )
-            .get({ id: optionID })
-        };
-      });
+      GROUP BY optionID
+      `
+      )
+      .all({ questionID });
   }
 };
 
-const getQuestionById = function(id) {
+const getQuestionById = function (id) {
   const db = init();
   return db
     .prepare(
@@ -192,7 +181,7 @@ const getQuestionById = function(id) {
     .get({ id });
 };
 
-const getQuestionWithOptions = function(id) {
+const getQuestionWithOptions = function (id) {
   const question = getQuestionById(id);
 
   if (!question) {
@@ -218,7 +207,7 @@ const getQuestionWithOptions = function(id) {
 };
 
 export const questions = {
-  listWithLimit: function(limit) {
+  listWithLimit: function (limit) {
     const db = init();
     return db
       .prepare(
@@ -236,7 +225,7 @@ export const questions = {
   },
   get: getQuestionById,
   getWithOptions: getQuestionWithOptions,
-  init: async function() {
+  init: async function () {
     const db = init();
     for (let question of config.questions) {
       const qksuid = await KSUID.random();
@@ -274,7 +263,7 @@ export const questions = {
 };
 
 export const stills = {
-  doesEmailExist: function(email) {
+  doesEmailExist: function (email) {
     const db = init();
     const { emailFlag } = db
       .prepare(
@@ -295,7 +284,7 @@ export const stills = {
       });
     return emailFlag === 1;
   },
-  getUnclaimed: function() {
+  getUnclaimed: function () {
     const limit = config.stills.perEmail;
     const db = init();
 
@@ -320,7 +309,7 @@ export const stills = {
       return stills;
     }
   },
-  allocate: function(token, email) {
+  allocate: function (token, email) {
     const db = init();
 
     db.prepare(
@@ -339,7 +328,7 @@ export const stills = {
       email
     });
   },
-  init: async function() {
+  init: async function () {
     const db = init();
 
     const statement = db.prepare(`
@@ -362,7 +351,7 @@ export const stills = {
   }
 };
 
-stills.allocateMany = function(email) {
+stills.allocateMany = function (email) {
   const db = init();
   const list = [];
 
