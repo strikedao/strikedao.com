@@ -146,7 +146,7 @@ export const votes = {
   },
   tally: function(questionID) {
     // Provided a question, this function returns the votes received by
-    // each option. For eg, [{ optionID: 1, votes: 2 }, { optionID: 2, votes: 3 }]
+    // each option. For eg, [{ optionID: 1, votes: 2, text: 'Option 1' }, { optionID: 2, votes: 3, text: 'Option 2' }, { optionID: 3, votes: 0, text: 'Option 3' }]
     const db = init();
     const question = questions.getWithOptions(questionID);
     const result = db
@@ -166,9 +166,9 @@ export const votes = {
       )
       .all({ questionID });
     for (let option of question.options) {
-      const included = result.find(({ optionId }) => optionId === option.ksuid);
+      const included = result.find(({ optionID }) => optionID === option.ksuid);
       if (!included) {
-        result.push({ optionId: option.ksuid, votes: 0 });
+        result.push({ optionID: option.ksuid, votes: 0, text: option.name });
       }
     }
     return result;

@@ -704,29 +704,27 @@ test.serial("if votes can be tallied", async t => {
   ];
 
   // recorded tokens mantains how many tokens an email has used for an option
-  // recordedTokens: [email, optionID, token]
+  // recordedTokens: [email, optionID, text, token]
   const recordedTokens = [];
 
-  const recordVote = (email, optionID, questionID) => {
-    // console.debug(
-    //   email,
-    //   "is voting for",
-    //   qs.find(q => q.ksuid === questionID).title,
-    //   "option",
-    //   optionID
-    // );
+  const recordVote = (email, option, question, count) => {
+    // console.debug(email, "is voting for", question.title, "option", option.ksuid);
     const tallyOption = recordedTokens.find(
       tallyOption =>
-        tallyOption.optionID === optionID &&
-        tallyOption.email === email &&
-        tallyOption.questionID === questionID
+        tallyOption.optionID === option.ksuid &&
+        tallyOption.email === email
     );
     if (tallyOption) {
-      tallyOption.tokens++;
+      tallyOption.tokens += count;
       return;
     }
 
-    recordedTokens.push({ email, optionID, questionID, tokens: 1 });
+    recordedTokens.push({
+      email,
+      optionID: option.ksuid,
+      text: option.name,
+      tokens: count
+    });
   };
 
   const qs = db
@@ -753,31 +751,36 @@ test.serial("if votes can be tallied", async t => {
     );
 
     await votes.vote(question.options[0].ksuid, tokens[tokensAllocated]);
-    recordVote(email, question.options[0].ksuid, question.ksuid);
+    recordVote(email, question.options[0], question, 1);
 
     await votes.vote(question.options[0].ksuid, tokens[tokensAllocated + 1]);
-    recordVote(email, question.options[0].ksuid, question.ksuid);
+    recordVote(email, question.options[0], question, 1);
 
     await votes.vote(question.options[0].ksuid, tokens[tokensAllocated + 2]);
-    recordVote(email, question.options[0].ksuid, question.ksuid);
+    recordVote(email, question.options[0], question, 1);
 
     await votes.vote(question.options[0].ksuid, tokens[tokensAllocated + 3]);
-    recordVote(email, question.options[0].ksuid, question.ksuid);
+    recordVote(email, question.options[0], question, 1);
 
     await votes.vote(question.options[1].ksuid, tokens[tokensAllocated + 4]);
-    recordVote(email, question.options[1].ksuid, question.ksuid);
+    recordVote(email, question.options[1], question, 1);
+    
+    // record that the remaining options were voted with 0 tokens
+    for(let i = 2; i < question.options.length; i++) {
+      recordVote(email, question.options[i], question, 0);
+    }
 
     tokensAllocated += 5;
   }
 
   // process recorded tokens, convert tokens into votes
   // votes = sqrt(tokens)
-  // recordedVotes: [email, optionID, questionID, votes]
+  // recordedVotes: [email, optionID, text, votes]
   const recordedVotes = recordedTokens.map(tally => {
     return {
       email: tally.email,
       optionID: tally.optionID,
-      questionID: tally.questionID,
+      text: tally.text,
       votes: Math.round(Math.sqrt(tally.tokens))
     };
   });
@@ -798,7 +801,8 @@ test.serial("if votes can be tallied", async t => {
 
     recordedTally.push({
       optionID: vote.optionID,
-      votes: vote.votes
+      votes: vote.votes,
+      text: vote.text
     });
   }
 
