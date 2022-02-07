@@ -108,11 +108,7 @@ function VotingApp() {
             ${votingItemList}
           </ul>
           <div class="${classes.votingButtonContainer}">
-            <button
-              disabled=${!allowSubmit}
-              class="${classes.votingButton}"
-              onClick="${handleSubmit}"
-            >
+            <button class="${classes.votingButton}" onClick="${handleSubmit}">
               ${allowSubmit ? "Vote" : `${credits} voting credits left`}
             </button>
           </div>
