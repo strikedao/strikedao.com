@@ -118,11 +118,6 @@ function VotingApp() {
           </div>
         </div>
         <div class="${classes.votingFooterContainer}">
-          <div class="${classes.flexCenter}">
-            <p class="${classes.votingCredits}">
-              You have ${credits}/${MAX_CREDITS} Credits
-            </p>
-          </div>
           <div class="${classes.votingProgressbarContainer}">
             <div
               style=${{ width: `${progress * 100}%` }}
@@ -148,4 +143,9 @@ function VotingApp() {
   `;
 }
 
-render(html` <${VotingApp} /> `, document.querySelector("#app"));
+render(
+  html`
+    <${VotingApp} />
+  `,
+  document.querySelector("#app")
+);

@@ -6,16 +6,17 @@ function VotingItem(props) {
   return html`
     <div>
       <li class="${styles.votingItem}">
+        <p class="${styles.votingItemText}">${content}</p>
         <${NominalAllocator}
+          disabled
           min="${props.min}"
           max="${props.max}"
           onUpdate="${props.onUpdate}"
           styles="${styles}"
         />
-        <p class="${styles.votingItemText}">${content}</p>
       </li>
       <a href=${`#${props.content}`} class="${styles.votingItemLink}"
-        >Learn more</a
+        >Learn more →</a
       >
     </div>
   `;
