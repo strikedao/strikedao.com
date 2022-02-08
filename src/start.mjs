@@ -18,7 +18,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import { getName, init, migrations, stills, questions, votes } from "./db.mjs";
 import index from "./views/index.mjs";
 import register from "./views/register.mjs";
-import contact from "./views/contact.mjs";
 import markdown from "./views/markdown.mjs";
 import message from "./views/message.mjs";
 import vote from "./views/vote.mjs";
