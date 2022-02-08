@@ -94,7 +94,7 @@ p {
   section p,
   .register p {
     width: auto;
-    margin: 5vh 5vw 5vh 5vw;
+    margin: 2.5vh 5vw 5vh 5vw;
   }
 }
 
@@ -139,7 +139,7 @@ input[type="email"] {
   padding: 0.5em;
 
   font-family: var(--text-font);
-  color: var(--big-email-input-color);
+  color: rgba(255, 255, 255, 0.7);
   font-size: var(--big-email-input-font-size);
   text-align: var(--big-email-input-text-align);
 }

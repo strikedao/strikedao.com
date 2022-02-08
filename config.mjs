@@ -12,82 +12,20 @@ const config = {
   },
   questions: [
     {
-      title: "Which fruit do you like most?",
-      content: `There are many fruit. Tomatos are actually also fruit, since they can be considered berries.`,
+      title: "What seems suited for the future of Bundeskunsthalle?",
+      content: "",
       options: [
         {
-          name: "Tomatos",
-          content: `
-THis is proposal 2.
-Strike DAO is an experiment in participatory governance of blockchain art
-institutions. The Ethereum domain of Bundeskunsthalle was squatted by
-artist Hito Steyerl and DoD. In the Strike DAO process we will vote on
-three models of future governance of this squatted domain.
-
-The voting will take place as a quadratic voting process in which votes
-are allocated to express the degree of their preferences. Every
-participant  voter is given a budget of 25 video stills that they can use
-to proportionally demonstrate the voter's support. I. e. one still equals
-one vote, four stills equals two votes, and nine stills equal three
-votes.
-
-Three suggestions on how to run
-[Bundeskunsthalle.eth](https://bundeskunsthalle.eth) will be presented during a
-live event. Participants have signed up for the process in advance and received
-stills by mail as voting token. They can use them to vote either before the
-event or during the event - results however will only be displayed during the
-live event.
-          `
+          name: "Status Quo",
+          content: `Bundeskunsthalle: The team of Bundeskunsthalle itself, who will suggest running it as a public institution in the legacy sense, i.e. a mixed governance structure funded by tax money; partly democratically controlled but mostly in the hands of experts, curators and committees.`
         },
         {
-          name: "Bananas",
-          content: `
-          Proposal B.
-Strike DAO is an experiment in participatory governance of blockchain art
-institutions. The Ethereum domain of Bundeskunsthalle was squatted by
-artist Hito Steyerl and DoD. In the Strike DAO process we will vote on
-three models of future governance of this squatted domain.
-
-The voting will take place as a quadratic voting process in which votes
-are allocated to express the degree of their preferences. Every
-participant  voter is given a budget of 25 video stills that they can use
-to proportionally demonstrate the voter's support. I. e. one still equals
-one vote, four stills equals two votes, and nine stills equal three
-votes.
-
-Three suggestions on how to run
-[Bundeskunsthalle.eth](https://bundeskunsthalle.eth) will be presented during a
-live event. Participants have signed up for the process in advance and received
-stills by mail as voting token. They can use them to vote either before the
-event or during the event - results however will only be displayed during the
-live event.
-
-          `
+          name: "There’s No Such Thing As Disintermediation",
+          content: `Department of Decentralization: DoD will argue for a modified DAO governance structure – not taking out the mediators - but subdividing the DAO in special task forces for different problems, each of the task forces collecting and curating proposals, as well as adding their “expert recommendations” to present to the DAO representatives. This proposal is in part, inspired by the Polkadot Governance structure. The goal is to critique through this gesture, the different subgroups of the blockchain ecosystem advocating for no mediation, or on the other side of the spectrum, arguing on-chain governance is a perfect solution.`
         },
         {
-          name: "I like hamsters",
-          content: `
-          And proposal C.
-Strike DAO is an experiment in participatory governance of blockchain art
-institutions. The Ethereum domain of Bundeskunsthalle was squatted by
-artist Hito Steyerl and DoD. In the Strike DAO process we will vote on
-three models of future governance of this squatted domain.
-
-The voting will take place as a quadratic voting process in which votes
-are allocated to express the degree of their preferences. Every
-participant  voter is given a budget of 25 video stills that they can use
-to proportionally demonstrate the voter's support. I. e. one still equals
-one vote, four stills equals two votes, and nine stills equal three
-votes.
-
-Three suggestions on how to run
-[Bundeskunsthalle.eth](https://bundeskunsthalle.eth) will be presented during a
-live event. Participants have signed up for the process in advance and received
-stills by mail as voting token. They can use them to vote either before the
-event or during the event - results however will only be displayed during the
-live event.
-
-          `
+          name: "Beyond Public Accountability",
+          content: `Other Internet: The Ethereum Name Service (ENS) can be read as a global catalog of economic relationships. A space of absolute transparency is a constraint as well as an opportunity to go beyond public accountability. To shape the museum’s financial flows as a form of curation. In a world of financially addressable objects, what unexpected arrangements of artists, institutions, and publics might emerge? We envision a new role for museums: continuously modeling a more constructive relationship with their own communities.`
         }
       ]
     }

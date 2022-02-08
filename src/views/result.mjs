@@ -36,7 +36,7 @@ export default (result, totalVotes, perPerson) => {
               The initial video is rearranged according to the results and
               temporal order of the voting process.
             </p>
-            <h2 style="margin-bottom: 0px;">DoD's proposal won the vote!</h2>
+            <h2 style="margin-bottom: 0px;">Results</h2>
             <p style="text-align: center;">
               Maximal Voting Credits: ${totalVotes} <br />
               Voting Credits per Email: ${perPerson} <br />

@@ -71,7 +71,7 @@ const style = {
     position: "relative",
     display: "flex",
     flexFlow: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     alignItems: "center",
     padding: 0,
     border: "1px solid white",
@@ -87,12 +87,15 @@ const style = {
   },
   votingItemText: {
     fontSize: 25,
-    textAlign: "center",
+    textAlign: "left",
+    marginLeft: "1em",
     fontFamily: "var(--logo-font)",
     wordWrap: "wrap",
     width: "50%",
     "@media (min-width: 1024px)": {
-      width: "inherit"
+      width: "inherit",
+      textAlign: "center",
+      marginLeft: 0
     }
   },
   votingItemLink: {
@@ -135,7 +138,7 @@ const style = {
     display: "flex",
     justifyContent: "space-between",
     fontFamily: "var(--logo-font)",
-    margin: "0 0",
+    margin: "0 2em 0 0",
     "@media (min-width: 1024px)": {
       margin: "0 16px"
     }
