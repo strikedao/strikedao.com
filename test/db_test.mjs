@@ -21,7 +21,7 @@ test.serial("if getting question with limit works", async t => {
 
   const [question] = questions.listWithLimit(1);
   t.truthy(question);
-  t.truthy(question.content && question.ksuid, question.title);
+  t.truthy(question.ksuid, question.title);
 });
 
 test.serial("if question with options query throws", async t => {
