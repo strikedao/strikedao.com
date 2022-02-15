@@ -2,7 +2,7 @@
 // Test all the API routes
 import test from "ava";
 
-import { init, questions, migrations, stills } from "../src/db.mjs";
+import { init, questions, migrations, stills, votes } from "../src/db.mjs";
 import { fastify, initDB } from "../src/start.mjs";
 import { aggregateCredits } from "../src/api/v1/index.mjs";
 import { delDB } from "./utils.mjs";
@@ -235,6 +235,44 @@ test.serial("if voting throws when too many options are submitted", async t => {
   t.is(response.statusCode, 400);
 });
 
+test.serial("if validating status works", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  migrations.init(4);
+  await stills.init();
+  await questions.init();
+  const db = init();
+
+  const { token } = db
+    .prepare("SELECT priority, token FROM stills where priority = 0")
+    .get();
+  t.truthy(token);
+  const email = "example@example.com";
+  stills.allocate(token, email);
+
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+  const question = questions.getWithOptions(qs[0].ksuid);
+  const option1 = question.options[0];
+
+  const response = await fastify.inject({
+    method: "GET",
+    url: `/api/v1/status?tokens=${token}`
+  });
+  t.is(response.statusCode, 200);
+  t.deepEqual(JSON.parse(response.body), { unusedTokens: [token] });
+});
+
 test.serial("if voting works", async t => {
   migrations.init(0);
   migrations.init(1);
@@ -321,6 +359,21 @@ test.serial(
     t.is(response2.statusCode, 302);
   }
 );
+
+test.serial("if tokens can be batch-validated", async t => {
+  await initDB();
+
+  const response = await fastify.inject({
+    method: "get",
+    url: "/api/v1/status",
+    query: {
+      tokens: ["a", "b"]
+    }
+  });
+
+  t.is(response.statusCode, 200);
+  t.deepEqual({ unusedTokens: ["a", "b"] }, JSON.parse(response.body));
+});
 
 test.serial(
   "if handling multiple query strings as an array works with fastify",

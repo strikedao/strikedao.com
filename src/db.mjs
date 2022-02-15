@@ -99,6 +99,25 @@ export const migrations = {
 };
 
 export const votes = {
+  isTokenUsed: function(token) {
+    const db = init();
+    const { tokenFlag } = db
+      .prepare(
+        `
+      SELECT
+        EXISTS (
+          SELECT
+            token
+          FROM
+            votes
+          WHERE
+            token = @token
+        ) as tokenFlag
+        `
+      )
+      .get({ token });
+    return tokenFlag === 1;
+  },
   listInOrder: function() {
     const db = init();
     let l = db

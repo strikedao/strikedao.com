@@ -50,7 +50,7 @@ function VotingApp() {
     };
   };
 
-  useEffect(async () => {
+  async function loadQuestion() {
     let question;
     try {
       question = await v1.question.getWithOptions(questionId);
@@ -60,6 +60,28 @@ function VotingApp() {
       )}`;
     }
     setQuestion(question);
+  }
+
+  async function loadTokenStatus() {
+    let response;
+    try {
+      response = await v1.areTokensUsed(tokens);
+    } catch (err) {
+      window.location.href = `/error?message=${encodeURIComponent(
+        err.toString()
+      )}`;
+    }
+
+    if (response.unusedTokens.length !== MAX_CREDITS) {
+      window.location.href = `/error?message=${encodeURIComponent(
+        "Reason: You have already cast your vote."
+      )}`;
+    }
+  }
+
+  useEffect(async () => {
+    await loadQuestion();
+    await loadTokenStatus();
   }, []);
 
   const handleSubmit = async () => {

@@ -20,7 +20,7 @@ export function getParam(search, name) {
 
 export const v1 = {
   question: {
-    getWithOptions: async function (id) {
+    getWithOptions: async function(id) {
       const res = await fetch(`/api/v1/questions/${id}`);
       if (res.status !== 200) {
         throw new Error(
@@ -30,9 +30,24 @@ export const v1 = {
       return await res.json();
     }
   },
+  areTokensUsed: async function(tokens) {
+    tokens = tokens.join("&tokens=");
+    const res = await fetch(`/api/v1/status?tokens=${tokens}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (res.status !== 200) {
+      throw new Error("Couldn't evaluate token's status");
+    }
+    return await res.json();
+  },
   // choices :: [{optionId: string, token: string}, ...], for more details see
   // POST /votes endpoint schema
-  votes: async function (choices) {
+  votes: async function(choices) {
     const res = await fetch(`/api/v1/votes`, {
       method: "POST",
       headers: {

@@ -37,6 +37,41 @@ test.serial("if question with options query throws", async t => {
   t.throws(() => questions.getWithOptions("non-existent"));
 });
 
+test.serial("if isTokenUsed function works", async t => {
+  migrations.init(0);
+  migrations.init(1);
+  migrations.init(2);
+  migrations.init(3);
+  migrations.init(4);
+  await stills.init();
+  await questions.init();
+
+  const db = init();
+
+  const tokens = db
+    .prepare("SELECT token FROM stills LIMIT 1")
+    .all()
+    .map(({ token }) => token);
+  const email = "example@example.com";
+  stills.allocate(tokens[0], email);
+
+  const qs = db
+    .prepare(
+      `
+      SELECT
+        *
+      FROM
+        questions
+    `
+    )
+    .all();
+
+  t.false(votes.isTokenUsed(tokens[0]));
+  const question = questions.getWithOptions(qs[0].ksuid);
+  await votes.vote(question.options[0].ksuid, tokens[0]);
+  t.true(votes.isTokenUsed(tokens[0]));
+});
+
 test.serial("to ensure that token can only be used once", async t => {
   migrations.init(0);
   migrations.init(1);
@@ -711,8 +746,7 @@ test.serial("if votes can be tallied", async t => {
     // console.debug(email, "is voting for", question.title, "option", option.ksuid);
     const tallyOption = recordedTokens.find(
       tallyOption =>
-        tallyOption.optionID === option.ksuid &&
-        tallyOption.email === email
+        tallyOption.optionID === option.ksuid && tallyOption.email === email
     );
     if (tallyOption) {
       tallyOption.tokens += count;
@@ -764,9 +798,9 @@ test.serial("if votes can be tallied", async t => {
 
     await votes.vote(question.options[1].ksuid, tokens[tokensAllocated + 4]);
     recordVote(email, question.options[1], question, 1);
-    
+
     // record that the remaining options were voted with 0 tokens
-    for(let i = 2; i < question.options.length; i++) {
+    for (let i = 2; i < question.options.length; i++) {
       recordVote(email, question.options[i], question, 0);
     }
 

@@ -124,6 +124,17 @@ export function handleGetQuestion(request, reply) {
   return reply.code(200).send(q);
 }
 
+// NOTE: Albeit desirable, this API function must not be used to implement a
+// feature where a user can vote a second time with their unspent tokens. It's
+// because for doing that, we'd have to replicate the previous voting
+// allocation to make sure they comply with the quadratic principle of just
+// allowing a total of 25 credits spent.
+export function validateTokens(request, reply) {
+  const { tokens } = request.query;
+  const unusedTokens = tokens.filter(token => !votes.isTokenUsed(token));
+  return reply.code(200).send({ unusedTokens });
+}
+
 export default (fastify, opts, done) => {
   fastify.get("/questions/:id", handleGetQuestion);
 
@@ -141,6 +152,22 @@ export default (fastify, opts, done) => {
       }
     },
     serveBallotBox
+  );
+
+  fastify.get(
+    "/status",
+    {
+      schema: {
+        querystring: {
+          type: "object",
+          required: ["tokens"],
+          properties: {
+            tokens: { type: "array" }
+          }
+        }
+      }
+    },
+    validateTokens
   );
 
   fastify.post(
