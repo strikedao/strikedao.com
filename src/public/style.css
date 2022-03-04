@@ -260,6 +260,7 @@ a {
 
 a.secondary {
   text-decoration: underline;
+  font-family: var(--regular-font);
 }
 
 /* We never want to have two anchors too close together, which is
