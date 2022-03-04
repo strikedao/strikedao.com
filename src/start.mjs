@@ -23,6 +23,7 @@ import message from "./views/message.mjs";
 import vote from "./views/vote.mjs";
 import result from "./views/result.mjs";
 import apiV1 from "./api/v1/index.mjs";
+import impressum from "./views/impressum.mjs";
 import config from "../config.mjs";
 
 const { SERVER_PORT, NODE_ENV } = process.env;
@@ -119,12 +120,11 @@ fastify.get("/about", async (request, reply) => {
     .send(content);
 });
 
-fastify.get("/contact", async (request, reply) => {
-  const content = await markdown("contact.md");
+fastify.get("/impressum", async (request, reply) => {
   return reply
     .code(200)
     .type("text/html")
-    .send(content);
+    .send(impressum());
 });
 
 fastify.get("/result", (request, reply) => {
