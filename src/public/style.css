@@ -5,6 +5,11 @@
     url("rockwell-condensed.woff") format("woff");
 }
 
+@font-face {
+  font-family: "Rockwell Nova";
+  src: url("RockwellNova.woff") format("woff");
+}
+
 :root {
   --big-email-input-font-size: 2em;
   --big-email-input-color: #f1f1f1;
@@ -14,6 +19,7 @@
 
   --logo-font: "Rockwell Condensed";
   --text-font: "Rockwell Condensed";
+  --regular-font: "Rockwell Nova";
 }
 
 body {
@@ -61,8 +67,8 @@ h3 {
 p {
   display: inline-block;
 
-  font-family: var(--text-font);
-  font-size: 1.5em;
+  font-family: var(--regular-font);
+  font-size: 1.1em;
   text-align: left;
 }
 
@@ -114,7 +120,7 @@ button {
   padding: 5px 2em 5px 2em;
   margin: 1em;
 
-  font-family: var(--text-font);
+  font-family: var(--regular-font);
   font-weight: bold;
 }
 
@@ -243,8 +249,8 @@ nav .col ul li {
   margin: 0 1.5em 0 0;
   display: inline;
 
-  font-size: 1.5em;
-  font-family: var(--logo-font);
+  font-size: 1.1em;
+  font-family: var(--regular-font);
 }
 
 a {
