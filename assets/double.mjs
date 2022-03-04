@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const min = 0;
-const max = 692;
+const max = 1385;
 
 function padded(num, targetLength) {
   return `out${num.toString().padStart(targetLength, "0")}.mp4`;
@@ -25,7 +25,7 @@ function produce(min, max, targetLength) {
 
 const dir = resolve(__dirname, "stills");
 const dir2 = resolve(__dirname, "stills2");
-const names = produce(min, max, 3);
+const names = produce(min, max, 4);
 let duplicates = 0;
 for (const { name, num } of names) {
   const copyPath = `${dir2}/${padded(num + duplicates, 4)}`;
