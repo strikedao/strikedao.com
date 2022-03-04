@@ -263,6 +263,11 @@ a.secondary {
   font-family: var(--regular-font);
 }
 
+button:hover,
+a.secondary:hover {
+  opacity: 0.7;
+}
+
 /* We never want to have two anchors too close together, which is
  * why for the last anchor in a sibling relationship, we define a
  * top margin that is wide enough to never falsly click one of the

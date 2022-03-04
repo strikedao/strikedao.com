@@ -33,7 +33,8 @@ const style = {
     backgroundColor: "transparent"
   },
   votingButton: {
-    fontSize: 19,
+    fontSize: 18,
+    fontFamily: "var(--regular-font)",
     width: 280,
     backgroundColor: "white",
     color: "black",
@@ -44,7 +45,7 @@ const style = {
     },
     "@media (min-width: 1024px)": {
       marginTop: 50,
-      marginBottom: 50
+      marginBottom: 30
     }
   },
   votingAppHeadline: {
@@ -92,6 +93,7 @@ const style = {
     fontFamily: "var(--logo-font)",
     wordWrap: "wrap",
     width: "50%",
+    minHeight: "2em",
     "@media (min-width: 1024px)": {
       width: "inherit",
       textAlign: "center",
@@ -100,13 +102,13 @@ const style = {
   },
   votingItemLink: {
     textAlign: "left",
-    fontSize: 24,
-    fontFamily: "var(--logo-font)",
+    fontSize: 18,
+    fontFamily: "var(--regular-font)",
     textDecoration: "underline",
     margin: "0 0.5em 10px 0.5em",
     "@media (min-width: 1024px)": {
-      textDecoration: "none",
-      fontSize: 28,
+      textDecoration: "underline",
+      fontSize: 20,
       marginTop: 16
     }
   },

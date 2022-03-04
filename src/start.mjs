@@ -81,9 +81,9 @@ fastify.get("/done", (request, reply) => {
     .send(
       message(html`
         <h2 style="margin-bottom: 0;">Thank You!</h2>
-        <p>
-          We will let you know when the results are ready. You're also invited
-          to the live event.
+        <p style="text-align:center">
+          We will let you know when the results are ready. <br />You're also
+          invited to the live event.
         </p>
       `)
     );

@@ -29,7 +29,7 @@ export default html`
           type="video/mp4"
           width="90%"
         ></video>
-        <p>${config.paragraph}</p>
+        <p style="text-align:center">${config.paragraph}</p>
         <a href="/register">
           <button>Participate</button>
         </a>

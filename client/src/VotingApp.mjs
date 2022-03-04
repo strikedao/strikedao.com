@@ -134,6 +134,12 @@ function VotingApp() {
               ${allowSubmit ? "Vote" : `${credits} voting credits left`}
             </button>
           </div>
+          <a
+            href="https://www.radicalxchange.org/concepts/quadratic-voting/"
+            style="text-align: center"
+            class="${classes.votingItemLink}"
+            >Read more about quadratic voting →</a
+          >
         </div>
         <div class="${classes.votingFooterContainer}">
           <div class="${classes.votingProgressbarContainer}">
