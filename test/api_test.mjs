@@ -1,6 +1,7 @@
 // @format
-// Test all the API routes
 import test from "ava";
+import esmock from "esmock";
+import { add } from "date-fns";
 
 import { init, questions, migrations, stills, votes } from "../src/db.mjs";
 import { fastify, initDB } from "../src/start.mjs";
@@ -34,6 +35,26 @@ test("if aggregating credits works", t => {
       { optionId: 3 }
     ])
   );
+});
+
+test("if voting is locked if voting hasn't begun", async t => {
+  const futureDate = add(new Date(), { minutes: 1 });
+  const { handleVote } = await esmock("../src/api/v1/index.mjs", null, {
+    "../config.mjs": {
+      default: { ...config, ...{ eventData: { voteBegin: futureDate } } }
+    }
+  });
+
+  let called = false;
+  const reply = {
+    code: statusCode => ({
+      send: method => {
+        called = true;
+      }
+    })
+  };
+  handleVote("request", reply);
+  t.true(called);
 });
 
 test.serial("if voting endpoint throws on invalid optionId", async t => {

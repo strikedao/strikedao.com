@@ -6,6 +6,9 @@ const config = {
     keywords: "Hito Steyerl, Quadratic Voting, Decentralization, art",
     author: "Department of Decentralization, Hito Steyerl, Tim Daubenschütz"
   },
+  eventData: {
+    voteBegin: "2022-03-09T16:36:03.095Z"
+  },
   stills: {
     quantity: 2772,
     perEmail: 25

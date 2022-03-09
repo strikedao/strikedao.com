@@ -22,6 +22,7 @@ import markdown from "./views/markdown.mjs";
 import message from "./views/message.mjs";
 import vote from "./views/vote.mjs";
 import result from "./views/result.mjs";
+import lock from "./views/lock.mjs";
 import apiV1 from "./api/v1/index.mjs";
 import impressum from "./views/impressum.mjs";
 import config from "../config.mjs";
@@ -49,6 +50,13 @@ fastify.get("/", (request, reply) => {
     .code(200)
     .type("text/html")
     .send(index);
+});
+
+fastify.get("/lock", (request, reply) => {
+  return reply
+    .code(200)
+    .type("text/html")
+    .send(lock);
 });
 
 fastify.get("/register", (request, reply) => {

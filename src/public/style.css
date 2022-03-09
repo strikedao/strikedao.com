@@ -311,3 +311,21 @@ a.secondary:hover {
     font-size: 16px;
   }
 }
+
+.lock {
+  text-align: center;
+}
+
+.lock > h2 {
+  font-size: 4em;
+}
+
+.lock > span {
+  font-size: 1.5em;
+  font-family: var(--regular-font);
+}
+
+.lock > span > a {
+  font-weight: bold;
+  text-decoration: underline;
+}

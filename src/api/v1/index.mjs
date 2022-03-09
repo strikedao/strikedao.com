@@ -6,7 +6,7 @@ import { once } from "events";
 import { stills, votes, questions } from "../../db.mjs";
 import { link } from "../../tokens.mjs";
 import config from "../../../config.mjs";
-import { calculateCost } from "../../voting.mjs";
+import { hasVotingBegun, calculateCost } from "../../voting.mjs";
 
 const logger = pino({ level: "info" });
 const mailWorkerPath = "./src/workers/send.mjs";
@@ -38,6 +38,11 @@ export function aggregateCredits(choices) {
 }
 
 export async function handleVote(request, reply) {
+  if (!hasVotingBegun()) {
+    logger.error(`Voting attempted but voting hasn't begun yet`);
+    return reply.code(423).send("Locked");
+  }
+
   let aggregatedCredits;
   try {
     aggregatedCredits = aggregateCredits(request.body);

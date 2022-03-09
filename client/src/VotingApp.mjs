@@ -6,7 +6,7 @@ import { getParam, v1 } from "./api.mjs";
 import VotingItem from "./components/VotingItem.mjs";
 import ContentSection from "./components/ContentSection.mjs";
 import { classes } from "./VotingStyles.mjs";
-import { calculateCost } from "../../src/voting.mjs";
+import { hasVotingBegun, calculateCost } from "../../src/voting.mjs";
 import config from "../../config.mjs";
 
 const MAX_CREDITS = config.stills.perEmail;
@@ -80,6 +80,9 @@ function VotingApp() {
   }
 
   useEffect(async () => {
+    if (!hasVotingBegun()) {
+      window.location.href = "/lock";
+    }
     await loadQuestion();
     await loadTokenStatus();
   }, []);

@@ -1,6 +1,28 @@
 // @format
 import test from "ava";
-import { calculateCost } from "../src/voting.mjs";
+import esmock from "esmock";
+import { add, sub } from "date-fns";
+
+import { hasVotingBegun, calculateCost } from "../src/voting.mjs";
+import config from "../config.mjs";
+
+test("if voting time assessment is correct", async t => {
+  const futureDate = add(new Date(), { minutes: 1 }).toISOString();
+  const futureDateMock = await esmock("../src/voting.mjs", null, {
+    "../config.mjs": {
+      default: { ...config, ...{ eventData: { voteBegin: futureDate } } }
+    }
+  });
+  t.false(futureDateMock.hasVotingBegun());
+
+  const pastDate = sub(new Date(), { minutes: 1 }).toISOString();
+  const pastDateMock = await esmock("../src/voting.mjs", null, {
+    "../config.mjs": {
+      default: { ...config, ...{ eventData: { voteBegin: pastDate } } }
+    }
+  });
+  t.true(pastDateMock.hasVotingBegun());
+});
 
 test("if cost function throws when costs exceed", t => {
   t.throws(() => calculateCost([6, 0, 0]));

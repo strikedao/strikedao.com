@@ -1,5 +1,12 @@
 // @format
 import config from "../config.mjs";
+import { isAfter } from "date-fns";
+
+export function hasVotingBegun() {
+  const voteBegin = new Date(config.eventData.voteBegin);
+  const now = new Date();
+  return isAfter(now, voteBegin);
+}
 
 export function cost(x) {
   return Math.pow(x, 2);
