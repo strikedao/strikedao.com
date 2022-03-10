@@ -7,7 +7,7 @@ const config = {
     author: "Department of Decentralization, Hito Steyerl, Tim Daubenschütz"
   },
   eventData: {
-    voteBegin: "2022-03-09T16:36:03.095Z"
+    voteBegin: "2022-03-16T18:00:00.000Z"
   },
   stills: {
     quantity: 2772,
