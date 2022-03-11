@@ -12,7 +12,8 @@
     "dev": "concurrently \"npm run watch:server\" \"npm run watch:frontend\"",
     "test": "ava --serial --verbose",
     "connect": "source .env && ssh root@$IPV4",
-    "deploy": "source .env && rsync -avz . root@$IPV4:./strike --exclude \"strike.db\" --exclude=\"node_modules\" --exclude=\".git\""
+    "deploy": "source .env && rsync -avz . root@$IPV4:./strike --exclude \"strike.db\" --exclude=\"node_modules\" --exclude=\".git\"",
+    "run:no_email": "NODE_ENV=test nohup node ./src/listen.mjs &"
   },
   "ava": {
     "nodeArguments": [
