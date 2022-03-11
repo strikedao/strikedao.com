@@ -1,5 +1,9 @@
 # strike
 
+## prerequisites
+
+- You'll need to have `ffmpeg` globally available in your command line.
+
 ## installation
 
 Clone the repository on your machine and `cd` into the folder.
