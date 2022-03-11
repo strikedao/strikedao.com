@@ -92,7 +92,9 @@ export async function handleAllocate(request, reply) {
     logger.error(
       `Couldn't allocate stills to email with error: "${err.toString()}"`
     );
-    return reply.redirect(`/error?message=${encodeURI("Status: 410")}`);
+    return reply.redirect(
+      `/error?message=${encodeURI("Status: 410; No voting credits left.")}`
+    );
   }
 
   const [question] = questions.listWithLimit(1);
