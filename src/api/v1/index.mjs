@@ -93,7 +93,7 @@ export async function handleAllocate(request, reply) {
       `Couldn't allocate stills to email with error: "${err.toString()}"`
     );
     return reply.redirect(
-      `/error?message=${encodeURI("Status: 410; No voting credits left.")}`
+      `/error?message=${encodeURI("Status: 410. No voting credits left.")}`
     );
   }
 
