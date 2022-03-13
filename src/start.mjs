@@ -48,6 +48,9 @@ fastify.register(fastifyFormbody);
 fastify.get("/", (request, reply) => {
   return reply
     .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=86400, must-revalidate"
+    })
     .type("text/html")
     .send(index);
 });
@@ -55,6 +58,9 @@ fastify.get("/", (request, reply) => {
 fastify.get("/lock", (request, reply) => {
   return reply
     .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=86400, must-revalidate"
+    })
     .type("text/html")
     .send(lock);
 });
@@ -62,6 +68,9 @@ fastify.get("/lock", (request, reply) => {
 fastify.get("/register", (request, reply) => {
   return reply
     .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=86400, must-revalidate"
+    })
     .type("text/html")
     .send(register);
 });
@@ -69,6 +78,9 @@ fastify.get("/register", (request, reply) => {
 fastify.get("/success", (request, reply) => {
   return reply
     .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=86400, must-revalidate"
+    })
     .type("text/html")
     .send(
       message(html`
@@ -85,6 +97,9 @@ fastify.get("/success", (request, reply) => {
 fastify.get("/done", (request, reply) => {
   return reply
     .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=86400, must-revalidate"
+    })
     .type("text/html")
     .send(
       message(html`
@@ -100,6 +115,9 @@ fastify.get("/done", (request, reply) => {
 fastify.get("/error", (request, reply) => {
   return reply
     .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=86400, must-revalidate"
+    })
     .type("text/html")
     .send(
       message(html`
@@ -116,6 +134,9 @@ fastify.get("/error", (request, reply) => {
 fastify.get("/vote", (request, reply) => {
   return reply
     .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=86400, must-revalidate"
+    })
     .type("text/html")
     .send(vote);
 });
@@ -124,6 +145,9 @@ fastify.get("/about", async (request, reply) => {
   const content = await markdown("about.md");
   return reply
     .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=86400, must-revalidate"
+    })
     .type("text/html")
     .send(content);
 });
@@ -131,6 +155,9 @@ fastify.get("/about", async (request, reply) => {
 fastify.get("/impressum", async (request, reply) => {
   return reply
     .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=86400, must-revalidate"
+    })
     .type("text/html")
     .send(impressum());
 });
@@ -140,6 +167,9 @@ fastify.get("/result", (request, reply) => {
   const results = votes.tally(ksuid);
   return reply
     .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=15, must-revalidate"
+    })
     .type("text/html")
     .send(result(results, config.stills.quantity, config.stills.perEmail));
 });

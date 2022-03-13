@@ -2,6 +2,7 @@
 import pino from "pino";
 import { Worker } from "worker_threads";
 import { once } from "events";
+import { hrtime } from "process";
 
 import { stills, votes, questions } from "../../db.mjs";
 import { link } from "../../tokens.mjs";
@@ -80,11 +81,15 @@ export async function handleVote(request, reply) {
 export async function handleAllocate(request, reply) {
   const { email } = request.body;
 
+  const ss1 = hrtime.bigint();
   const emailExists = stills.doesEmailExist(email);
   if (emailExists) {
     return reply.redirect(`/error?message=${encodeURI("Status: 403")}`);
   }
+  const se1 = hrtime.bigint();
+  logger.info(`doesEmailExist: ${(se1 - ss1) / BigInt(10e6)} ms`);
 
+  const ss2 = hrtime.bigint();
   let tokens;
   try {
     tokens = stills.allocateMany(email);
@@ -96,10 +101,21 @@ export async function handleAllocate(request, reply) {
       `/error?message=${encodeURI("Status: 410. No voting credits left.")}`
     );
   }
+  const se2 = hrtime.bigint();
+  logger.info(`allocateMany: ${(se2 - ss2) / BigInt(10e6)} ms`);
 
+  const ss3 = hrtime.bigint();
   const [question] = questions.listWithLimit(1);
+  const se3 = hrtime.bigint();
+  logger.info(`listWithLimit: ${(se3 - ss3) / BigInt(10e6)} ms`);
+
+  const ss4 = hrtime.bigint();
   const text = link(tokens, question.ksuid);
-  const mailWorker = new Worker(mailWorkerPath, {
+
+  // NOTE: Given performance reasons, we don't await the worker's response but
+  // instead "fire and forget." Waiting for a response exponentially increases
+  // the wait time when many people simultaneously request their registration.
+  new Worker(mailWorkerPath, {
     workerData: {
       to: email,
       subject: "Your Voting Credits",
@@ -107,16 +123,10 @@ export async function handleAllocate(request, reply) {
       link: text
     }
   });
+  const se4 = hrtime.bigint();
+  logger.info(`emailWorker: ${(se4 - ss4) / BigInt(10e6)} ms`);
 
-  const [exitCode] = await once(mailWorker, "exit");
-  if (exitCode === 0) {
-    // TODO: Upon success, we want to redirect the user to a screen
-    // indicating success. For now, the design isn't recommending an
-    // option yet, which is why we're redirecting to the root page.
-    return reply.redirect("/success");
-  } else {
-    return reply.redirect(`/error?message=${encodeURI("Status: 500")}`);
-  }
+  return reply.redirect("/success");
 }
 
 export function handleGetQuestion(request, reply) {
