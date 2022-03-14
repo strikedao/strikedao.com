@@ -2,12 +2,17 @@
 import test from "ava";
 import esmock from "esmock";
 import { add } from "date-fns";
+import { rename, writeFile } from "fs/promises";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
 
 import { init, questions, migrations, stills, votes } from "../src/db.mjs";
 import { fastify, initDB } from "../src/start.mjs";
 import { aggregateCredits } from "../src/api/v1/index.mjs";
 import { delDB } from "./utils.mjs";
 import config from "../config.mjs";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test.afterEach.always(delDB);
 test.before(delDB);
@@ -67,6 +72,17 @@ test.serial("if voting endpoint throws on invalid optionId", async t => {
   await questions.init();
   const db = init();
 
+  let content = (await import("../config.mjs")).default;
+  content.eventData.voteBegin = "2020-01-01T00:00:00.000Z";
+  await rename(
+    resolve(__dirname, "../config.mjs"),
+    resolve(__dirname, "../prod_config.mjs")
+  );
+  await writeFile(
+    resolve(__dirname, "../config.mjs"),
+    `const config = ${JSON.stringify(content)}; export default config;`
+  );
+
   const { token } = db
     .prepare("SELECT priority, token FROM stills where priority = 0")
     .get();
@@ -85,6 +101,11 @@ test.serial("if voting endpoint throws on invalid optionId", async t => {
     ]
   });
   t.is(response.statusCode, 401);
+
+  await rename(
+    resolve(__dirname, "../prod_config.mjs"),
+    resolve(__dirname, "../config.mjs")
+  );
 });
 
 test.serial("if voting endpoint throws on invalid token", async t => {
@@ -96,6 +117,17 @@ test.serial("if voting endpoint throws on invalid token", async t => {
   await stills.init();
   await questions.init();
   const db = init();
+
+  let content = (await import("../config.mjs")).default;
+  content.eventData.voteBegin = "2020-01-01T00:00:00.000Z";
+  await rename(
+    resolve(__dirname, "../config.mjs"),
+    resolve(__dirname, "../prod_config.mjs")
+  );
+  await writeFile(
+    resolve(__dirname, "../config.mjs"),
+    `const config = ${JSON.stringify(content)}; export default config;`
+  );
 
   const { token } = db
     .prepare("SELECT priority, token FROM stills where priority = 0")
@@ -128,6 +160,10 @@ test.serial("if voting endpoint throws on invalid token", async t => {
     ]
   });
   t.is(response.statusCode, 401);
+  await rename(
+    resolve(__dirname, "../prod_config.mjs"),
+    resolve(__dirname, "../config.mjs")
+  );
 });
 
 test.serial("retrieving a non-existent question", async t => {
@@ -189,6 +225,17 @@ test.serial("if voting throws cost exceeds", async t => {
   await questions.init();
   const db = init();
 
+  let content = (await import("../config.mjs")).default;
+  content.eventData.voteBegin = "2020-01-01T00:00:00.000Z";
+  await rename(
+    resolve(__dirname, "../config.mjs"),
+    resolve(__dirname, "../prod_config.mjs")
+  );
+  await writeFile(
+    resolve(__dirname, "../config.mjs"),
+    `const config = ${JSON.stringify(content)}; export default config;`
+  );
+
   const qs = db
     .prepare(
       `
@@ -209,6 +256,10 @@ test.serial("if voting throws cost exceeds", async t => {
     body: choices
   });
   t.is(response.statusCode, 400);
+  await rename(
+    resolve(__dirname, "../prod_config.mjs"),
+    resolve(__dirname, "../config.mjs")
+  );
 });
 
 test.serial("if voting throws when too many options are submitted", async t => {
@@ -220,6 +271,17 @@ test.serial("if voting throws when too many options are submitted", async t => {
   await stills.init();
   await questions.init();
   const db = init();
+
+  let content = (await import("../config.mjs")).default;
+  content.eventData.voteBegin = "2020-01-01T00:00:00.000Z";
+  await rename(
+    resolve(__dirname, "../config.mjs"),
+    resolve(__dirname, "../prod_config.mjs")
+  );
+  await writeFile(
+    resolve(__dirname, "../config.mjs"),
+    `const config = ${JSON.stringify(content)}; export default config;`
+  );
 
   const qs = db
     .prepare(
@@ -254,6 +316,11 @@ test.serial("if voting throws when too many options are submitted", async t => {
     ]
   });
   t.is(response.statusCode, 400);
+
+  await rename(
+    resolve(__dirname, "../prod_config.mjs"),
+    resolve(__dirname, "../config.mjs")
+  );
 });
 
 test.serial("if validating status works", async t => {
@@ -304,6 +371,17 @@ test.serial("if voting works", async t => {
   await questions.init();
   const db = init();
 
+  let content = (await import("../config.mjs")).default;
+  content.eventData.voteBegin = "2020-01-01T00:00:00.000Z";
+  await rename(
+    resolve(__dirname, "../config.mjs"),
+    resolve(__dirname, "../prod_config.mjs")
+  );
+  await writeFile(
+    resolve(__dirname, "../config.mjs"),
+    `const config = ${JSON.stringify(content)}; export default config;`
+  );
+
   const { token } = db
     .prepare("SELECT priority, token FROM stills where priority = 0")
     .get();
@@ -335,6 +413,11 @@ test.serial("if voting works", async t => {
     ]
   });
   t.is(response.statusCode, 200);
+
+  await rename(
+    resolve(__dirname, "../prod_config.mjs"),
+    resolve(__dirname, "../config.mjs")
+  );
 });
 
 test.serial("if handling allocations works", async t => {
