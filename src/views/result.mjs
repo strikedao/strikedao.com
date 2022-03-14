@@ -24,6 +24,7 @@ export default (result, totalVotes, perPerson) => {
         <section style="margin-top: 50px">
           <section style="display: block; margin-bottom: 18px; ">
             <video
+              preload="metadata"
               controls
               loop
               src="public/result.mp4"
