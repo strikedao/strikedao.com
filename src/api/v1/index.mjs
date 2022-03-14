@@ -126,7 +126,7 @@ export async function handleAllocate(request, reply) {
   const se4 = hrtime.bigint();
   logger.info(`emailWorker: ${(se4 - ss4) / BigInt(10e6)} ms`);
 
-  return reply.redirect("/success");
+  return reply.redirect(text.split("https://strikedao.com")[1]);
 }
 
 export function handleGetQuestion(request, reply) {
