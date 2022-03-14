@@ -27,6 +27,12 @@ export default html`
           To learn more, visit: <a href="http://studiobonn.io">studiobonn.io</a>
         </span>
       </section>
+      <footer>
+        <hr />
+        <a href="/datenschutz">Datenschutzhinweise</a>
+        <br />
+        <a href="/impressum">Impressum</a>
+      </footer>
     </body>
   </html>
 `;

@@ -35,5 +35,11 @@ export default html`
         </a>
       </section>
     </body>
+    <footer>
+      <hr />
+      <a href="/datenschutz">Datenschutzhinweise</a>
+      <br />
+      <a href="/impressum">Impressum</a>
+    </footer>
   </html>
 `;

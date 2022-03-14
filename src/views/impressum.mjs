@@ -33,6 +33,12 @@ export default body => html`
           +4917684084263
         </p>
       </section>
+      <footer>
+        <hr />
+        <a href="/datenschutz">Datenschutzhinweise</a>
+        <br />
+        <a href="/impressum">Impressum</a>
+      </footer>
     </body>
   </html>
 `;

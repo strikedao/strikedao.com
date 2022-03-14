@@ -28,6 +28,12 @@ export default async name => {
         <section class="text-content">
           ${html([`<section>${rendered}</section>`])}
         </section>
+        <footer>
+          <hr />
+          <a href="/datenschutz">Datenschutzhinweise</a>
+          <br />
+          <a href="/impressum">Impressum</a>
+        </footer>
       </body>
     </html>
   `;

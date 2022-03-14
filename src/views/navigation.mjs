@@ -13,9 +13,6 @@ export default () => html`
         <li>
           <a href="/about"> About </a>
         </li>
-        <li>
-          <a href="/impressum"> Impressum </a>
-        </li>
       </ul>
     </div>
   </nav>

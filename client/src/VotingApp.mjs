@@ -161,6 +161,12 @@ function VotingApp() {
             `;
           })}
         </div>
+        <footer>
+          <hr />
+          <a href="/datenschutz">Datenschutzhinweise</a>
+          <br />
+          <a href="/impressum">Impressum</a>
+        </footer>
       </div>
     `;
   }
@@ -170,9 +176,4 @@ function VotingApp() {
   `;
 }
 
-render(
-  html`
-    <${VotingApp} />
-  `,
-  document.querySelector("#app")
-);
+render(html` <${VotingApp} /> `, document.querySelector("#app"));

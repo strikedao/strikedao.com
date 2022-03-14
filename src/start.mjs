@@ -152,6 +152,17 @@ fastify.get("/about", async (request, reply) => {
     .send(content);
 });
 
+fastify.get("/datenschutz", async (request, reply) => {
+  const content = await markdown("datenschutz.md");
+  return reply
+    .code(200)
+    .headers({
+      "Cache-Control": "public, max-age=86400, must-revalidate"
+    })
+    .type("text/html")
+    .send(content);
+});
+
 fastify.get("/impressum", async (request, reply) => {
   return reply
     .code(200)

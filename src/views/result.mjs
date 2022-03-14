@@ -67,7 +67,7 @@ export default (result, totalVotes, perPerson) => {
                 <span
                   style="margin-top: 10px;
                     max-width: calc(${radius[0] *
-                    2} * 100vw * var(--svg-normalizer))"
+                  2} * 100vw * var(--svg-normalizer))"
                   >${result[0].text}</span
                 >
                 <span>${result[0].votes}</span>
@@ -78,7 +78,7 @@ export default (result, totalVotes, perPerson) => {
                     style="stroke: white;
                   width: calc(${radius[1] * 2} * 100vw * var(--svg-normalizer));
                   height: calc(${radius[1] *
-                      2} * 100vw * var(--svg-normalizer));"
+                    2} * 100vw * var(--svg-normalizer));"
                   >
                     <circle cx="50%" cy="50%" r="49%"></circle>
                     <text
@@ -95,7 +95,7 @@ export default (result, totalVotes, perPerson) => {
                   <span
                     style="margin-top: 10px;
                     max-width: calc(${radius[1] *
-                      2} * 100vw * var(--svg-normalizer))"
+                    2} * 100vw * var(--svg-normalizer))"
                     >${result[1].text}</span
                   >
                   <span>${result[1].votes}</span>
@@ -108,7 +108,7 @@ export default (result, totalVotes, perPerson) => {
                     style="stroke: white;
                   width: calc(${radius[2] * 2} * 100vw * var(--svg-normalizer));
                   height: calc(${radius[2] *
-                      2} * 100vw * var(--svg-normalizer));"
+                    2} * 100vw * var(--svg-normalizer));"
                   >
                     <circle cx="50%" cy="50%" r="49%"></circle>
                     <text
@@ -125,7 +125,7 @@ export default (result, totalVotes, perPerson) => {
                   <span
                     style="margin-top: 10px;
                     max-width: calc(${radius[2] *
-                      2} * 100vw * var(--svg-normalizer))"
+                    2} * 100vw * var(--svg-normalizer))"
                     >${result[2].text}</span
                   >
                   <span>${result[2].votes}</span>
@@ -134,6 +134,12 @@ export default (result, totalVotes, perPerson) => {
             </div>
           </section>
         </section>
+        <footer>
+          <hr />
+          <a href="/datenschutz">Datenschutzhinweise</a>
+          <br />
+          <a href="/impressum">Impressum</a>
+        </footer>
       </body>
     </html>
   `;

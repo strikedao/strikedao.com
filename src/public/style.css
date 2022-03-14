@@ -77,7 +77,18 @@ p {
   margin: 2em 0 2em 0;
 }
 
-.text-content h2 {
+.text-content {
+  font-family: var(--regular-font);
+}
+
+.text-content h3 {
+  font-family: var(--regular-font);
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.text-content h2,
+.text-content h3 {
   align-self: flex-start;
 }
 
@@ -329,4 +340,19 @@ a.secondary:hover {
 .lock > span > a {
   font-weight: bold;
   text-decoration: underline;
+}
+
+footer {
+  text-align: left;
+  font-family: var(--regular-font);
+  line-height: 2;
+}
+
+footer > hr {
+  border: 1px solid #1b1212;
+}
+
+footer > a {
+  text-decoration: underline;
+  padding-left: 1em;
 }
