@@ -25,7 +25,8 @@ export default html`
           muted
           autoplay
           loop
-          src="public/original.mp4"
+          preload="metadata"
+          src="https://strikedao.s3.eu-central-1.amazonaws.com/original.mp4"
           type="video/mp4"
           width="90%"
         ></video>

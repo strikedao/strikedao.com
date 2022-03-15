@@ -1,6 +1,6 @@
 ## About
 
-<video autoplay controls loop src="public/original.mp4" type="video/mp4" width="100%"></video>
+<video preload="metadata" autoplay controls loop src="https://strikedao.s3.eu-central-1.amazonaws.com/original.mp4" type="video/mp4" width="100%"></video>
 
 Strike DAO is an experiment in participatory governance of blockchain art
 institutions. The Ethereum domain of Bundeskunsthalle was squatted by
@@ -9,7 +9,7 @@ three models of future governance of this squatted domain.
 
 The voting will take place as a quadratic voting process in which votes
 are allocated to express the degree of their preferences. Every
-participant  voter is given a budget of 25 video stills that they can use
+participant voter is given a budget of 25 video stills that they can use
 to proportionally demonstrate the voter's support. I. e. one still equals
 one vote, four stills equals two votes, and nine stills equal three
 votes.
