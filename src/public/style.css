@@ -293,6 +293,7 @@ a.secondary:hover {
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;
+  font-family: var(--regular-font);
 }
 
 .result-visual > div:nth-child(2) {
