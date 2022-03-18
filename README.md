@@ -3,7 +3,7 @@
 [![Node.js CI](https://github.com/strikedao/strikedao.com/actions/workflows/node.js.yml/badge.svg)](https://github.com/strikedao/strikedao.com/actions/workflows/node.js.yml)
 
 <p align="center">
-  <img src="/src/public/email_logo.png" />
+  <img src="/assets/logo.png" />
 </p>
 
 ### Strike DAO is an experiment in participatory governance of blockchain art institutions.
