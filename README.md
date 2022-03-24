@@ -8,7 +8,7 @@
 
 ### Strike DAO is an experiment in participatory governance of blockchain art institutions.
 
-#### [context](readme.md#context) | [documentation](readme.md#documentation) | [license](readme.md/#license)
+#### [context](README.md#context) | [documentation](README.md#documentation) | [license](README.md/#license)
 
 ## context
 
