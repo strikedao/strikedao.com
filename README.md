@@ -87,6 +87,14 @@ curl \
   "http://localhost:5000/api/v1/stills/"
 ```
 
+## Maintenance
+
+### Renewing the strikedao.com SSL certificate
+
+- Log into the server
+- `cd` into the `proxy` folder and run `make renew-cert` which should take care
+  of everything else.
+
 ## license
 
 See LICENSE file.
